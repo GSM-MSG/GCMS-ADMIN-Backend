@@ -29,7 +29,11 @@ public class UserController {
         return responseService.getSuccessResult();
     }
 
-
+    @GetMapping("/search")
+    public List<UserResponseDto> search(String keyword) {
+        List<UserResponseDto> searchList = userService.search(keyword);
+        return searchList;
+    }
 
 
 }
