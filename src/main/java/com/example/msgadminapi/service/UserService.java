@@ -39,5 +39,15 @@ public class UserService {
         userEntity.update(grade, class_, num);
     }
 
-
+    @Transactional
+    public List<UserResponseDto> search(String keyword) {
+        List<UserResponseDto> searchList = new ArrayList<>();
+        userRepository.findByNameContaining(keyword)
+                .forEach(e -> searchList.add(UserResponseDto.builder()
+                        .email(e.getEmail())
+                        .name(e.getName())
+                        .grade(e.getGrade())
+                        .build()));
+        return searchList;
+    }
 }
