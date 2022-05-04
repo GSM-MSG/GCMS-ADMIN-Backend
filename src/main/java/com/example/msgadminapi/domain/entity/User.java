@@ -3,12 +3,14 @@ package com.example.msgadminapi.domain.entity;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 
 @Getter
 @Entity
 @NoArgsConstructor
+@ToString
 public class User {
 
     @Id
@@ -38,5 +40,12 @@ public class User {
         this.num = num;
         this.userImg = userImg;
         this.refeshToken = refeshToken;
+    }
+
+    // 회원 정보 수정
+    public void update(int grade, int class_, int num) {
+        this.grade = grade;
+        this.class_ = class_;
+        this.num = num;
     }
 }

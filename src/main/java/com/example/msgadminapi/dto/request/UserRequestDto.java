@@ -10,5 +10,5 @@ import java.util.Optional;
 public class UserRequestDto {
     private String email;
     private String name;
-    private String grade;wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww
+    private String grade;
 }

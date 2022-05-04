@@ -13,6 +13,7 @@ import org.springframework.test.web.servlet.ResultMatcher;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.content;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(MockitoExtension.class)
@@ -28,6 +29,13 @@ class UserControllerTest {
         String data = "전체 회원";
 
         mvc.perform(get("/user"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    @DisplayName("modifyUser")
+    public void 회원수정() throws Exception {
+        mvc.perform(put("/user/modify"))
                 .andExpect(status().isOk());
     }
 
