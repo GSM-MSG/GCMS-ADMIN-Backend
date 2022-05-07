@@ -31,10 +31,14 @@ public class UserController {
 
     @GetMapping("/search")
     public List<UserResponseDto> search(String keyword) {
-        List<UserResponseDto> searchList = userService.search(keyword);
-        return searchList;
+        return userService.search(keyword);
     }
 
+    @DeleteMapping()
+    public CommonResultResponse userDelete(String email) {
+        userService.userDelete(email);
+        return responseService.getSuccessResult();
+    }
 
 }
 

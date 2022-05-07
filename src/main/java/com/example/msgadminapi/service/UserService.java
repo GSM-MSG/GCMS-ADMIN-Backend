@@ -50,4 +50,9 @@ public class UserService {
                         .build()));
         return searchList;
     }
+
+    @Transactional
+    public void userDelete(String email) {
+        userRepository.deleteById(email);
+    }
 }
