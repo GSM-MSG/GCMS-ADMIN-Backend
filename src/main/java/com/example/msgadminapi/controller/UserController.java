@@ -30,12 +30,12 @@ public class UserController {
     }
 
     @GetMapping("/search")
-    public List<UserResponseDto> search(String keyword) {
+    public List<UserResponseDto> search(@RequestParam("keyword") String keyword) {
         return userService.search(keyword);
     }
 
-    @DeleteMapping()
-    public CommonResultResponse userDelete(String email) {
+    @DeleteMapping("")
+    public CommonResultResponse userDelete(@RequestParam("email") String email) {
         userService.userDelete(email);
         return responseService.getSuccessResult();
     }
