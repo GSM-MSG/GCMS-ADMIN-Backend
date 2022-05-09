@@ -5,8 +5,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class UserRequestDto {
-    private String email;
-    private String name;
-    private String grade;
+public class ClubTitleModifyRequest {
+    private Long id;
+    private String title;
 }
