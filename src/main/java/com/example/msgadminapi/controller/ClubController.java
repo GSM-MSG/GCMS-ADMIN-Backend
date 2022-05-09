@@ -29,4 +29,10 @@ public class ClubController {
         return clubService.search(title);
     }
 
+    @PutMapping("/title")
+    public CommonResultResponse titleModify(@RequestParam ClubTitleModifyRequest request) {
+        clubService.clubTitleModify(request);
+        return responseService.getSuccessResult();
+    }
+
 }
