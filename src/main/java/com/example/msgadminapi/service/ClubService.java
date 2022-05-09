@@ -34,4 +34,20 @@ public class ClubService {
     }
 
 
+    @Transactional
+    public List<ClubResponseDto> search(String title) {
+        List<ClubResponseDto> searchList = new ArrayList<>();
+        clubRepository.findByTitleContaining(title)
+                .forEach(e -> searchList.add(ClubResponseDto.builder()
+                        .id(e.getId())
+                        .type(e.getType())
+                        .bannerUrl(e.getBannerUrl())
+                        .title(e.getTitle())
+                        .description(e.getDescription())
+                        .contact(e.getContact())
+                        .teacher(e.getTeacher())
+                        .isOpened(e.isOpened())
+                        .build()));
+        return searchList;
+    }
 }
