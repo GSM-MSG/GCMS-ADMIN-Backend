@@ -50,4 +50,10 @@ public class ClubService {
                         .build()));
         return searchList;
     }
+
+    @Transactional
+    public void clubTitleModify(ClubTitleModifyRequest request) {
+        Optional<Club> clubEntity = clubRepository.findById(request.getId());
+        clubEntity.ifPresent(e -> e.titleModify(request.getTitle()));
+    }
 }
