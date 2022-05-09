@@ -23,4 +23,10 @@ public class ClubController {
     public List<ClubResponseDto> clubFindAll() {
         return clubService.findAll();
     }
+
+    @GetMapping("/search")
+    public List<ClubResponseDto> search(@RequestParam("title") String title) {
+        return clubService.search(title);
+    }
+
 }
