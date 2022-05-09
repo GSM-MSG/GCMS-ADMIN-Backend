@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.util.Optional;
 
 @Getter
 @Entity
@@ -33,5 +34,7 @@ public class Club {
     private boolean isOpened;
 
 
-
+    public void titleModify(String title) {
+        this.title = title;
+    }
 }
