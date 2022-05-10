@@ -19,7 +19,7 @@ public class ClubController {
     private final ClubService clubService;
     private final ResponseService responseService;
 
-    @GetMapping("")
+    @GetMapping
     public List<ClubResponseDto> clubFindAll() {
         return clubService.findAll();
     }
@@ -35,4 +35,9 @@ public class ClubController {
         return responseService.getSuccessResult();
     }
 
+    @DeleteMapping("{clubIdx}")
+    public CommonResultResponse clubDelete(@PathVariable String clubIdx) throws Exception {
+        clubService.clubDelete(clubIdx);
+        return responseService.getSuccessResult();
+    }
 }
