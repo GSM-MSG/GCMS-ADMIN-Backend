@@ -19,7 +19,7 @@ public class ClubController {
     private final ClubService clubService;
     private final ResponseService responseService;
 
-    @GetMapping("/")
+    @GetMapping("")
     public List<ClubResponseDto> clubFindAll() {
         return clubService.findAll();
     }
