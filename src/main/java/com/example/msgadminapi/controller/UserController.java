@@ -13,12 +13,13 @@ import java.util.List;
 @RestController()
 @RequiredArgsConstructor
 @RequestMapping("users")
+
 public class UserController {
 
     private final UserService userService;
     private final ResponseService responseService;
 
-    @GetMapping("")
+    @GetMapping
     public List<UserResponseDto> userFindAll() {
         return userService.findAll();
     }
@@ -34,7 +35,7 @@ public class UserController {
         return responseService.getSuccessResult();
     }
 
-    @DeleteMapping("")
+    @DeleteMapping
     public CommonResultResponse userDelete(@RequestParam("email") String email) {
         userService.userDelete(email);
         return responseService.getSuccessResult();
