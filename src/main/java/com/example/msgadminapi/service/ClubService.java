@@ -64,4 +64,12 @@ public class ClubService {
         clubRepository.delete(club);
     }
 
+
+    public void clubClose(String clubIdx) throws Exception {
+        Long id = Long.parseLong(clubIdx);
+        Club club = clubRepository.findById(id)
+                .orElseThrow(() -> new Exception("Club is Not Found"));
+
+
+    }
 }
