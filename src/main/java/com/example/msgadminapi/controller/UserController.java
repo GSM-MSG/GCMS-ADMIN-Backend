@@ -12,26 +12,26 @@ import java.util.List;
 
 @RestController()
 @RequiredArgsConstructor
-@RequestMapping("user")
+@RequestMapping("users")
 public class UserController {
 
     private final UserService userService;
     private final ResponseService responseService;
 
-    @GetMapping("/users")
+    @GetMapping("")
     public List<UserResponseDto> userFindAll() {
         return userService.findAll();
+    }
+
+    @GetMapping("/search")
+    public List<UserResponseDto> search(@RequestParam("keyword") String keyword) {
+        return userService.search(keyword);
     }
 
     @PutMapping("/modify")
     public CommonResultResponse userModify(@RequestBody UserRequestDto userRequestDto) {
         userService.userModify(userRequestDto);
         return responseService.getSuccessResult();
-    }
-
-    @GetMapping("/search")
-    public List<UserResponseDto> search(@RequestParam("keyword") String keyword) {
-        return userService.search(keyword);
     }
 
     @DeleteMapping("")

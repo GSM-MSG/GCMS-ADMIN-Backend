@@ -1,10 +1,9 @@
 package com.example.msgadminapi.service;
 
-import com.example.msgadminapi.domain.entity.User;
+import com.example.msgadminapi.domain.entity.user.User;
 import com.example.msgadminapi.domain.repository.UserRepository;
 import com.example.msgadminapi.dto.request.UserRequestDto;
 import com.example.msgadminapi.dto.response.UserResponseDto;
-import com.example.msgadminapi.response.result.CommonResultResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

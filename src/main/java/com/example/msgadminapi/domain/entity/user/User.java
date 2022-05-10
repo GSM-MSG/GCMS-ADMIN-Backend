@@ -1,4 +1,4 @@
-package com.example.msgadminapi.domain.entity;
+package com.example.msgadminapi.domain.entity.user;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -12,7 +12,6 @@ import javax.persistence.*;
 @NoArgsConstructor
 @ToString
 public class User {
-
     @Id
     @GeneratedValue()
     private String email;
