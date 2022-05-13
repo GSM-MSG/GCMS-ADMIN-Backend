@@ -40,4 +40,10 @@ public class ClubController {
         clubService.clubDelete(clubIdx);
         return responseService.getSuccessResult();
     }
+
+    @PutMapping("{clubIdx}/end")
+    public CommonResultResponse clubFinishOpen(@PathVariable String clubIdx) throws Exception {
+        clubService.clubClose(clubIdx);
+        return responseService.getSuccessResult();
+    }
 }
