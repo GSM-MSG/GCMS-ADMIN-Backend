@@ -29,10 +29,14 @@ public class Club {
     private String teacher;
 
     @Column(columnDefinition = "TINYINT")
-    private boolean isOpened;
+    private Boolean isOpened;
 
 
     public void titleModify(String title) {
         this.title = title;
+    }
+
+    public void isClubFinishOpen(Boolean isClosure) {
+        this.isOpened = isClosure;
     }
 }
