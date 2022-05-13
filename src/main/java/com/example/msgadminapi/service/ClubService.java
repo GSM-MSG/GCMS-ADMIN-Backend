@@ -28,7 +28,7 @@ public class ClubService {
                 .description(e.getDescription())
                 .contact(e.getContact())
                 .teacher(e.getTeacher())
-                .isOpened(e.isOpened())
+                .isOpened(e.getIsOpened())
                 .build()));
         return clubs;
     }
@@ -69,7 +69,6 @@ public class ClubService {
         Long id = Long.parseLong(clubIdx);
         Club club = clubRepository.findById(id)
                 .orElseThrow(() -> new Exception("Club is Not Found"));
-
-
+        club.isClubFinishOpen(false);
     }
 }
