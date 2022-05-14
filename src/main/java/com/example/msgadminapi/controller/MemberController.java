@@ -21,4 +21,10 @@ public class MemberController {
         return responseService.getSuccessResult();
     }
 
+    @DeleteMapping("/{id}")
+    public CommonResultResponse deleteMember(@PathVariable String id) throws Exception {
+        memberService.deleteMember(id);
+        return responseService.getSuccessResult();
+    }
+
 }
