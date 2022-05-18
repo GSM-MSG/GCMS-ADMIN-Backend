@@ -15,6 +15,8 @@ public class Member {
     @Id
     private Long id;
 
+    private String scope;
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_email")
     private User user;
