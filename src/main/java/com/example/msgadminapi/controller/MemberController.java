@@ -22,7 +22,7 @@ public class MemberController {
     }
 
     @DeleteMapping("/{id}")
-    public CommonResultResponse deleteMember(@PathVariable String id) throws Exception {
+    public CommonResultResponse deleteMember(@PathVariable Long id) throws Exception {
         memberService.deleteMember(id);
         return responseService.getSuccessResult();
     }

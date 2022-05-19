@@ -20,9 +20,8 @@ public class MemberService {
         memberRepository.save(member);
     }
 
-    public void deleteMember(String id) throws Exception{
-        Long memberId = Long.parseLong(id);
-        Member member = memberRepository.findById(memberId)
+    public void deleteMember(Long id) throws Exception{
+        Member member = memberRepository.findById(id)
                         .orElseThrow(() -> new Exception("존재하지 않는 멤버 엔티티 튜플입니다."));
         memberRepository.delete(member);
     }
