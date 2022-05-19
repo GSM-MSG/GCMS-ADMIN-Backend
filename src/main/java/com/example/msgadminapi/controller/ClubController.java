@@ -36,13 +36,13 @@ public class ClubController {
     }
 
     @DeleteMapping("{clubIdx}")
-    public CommonResultResponse clubDelete(@PathVariable String clubIdx) throws Exception {
+    public CommonResultResponse clubDelete(@PathVariable Long clubIdx) throws Exception {
         clubService.clubDelete(clubIdx);
         return responseService.getSuccessResult();
     }
 
     @PutMapping("{clubIdx}/end")
-    public CommonResultResponse clubFinishOpen(@PathVariable String clubIdx) throws Exception {
+    public CommonResultResponse clubFinishOpen(@PathVariable Long clubIdx) throws Exception {
         clubService.clubClose(clubIdx);
         return responseService.getSuccessResult();
     }

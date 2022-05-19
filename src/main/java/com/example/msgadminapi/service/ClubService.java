@@ -57,17 +57,15 @@ public class ClubService {
         clubEntity.ifPresent(e -> e.titleModify(request.getTitle()));
     }
 
-    public void clubDelete(String clubIdx) throws Exception {
-        Long id = Long.parseLong(clubIdx);
-        Club club = clubRepository.findById(id)
+    public void clubDelete(Long clubIdx) throws Exception {
+        Club club = clubRepository.findById(clubIdx)
                 .orElseThrow(() -> new Exception("Club is Not Found "));
         clubRepository.delete(club);
     }
 
 
-    public void clubClose(String clubIdx) throws Exception {
-        Long id = Long.parseLong(clubIdx);
-        Club club = clubRepository.findById(id)
+    public void clubClose(Long clubIdx) throws Exception {
+        Club club = clubRepository.findById(clubIdx)
                 .orElseThrow(() -> new Exception("Club is Not Found"));
         club.isClubFinishOpen(false);
     }

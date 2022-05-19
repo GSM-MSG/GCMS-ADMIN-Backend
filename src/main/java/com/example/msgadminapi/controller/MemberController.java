@@ -8,7 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/Member")
+@RequestMapping("/member")
 @RequiredArgsConstructor
 public class MemberController {
 
@@ -17,12 +17,12 @@ public class MemberController {
 
     @PostMapping("/{email}")
     public CommonResultResponse insert(@PathVariable String email, @RequestBody Member member) {
-        memberService.insert(email, member);
+        memberService.insertMember(email, member);
         return responseService.getSuccessResult();
     }
 
     @DeleteMapping("/{id}")
-    public CommonResultResponse deleteMember(@PathVariable String id) throws Exception {
+    public CommonResultResponse deleteMember(@PathVariable Long id) throws Exception {
         memberService.deleteMember(id);
         return responseService.getSuccessResult();
     }

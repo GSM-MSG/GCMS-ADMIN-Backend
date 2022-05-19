@@ -16,7 +16,6 @@ import java.util.List;
 @ToString
 public class User {
     @Id
-    @GeneratedValue()
     private String email;
 
     private String name;
