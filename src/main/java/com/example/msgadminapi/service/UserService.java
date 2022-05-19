@@ -6,8 +6,8 @@ import com.example.msgadminapi.dto.request.UserRequestDto;
 import com.example.msgadminapi.dto.response.UserResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,6 +17,7 @@ public class UserService {
 
     private final UserRepository userRepository;
 
+    @Transactional(readOnly = true)
     public List<UserResponseDto> findAll() {
         List<UserResponseDto> users = new ArrayList<>();
         userRepository.findAll().forEach(e -> users.add(UserResponseDto.builder()
@@ -38,7 +39,7 @@ public class UserService {
         userEntity.update(grade, class_, num);
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public List<UserResponseDto> search(String keyword) {
         List<UserResponseDto> searchList = new ArrayList<>();
         userRepository.findByNameContaining(keyword)
