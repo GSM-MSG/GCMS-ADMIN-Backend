@@ -14,7 +14,7 @@ public class MemberService {
     private final MemberRepository memberRepository;
     private final UserRepository userRepository;
 
-    public void insert(String email, Member member){
+    public void insertMember(String email, Member member){
         User byEmail = userRepository.findByEmail(email);
         member.mapping(byEmail);
         memberRepository.save(member);
