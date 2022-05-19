@@ -6,8 +6,8 @@ import com.example.msgadminapi.dto.request.ClubTitleModifyRequest;
 import com.example.msgadminapi.dto.response.ClubResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -18,6 +18,7 @@ public class ClubService {
 
     private final ClubRepository clubRepository;
 
+    @Transactional(readOnly = true)
     public List<ClubResponseDto> findAll() {
         List<ClubResponseDto> clubs = new ArrayList<>();
         clubRepository.findAll().forEach(e -> clubs.add(ClubResponseDto.builder()
@@ -34,7 +35,7 @@ public class ClubService {
     }
 
 
-    @Transactional
+    @Transactional(readOnly = true)
     public List<ClubResponseDto> search(String title) {
         List<ClubResponseDto> searchList = new ArrayList<>();
         clubRepository.findByTitleContaining(title)
@@ -57,13 +58,14 @@ public class ClubService {
         clubEntity.ifPresent(e -> e.titleModify(request.getTitle()));
     }
 
+    @Transactional
     public void clubDelete(Long clubIdx) throws Exception {
         Club club = clubRepository.findById(clubIdx)
                 .orElseThrow(() -> new Exception("Club is Not Found "));
         clubRepository.delete(club);
     }
 
-
+    @Transactional
     public void clubClose(Long clubIdx) throws Exception {
         Club club = clubRepository.findById(clubIdx)
                 .orElseThrow(() -> new Exception("Club is Not Found"));

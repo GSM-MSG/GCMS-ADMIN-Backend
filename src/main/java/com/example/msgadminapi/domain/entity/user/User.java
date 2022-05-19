@@ -14,6 +14,7 @@ import java.util.List;
 @Entity
 @NoArgsConstructor
 @ToString
+@Table(name = "users")
 public class User {
     @Id
     private String email;
