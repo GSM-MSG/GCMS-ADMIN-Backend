@@ -13,10 +13,12 @@ import java.util.Optional;
 @Getter
 @Entity
 @NoArgsConstructor // 파라미터가 없는 기본 생성자를 생성해준다
+@Table(name="club")
 @ToString
 public class Club {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String type;

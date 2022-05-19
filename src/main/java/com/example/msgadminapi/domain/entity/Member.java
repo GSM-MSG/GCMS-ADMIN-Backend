@@ -12,6 +12,7 @@ import javax.persistence.*;
 @Getter
 public class Member {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String scope;
@@ -21,7 +22,7 @@ public class Member {
     private User user;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "club_id")
     private Club club;
 
     public void mapping(User user){
