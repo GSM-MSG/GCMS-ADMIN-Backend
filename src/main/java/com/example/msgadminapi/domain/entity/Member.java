@@ -1,10 +1,9 @@
 package com.example.msgadminapi.domain.entity;
 
+import com.example.msgadminapi.domain.entity.club.Club;
 import com.example.msgadminapi.domain.entity.user.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
 
 import javax.persistence.*;
 
@@ -20,6 +19,10 @@ public class Member {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_email")
     private User user;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "id")
+    private Club club;
 
     public void mapping(User user){
         this.user=user;

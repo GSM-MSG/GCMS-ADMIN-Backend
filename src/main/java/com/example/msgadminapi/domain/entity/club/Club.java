@@ -1,10 +1,13 @@
 package com.example.msgadminapi.domain.entity.club;
 
+import com.example.msgadminapi.domain.entity.Member;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Getter
@@ -31,6 +34,8 @@ public class Club {
     @Column(columnDefinition = "TINYINT")
     private Boolean isOpened;
 
+    @OneToMany(mappedBy = "club", fetch = FetchType.EAGER)
+    private List<Member> members = new ArrayList<>();
 
     public void titleModify(String title) {
         this.title = title;
