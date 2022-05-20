@@ -1,16 +1,14 @@
 package com.example.msgadminapi.service;
 
-import com.example.msgadminapi.domain.entity.Member;
+import com.example.msgadminapi.domain.entity.member.Member;
 import com.example.msgadminapi.domain.entity.club.Club;
+import com.example.msgadminapi.domain.entity.member.enums.Scope;
 import com.example.msgadminapi.domain.entity.user.User;
 import com.example.msgadminapi.domain.repository.ClubRepository;
 import com.example.msgadminapi.domain.repository.MemberRepository;
 import com.example.msgadminapi.domain.repository.UserRepository;
-import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor

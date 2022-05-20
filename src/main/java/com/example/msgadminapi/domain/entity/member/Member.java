@@ -1,6 +1,7 @@
-package com.example.msgadminapi.domain.entity;
+package com.example.msgadminapi.domain.entity.member;
 
 import com.example.msgadminapi.domain.entity.club.Club;
+import com.example.msgadminapi.domain.entity.member.enums.Scope;
 import com.example.msgadminapi.domain.entity.user.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,7 +16,7 @@ public class Member {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String scope;
+    private Scope scope;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_email")
@@ -35,5 +36,12 @@ public class Member {
         club.getMembers().add(this);
     }
 
+    public void changeScope(Scope scope){
+        this.scope=scope;
+    }
+
+    public Member(){
+        this.scope=Scope.MEMBER;
+    }
 
 }
