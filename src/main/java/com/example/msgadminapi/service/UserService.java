@@ -33,8 +33,9 @@ public class UserService {
         int grade = Integer.parseInt(userRequestDto.getGrade().substring(0, 1));
         int class_ = Integer.parseInt(userRequestDto.getGrade().substring(1, 2));
         int num = Integer.parseInt(userRequestDto.getGrade().substring(2, 4));
-
-        User userEntity = userRepository.findByEmail(userRequestDto.getEmail());
+        System.out.println("email" + userRequestDto.getEmail());
+        User userEntity = userRepository.findByEmail(userRequestDto.getEmail())
+                .orElseThrow(() -> new RuntimeException("오류3"));
 
         userEntity.update(grade, class_, num);
     }

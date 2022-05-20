@@ -25,8 +25,15 @@ public class Member {
     @JoinColumn(name = "club_id")
     private Club club;
 
-    public void mapping(User user){
+    public void userMapping(User user){
         this.user=user;
         user.getMembers().add(this);
     }
+
+    public void clubMapping(Club club) {
+        this.club = club;
+        club.getMembers().add(this);
+    }
+
+
 }
