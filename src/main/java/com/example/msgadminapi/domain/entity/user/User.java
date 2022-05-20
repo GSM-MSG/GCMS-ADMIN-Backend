@@ -1,6 +1,6 @@
 package com.example.msgadminapi.domain.entity.user;
 
-import com.example.msgadminapi.domain.entity.Member;
+import com.example.msgadminapi.domain.entity.member.Member;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

@@ -1,6 +1,5 @@
 package com.example.msgadminapi.controller;
 
-import com.example.msgadminapi.domain.entity.Member;
 import com.example.msgadminapi.response.ResponseService;
 import com.example.msgadminapi.response.result.CommonResultResponse;
 import com.example.msgadminapi.service.MemberService;
