@@ -36,4 +36,15 @@ public class MemberService {
                         .orElseThrow(() -> new Exception("존재하지 않는 멤버 엔티티 튜플입니다."));
         memberRepository.delete(member);
     }
+
+    public void moveMember(Long memberIdx, Long clubIdx) {
+        Member member = memberRepository.findById(memberIdx)
+                .orElseThrow(() -> new RuntimeException("런타임 오류"));
+        Club club = clubRepository.findById(clubIdx)
+                .orElseThrow(() -> new RuntimeException("런타임 오류2"));
+        member.getClub().getMembers().remove(member);
+        member.changeClub(club);
+        club.getMembers().add(member);
+        memberRepository.save(member);
+    }
 }
