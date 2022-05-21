@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
 @Entity
-@NoArgsConstructor
 @Getter
 public class Member {
     @Id
@@ -38,6 +37,10 @@ public class Member {
 
     public void changeScope(Scope scope){
         this.scope=scope;
+    }
+
+    public void changeClub(Club club) {
+        this.club = club;
     }
 
     public Member(){
