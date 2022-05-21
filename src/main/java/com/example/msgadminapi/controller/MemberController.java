@@ -26,9 +26,8 @@ public class MemberController {
         return responseService.getSuccessResult();
     }
 
-    @PostMapping("/move/{memberIdx}/{clubIdx}")
+    @PutMapping("/move/{memberIdx}/{clubIdx}")
     public CommonResultResponse moveMember(@PathVariable Long memberIdx, @PathVariable Long clubIdx) {
-        System.out.println(memberIdx);
         memberService.moveMember(memberIdx, clubIdx);
         return responseService.getSuccessResult();
     }
