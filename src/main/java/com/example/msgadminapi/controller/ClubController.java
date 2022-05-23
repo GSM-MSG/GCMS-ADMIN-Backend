@@ -29,7 +29,7 @@ public class ClubController {
         return clubService.search(title);
     }
 
-    @PutMapping("/title")
+    @PatchMapping("/title")
     public CommonResultResponse titleModify(@RequestParam ClubTitleModifyRequest request) {
         clubService.clubTitleModify(request);
         return responseService.getSuccessResult();
@@ -41,7 +41,7 @@ public class ClubController {
         return responseService.getSuccessResult();
     }
 
-    @PutMapping("{clubIdx}/end")
+    @PatchMapping("{clubIdx}/end")
     public CommonResultResponse clubFinishOpen(@PathVariable Long clubIdx) throws Exception {
         clubService.clubClose(clubIdx);
         return responseService.getSuccessResult();
