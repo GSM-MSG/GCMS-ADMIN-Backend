@@ -26,7 +26,7 @@ public class MemberController {
         return responseService.getSuccessResult();
     }
 
-    @PutMapping("/move/{memberIdx}/{clubIdx}")
+    @PatchMapping("/move/{memberIdx}/{clubIdx}")
     public CommonResultResponse moveMember(@PathVariable Long memberIdx, @PathVariable Long clubIdx) {
         memberService.moveMember(memberIdx, clubIdx);
         return responseService.getSuccessResult();
