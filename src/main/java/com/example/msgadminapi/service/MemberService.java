@@ -8,6 +8,7 @@ import com.example.msgadminapi.domain.repository.ClubRepository;
 import com.example.msgadminapi.domain.repository.MemberRepository;
 import com.example.msgadminapi.domain.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -18,14 +19,12 @@ public class MemberService {
     private final UserRepository userRepository;
     private final ClubRepository clubRepository;
 
-
     public void insertMember(String email, Long clubIdx) {
         System.out.println("club email" + email);
         Member member = new Member();
         User user = userRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("오류1"));
         System.out.println("1" + user);
         Club club = clubRepository.findById(clubIdx).orElseThrow(()-> new RuntimeException("오류"));
-        System.out.println("2" + club);
         member.userMapping(user);
         member.clubMapping(club);
         memberRepository.save(member);
