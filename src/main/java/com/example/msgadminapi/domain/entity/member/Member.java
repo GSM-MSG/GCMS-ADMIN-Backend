@@ -39,6 +39,10 @@ public class Member {
         this.scope=scope;
     }
 
+    public void changeClub(Club club) {
+        this.club = club;
+    }
+
     public Member(){
         this.scope=Scope.MEMBER;
     }
