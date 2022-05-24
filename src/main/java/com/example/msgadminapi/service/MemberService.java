@@ -8,11 +8,16 @@ import com.example.msgadminapi.domain.repository.ClubRepository;
 import com.example.msgadminapi.domain.repository.MemberRepository;
 import com.example.msgadminapi.domain.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class MemberService {
 
     private final MemberRepository memberRepository;
@@ -45,5 +50,18 @@ public class MemberService {
         member.changeClub(club);
         club.getMembers().add(member);
         memberRepository.save(member);
+    }
+
+    @Transactional
+    public void changeManager(Long memberIdx, Long clubIdx) {
+        Member member = memberRepository.findById(memberIdx)
+                .orElseThrow(() -> new RuntimeException("멤버 Change 함수에서 불러오다 오류"));
+        List<Member> members = member.getClub().getMembers();
+        for(Member m : members) {
+            if(m.getScope() == Scope.HEAD) {
+                m.changeScope(Scope.MEMBER);
+            }
+        }
+        member.changeScope(Scope.HEAD);
     }
 }
