@@ -1,10 +1,7 @@
 package com.example.msgadminapi.domain.entity.user;
 
 import com.example.msgadminapi.domain.entity.member.Member;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -13,8 +10,11 @@ import java.util.List;
 @Getter
 @Entity
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @ToString
 @Table(name = "users")
+
 public class User {
     @Id
     private String email;
@@ -35,17 +35,6 @@ public class User {
 
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     private List<Member> members = new ArrayList<>();
-
-    @Builder
-    public User(String email, String name, int grade, int class_, int num, String userImg, String refreshToken) {
-        this.email = email;
-        this.name = name;
-        this.grade = grade;
-        this.class_ = class_;
-        this.num = num;
-        this.userImg = userImg;
-        this.refreshToken = refreshToken;
-    }
 
     // 회원 정보 수정
     public void update(int grade, int class_, int num) {
