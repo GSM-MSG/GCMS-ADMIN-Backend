@@ -56,5 +56,4 @@ public class UserService {
     public void userDelete(String email) {
         userRepository.deleteById(email);
     }
-
 }

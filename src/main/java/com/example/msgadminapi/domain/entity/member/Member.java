@@ -15,6 +15,7 @@ public class Member {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Enumerated(EnumType.STRING)
     private Scope scope;
 
     @ManyToOne(fetch = FetchType.EAGER)

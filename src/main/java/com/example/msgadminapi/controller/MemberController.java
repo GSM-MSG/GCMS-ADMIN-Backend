@@ -1,5 +1,6 @@
 package com.example.msgadminapi.controller;
 
+import com.example.msgadminapi.domain.entity.member.enums.Scope;
 import com.example.msgadminapi.response.ResponseService;
 import com.example.msgadminapi.response.result.CommonResultResponse;
 import com.example.msgadminapi.service.MemberService;
@@ -29,6 +30,12 @@ public class MemberController {
     @PatchMapping("/move/{memberIdx}/{clubIdx}")
     public CommonResultResponse moveMember(@PathVariable Long memberIdx, @PathVariable Long clubIdx) {
         memberService.moveMember(memberIdx, clubIdx);
+        return responseService.getSuccessResult();
+    }
+
+    @PatchMapping("/club/manager/{memberIdx}/{clubIdx}")
+    public CommonResultResponse changeManager(@PathVariable Long memberIdx, @PathVariable Long clubIdx) {
+        memberService.changeManager(memberIdx, clubIdx);
         return responseService.getSuccessResult();
     }
 
