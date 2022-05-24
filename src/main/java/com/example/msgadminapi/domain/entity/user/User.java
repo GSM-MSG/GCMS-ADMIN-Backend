@@ -17,7 +17,6 @@ import java.util.List;
 @Table(name = "users")
 public class User {
     @Id
-    @GeneratedValue
     private String email;
 
     private String name;
