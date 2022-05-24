@@ -32,20 +32,20 @@ public class User {
     private String userImg;
 
     @Column( nullable = true )
-    private String refeshToken;
+    private String refreshToken;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     private List<Member> members = new ArrayList<>();
 
     @Builder
-    public User(String email, String name, int grade, int class_, int num, String userImg, String refeshToken) {
+    public User(String email, String name, int grade, int class_, int num, String userImg, String refreshToken) {
         this.email = email;
         this.name = name;
         this.grade = grade;
         this.class_ = class_;
         this.num = num;
         this.userImg = userImg;
-        this.refeshToken = refeshToken;
+        this.refreshToken = refreshToken;
     }
 
     // 회원 정보 수정
