@@ -5,6 +5,7 @@ import com.example.msgadminapi.domain.repository.UserRepository;
 import com.example.msgadminapi.dto.request.UserRequestDto;
 import com.example.msgadminapi.dto.response.UserResponseDto;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,6 +14,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @Service
+@Slf4j
 public class UserService {
 
     private final UserRepository userRepository;
@@ -23,7 +25,7 @@ public class UserService {
         userRepository.findAll().forEach(e -> users.add(UserResponseDto.builder()
                 .email(e.getEmail())
                 .name(e.getName())
-                .grade(Integer.parseInt(String.valueOf(e.getGrade()) + String.valueOf(e.getClass_()) + String.valueOf(e.getNum())))
+                .grade(Integer.parseInt("" + e.getGrade() + e.getClass_() + e.getNum()))
                 .build()));
         return users;
     }
@@ -33,7 +35,7 @@ public class UserService {
         int grade = Integer.parseInt(userRequestDto.getGrade().substring(0, 1));
         int class_ = Integer.parseInt(userRequestDto.getGrade().substring(1, 2));
         int num = Integer.parseInt(userRequestDto.getGrade().substring(2, 4));
-        System.out.println("email" + userRequestDto.getEmail());
+        log.info("email = {}", userRequestDto.getEmail());
         User userEntity = userRepository.findByEmail(userRequestDto.getEmail())
                 .orElseThrow(() -> new RuntimeException("오류3"));
 
