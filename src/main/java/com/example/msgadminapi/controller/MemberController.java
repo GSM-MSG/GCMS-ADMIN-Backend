@@ -33,9 +33,9 @@ public class MemberController {
         return responseService.getSuccessResult();
     }
 
-    @PatchMapping("/club/manager/{memberIdx}/{clubIdx}")
-    public CommonResultResponse changeManager(@PathVariable Long memberIdx, @PathVariable Long clubIdx) {
-        memberService.changeManager(memberIdx, clubIdx);
+    @PatchMapping("/club/manager/{memberIdx}")
+    public CommonResultResponse changeManager(@PathVariable Long memberIdx) {
+        memberService.changeManager(memberIdx);
         return responseService.getSuccessResult();
     }
 

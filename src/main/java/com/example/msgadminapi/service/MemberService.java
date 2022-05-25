@@ -9,7 +9,6 @@ import com.example.msgadminapi.domain.repository.MemberRepository;
 import com.example.msgadminapi.domain.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -47,13 +46,11 @@ public class MemberService {
         Club club = clubRepository.findById(clubIdx)
                 .orElseThrow(() -> new RuntimeException("런타임 오류2"));
         member.getClub().getMembers().remove(member);
-        member.changeClub(club);
-        club.getMembers().add(member);
-        memberRepository.save(member);
+        member.clubMapping(club);
     }
 
     @Transactional
-    public void changeManager(Long memberIdx, Long clubIdx) {
+    public void changeManager(Long memberIdx) {
         Member member = memberRepository.findById(memberIdx)
                 .orElseThrow(() -> new RuntimeException("멤버 Change 함수에서 불러오다 오류"));
         List<Member> members = member.getClub().getMembers();
