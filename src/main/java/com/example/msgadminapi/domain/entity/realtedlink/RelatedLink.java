@@ -2,13 +2,11 @@ package com.example.msgadminapi.domain.entity.realtedlink;
 
 import com.example.msgadminapi.domain.entity.club.Club;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
 @Entity
 @Getter
-@NoArgsConstructor
 public class RelatedLink{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

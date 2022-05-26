@@ -3,13 +3,11 @@ package com.example.msgadminapi.domain.entity.requestjoin;
 import com.example.msgadminapi.domain.entity.club.Club;
 import com.example.msgadminapi.domain.entity.user.User;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
 @Entity
 @Getter
-@NoArgsConstructor
 public class RequestJoin {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
