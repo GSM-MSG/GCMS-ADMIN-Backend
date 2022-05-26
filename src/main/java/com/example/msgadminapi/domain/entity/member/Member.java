@@ -19,7 +19,7 @@ public class Member {
     private Scope scope;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "user_email")
+    @JoinColumn(name = "users_email")
     private User user;
 
     @ManyToOne(fetch = FetchType.EAGER)

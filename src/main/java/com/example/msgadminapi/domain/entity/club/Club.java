@@ -1,13 +1,17 @@
 package com.example.msgadminapi.domain.entity.club;
 
+import com.example.msgadminapi.domain.entity.image.Image;
 import com.example.msgadminapi.domain.entity.member.Member;
+import com.example.msgadminapi.domain.entity.realtedlink.RelatedLink;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Entity
@@ -16,7 +20,7 @@ import java.util.List;
 @ToString
 public class Club {
     @Id
-    @Column(name = "id")
+    @Column(name = "club_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -36,7 +40,13 @@ public class Club {
     private Boolean isOpened;
 
     @OneToMany(mappedBy = "club", fetch = FetchType.EAGER)
-    private List<Member> members = new ArrayList<>();
+    private Set<Member> members = new HashSet<>();
+
+    @OneToMany(mappedBy = "club", fetch = FetchType.EAGER)
+    private Set<RelatedLink> relatedLinks = new HashSet<>();
+
+    @OneToMany(mappedBy = "club", fetch = FetchType.EAGER)
+    private Set<Image> images = new HashSet<>();
 
     public void titleModify(String title) {
         this.title = title;

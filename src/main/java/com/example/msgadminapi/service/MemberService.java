@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -53,7 +54,7 @@ public class MemberService {
     public void changeManager(Long memberIdx) {
         Member member = memberRepository.findById(memberIdx)
                 .orElseThrow(() -> new RuntimeException("멤버 Change 함수에서 불러오다 오류"));
-        List<Member> members = member.getClub().getMembers();
+        Set<Member> members = member.getClub().getMembers();
         for(Member m : members) {
             if(m.getScope() == Scope.HEAD) {
                 m.changeScope(Scope.MEMBER);
