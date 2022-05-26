@@ -20,6 +20,7 @@ import java.util.Set;
 
 public class User {
     @Id
+    @Column(name = "users_email")
     private String email;
 
     private String name;
@@ -37,7 +38,7 @@ public class User {
     private String refreshToken;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
-    private List<Member> members = new ArrayList<>();
+    private Set<Member> members = new HashSet<>();
 
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     private Set<RequestJoin> requestJoins = new HashSet<>();

@@ -20,7 +20,7 @@ import java.util.Set;
 @ToString
 public class Club {
     @Id
-    @Column(name = "id")
+    @Column(name = "club_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -40,7 +40,7 @@ public class Club {
     private Boolean isOpened;
 
     @OneToMany(mappedBy = "club", fetch = FetchType.EAGER)
-    private List<Member> members = new ArrayList<>();
+    private Set<Member> members = new HashSet<>();
 
     @OneToMany(mappedBy = "club", fetch = FetchType.EAGER)
     private Set<RelatedLink> relatedLinks = new HashSet<>();

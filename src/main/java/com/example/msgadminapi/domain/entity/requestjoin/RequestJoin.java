@@ -18,6 +18,6 @@ public class RequestJoin {
     private Club club;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn("users_email")
+    @JoinColumn(name = "users_email")
     private User user;
 }
