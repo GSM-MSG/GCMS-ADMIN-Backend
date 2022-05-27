@@ -1,5 +1,6 @@
 package com.example.msgadminapi.domain.entity.club;
 
+import com.example.msgadminapi.domain.entity.club.enums.Type;
 import com.example.msgadminapi.domain.entity.image.Image;
 import com.example.msgadminapi.domain.entity.member.Member;
 import com.example.msgadminapi.domain.entity.realtedlink.RelatedLink;
@@ -25,7 +26,8 @@ public class Club {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String type;
+    @Enumerated(EnumType.STRING)
+    private Type type;
 
     private String bannerUrl;
 

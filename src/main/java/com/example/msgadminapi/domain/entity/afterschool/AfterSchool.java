@@ -1,5 +1,8 @@
 package com.example.msgadminapi.domain.entity.afterschool;
 
+import com.example.msgadminapi.domain.entity.afterschool.enums.Grade;
+import com.example.msgadminapi.domain.entity.afterschool.enums.Season;
+import com.example.msgadminapi.domain.entity.afterschool.enums.Week;
 import com.example.msgadminapi.domain.entity.classregistration.ClassRegistration;
 import lombok.Getter;
 
@@ -16,11 +19,10 @@ public class AfterSchool {
 
     private String title;
 
-    private Long personnel;
+    @Enumerated(EnumType.STRING)
+    private Week dayOfWeek;
 
-    private String week;
-
-    private Long grade;
+    private Grade grade;
 
     private String teacher;
 
@@ -35,9 +37,10 @@ public class AfterSchool {
     @Column(columnDefinition = "TINYINT")
     private Boolean isFull;
 
-    private String season;
+    @Enumerated(EnumType.STRING)
+    private Season season;
 
-    private Long year;
+    private Long yearOf;
 
     @Column(columnDefinition = "TINYINT")
     private Boolean isOpened;
