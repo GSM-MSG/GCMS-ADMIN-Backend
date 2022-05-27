@@ -1,13 +1,12 @@
 package com.example.msgadminapi.domain.entity.user;
 
+import com.example.msgadminapi.domain.entity.classregistration.ClassRegistration;
 import com.example.msgadminapi.domain.entity.member.Member;
 import com.example.msgadminapi.domain.entity.requestjoin.RequestJoin;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -42,6 +41,9 @@ public class User {
 
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     private Set<RequestJoin> requestJoins = new HashSet<>();
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    private Set<ClassRegistration> classRegistrations = new HashSet<>();
 
     // 회원 정보 수정
     public void update(int grade, int class_, int num) {

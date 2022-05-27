@@ -3,6 +3,7 @@ package com.example.msgadminapi.domain.entity.club;
 import com.example.msgadminapi.domain.entity.image.Image;
 import com.example.msgadminapi.domain.entity.member.Member;
 import com.example.msgadminapi.domain.entity.realtedlink.RelatedLink;
+import com.example.msgadminapi.domain.entity.requestjoin.RequestJoin;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -47,6 +48,9 @@ public class Club {
 
     @OneToMany(mappedBy = "club", fetch = FetchType.EAGER)
     private Set<Image> images = new HashSet<>();
+
+    @OneToMany(mappedBy = "club", fetch = FetchType.EAGER)
+    private Set<RequestJoin> requestJoins = new HashSet<>();
 
     public void titleModify(String title) {
         this.title = title;
