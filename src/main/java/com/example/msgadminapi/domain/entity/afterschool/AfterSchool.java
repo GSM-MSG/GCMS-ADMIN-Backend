@@ -19,9 +19,8 @@ public class AfterSchool {
 
     private String title;
 
-    private Long personnel;
-
-    private Week week;
+    @Enumerated(EnumType.STRING)
+    private Week dayOfWeek;
 
     private Grade grade;
 
@@ -38,6 +37,7 @@ public class AfterSchool {
     @Column(columnDefinition = "TINYINT")
     private Boolean isFull;
 
+    @Enumerated(EnumType.STRING)
     private Season season;
 
     private Long year;
