@@ -16,7 +16,7 @@ public class RelatedLink{
 
     private String url;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     @JoinColumn(name = "club_id")
     private Club club;
 }
