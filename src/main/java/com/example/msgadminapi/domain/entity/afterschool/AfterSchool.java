@@ -40,7 +40,7 @@ public class AfterSchool {
     @Enumerated(EnumType.STRING)
     private Season season;
 
-    private Long year;
+    private Long yearOf;
 
     @Column(columnDefinition = "TINYINT")
     private Boolean isOpened;
