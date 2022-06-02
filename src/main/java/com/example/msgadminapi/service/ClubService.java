@@ -4,13 +4,14 @@ import com.example.msgadminapi.domain.entity.club.Club;
 import com.example.msgadminapi.domain.repository.ClubRepository;
 import com.example.msgadminapi.dto.request.ClubTitleModifyRequest;
 import com.example.msgadminapi.dto.response.ClubResponseDto;
+import com.example.msgadminapi.exception.ErrorCode;
+import com.example.msgadminapi.exception.exception.ClubNotFindException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -37,38 +38,45 @@ public class ClubService {
 
     @Transactional(readOnly = true)
     public List<ClubResponseDto> search(String title) {
-        List<ClubResponseDto> searchList = new ArrayList<>();
-        clubRepository.findByTitleContaining(title)
-                .forEach(e -> searchList.add(ClubResponseDto.builder()
-                        .id(e.getId())
-                        .type(e.getType())
-                        .bannerUrl(e.getBannerUrl())
-                        .title(e.getTitle())
-                        .description(e.getDescription())
-                        .contact(e.getContact())
-                        .teacher(e.getTeacher())
-                        .isOpened(e.isOpened())
-                        .build()));
-        return searchList;
+        List<Club> allByTitleLike = clubRepository.findAllByTitleLike("%"+title+"%");
+        List<ClubResponseDto> response = getClubResponseDtoList(allByTitleLike);
+
+        return response;
     }
 
     @Transactional
     public void clubTitleModify(ClubTitleModifyRequest request) {
-        Optional<Club> clubEntity = clubRepository.findById(request.getId());
-        clubEntity.ifPresent(e -> e.titleModify(request.getTitle()));
+        Club clubEntity = clubRepository.findById(request.getId())
+                        .orElseThrow(() -> new ClubNotFindException("동아리 이름 수정하는 과정중에 동아리를 찾지 못했습니다.", ErrorCode.CLUB_NOT_FIND));
+        clubEntity.titleModify(request.getTitle());
     }
 
     @Transactional
-    public void clubDelete(Long clubIdx) throws Exception {
+    public void clubDelete(Long clubIdx) {
         Club club = clubRepository.findById(clubIdx)
-                .orElseThrow(() -> new Exception("Club is Not Found "));
+                .orElseThrow(() -> new ClubNotFindException("동아리 삭제 하는 과정중에 동아리를 찾지 못했습니다.", ErrorCode.CLUB_NOT_FIND));
         clubRepository.delete(club);
     }
 
     @Transactional
-    public void clubClose(Long clubIdx) throws Exception {
+    public void clubClose(Long clubIdx) {
         Club club = clubRepository.findById(clubIdx)
-                .orElseThrow(() -> new Exception("Club is Not Found"));
+                .orElseThrow(() -> new ClubNotFindException("동아리 강제 마감하는 과정중에 동아리를 찾지 못했습니다.", ErrorCode.CLUB_NOT_FIND));
         club.isClubFinishOpen(false);
+    }
+
+    public List<ClubResponseDto> getClubResponseDtoList(List<Club> all) {
+        List<ClubResponseDto> searchList = new ArrayList<>();
+        all.forEach(e -> searchList.add(ClubResponseDto.builder()
+                .id(e.getId())
+                .type(e.getType())
+                .bannerUrl(e.getBannerUrl())
+                .title(e.getTitle())
+                .description(e.getDescription())
+                .contact(e.getContact())
+                .teacher(e.getTeacher())
+                .isOpened(e.getIsOpened())
+                .build()));
+        return searchList;
     }
 }
