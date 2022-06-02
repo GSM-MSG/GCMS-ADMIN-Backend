@@ -4,5 +4,5 @@ import lombok.Getter;
 
 @Getter
 public enum ErrorClassification {
-    USER, CLUB, MEMEBER, COMMON, SERVER,
+    USER, CLUB, MEMBER, COMMON, SERVER,
 }
