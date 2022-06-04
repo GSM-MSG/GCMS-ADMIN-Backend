@@ -1,13 +1,13 @@
 package com.example.msgadminapi.domain.entity.afterschool;
 
-import com.example.msgadminapi.domain.entity.afterschool.enums.Grade;
+
 import com.example.msgadminapi.domain.entity.afterschool.enums.Season;
-import com.example.msgadminapi.domain.entity.afterschool.enums.Week;
 import com.example.msgadminapi.domain.entity.classregistration.ClassRegistration;
 import lombok.Getter;
 
 import javax.persistence.*;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -19,10 +19,8 @@ public class AfterSchool {
 
     private String title;
 
-    @Enumerated(EnumType.STRING)
-    private Week dayOfWeek;
-
-    private Grade grade;
+    @OneToMany(mappedBy = "afterSchool")
+    private List<AfterSchoolList> afterSchoolList;
 
     private String teacher;
 
