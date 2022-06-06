@@ -20,7 +20,10 @@ public class AfterSchool {
     private String title;
 
     @OneToMany(mappedBy = "afterSchool")
-    private List<AfterSchoolList> afterSchoolList;
+    private List<Grade> grade;
+
+    @OneToMany(mappedBy = "afterSchool")
+    private List<DayOfWeek> dayOfWeek;
 
     private String teacher;
 
