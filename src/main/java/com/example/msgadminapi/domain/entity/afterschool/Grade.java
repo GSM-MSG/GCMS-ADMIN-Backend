@@ -9,11 +9,11 @@ import javax.persistence.*;
 public class Grade {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "afterschool_id")
     private AfterSchool afterSchool;
 
-    private String grade;
+    private Long grade;
 }
