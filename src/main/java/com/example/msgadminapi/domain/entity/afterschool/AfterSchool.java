@@ -19,21 +19,18 @@ public class AfterSchool {
 
     private String title;
 
+    private Long personnel;
+
     @OneToMany(mappedBy = "afterSchool")
-    private List<AfterSchoolList> afterSchoolList;
+    private List<Grade> grade;
+
+    @OneToMany(mappedBy = "afterSchool")
+    private List<DayOfWeek> dayOfWeek;
 
     private String teacher;
 
     @Column(columnDefinition = "TINYINT")
     private Boolean canDuplicate;
-
-    @Column(columnDefinition = "TINYINT")
-    private Boolean isCommon;
-
-    private Long maxPersonnel;
-
-    @Column(columnDefinition = "TINYINT")
-    private Boolean isFull;
 
     @Enumerated(EnumType.STRING)
     private Season season;

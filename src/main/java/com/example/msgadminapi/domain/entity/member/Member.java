@@ -22,18 +22,18 @@ public class Member {
     @JoinColumn(name = "users_email")
     private User user;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     @JoinColumn(name = "club_id")
     private Club club;
 
     public void userMapping(User user){
         this.user=user;
-        user.getMembers().add(this);
+        user.getMember().add(this);
     }
 
     public void clubMapping(Club club) {
         this.club = club;
-        club.getMembers().add(this);
+        club.getMember().add(this);
     }
 
     public void changeScope(Scope scope){
