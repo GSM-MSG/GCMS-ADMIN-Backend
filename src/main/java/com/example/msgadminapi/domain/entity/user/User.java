@@ -15,11 +15,9 @@ import java.util.Set;
 @AllArgsConstructor
 @Builder
 @ToString
-@Table(name = "users")
-
+@Table(name = "users") // 나중에 본 DB 연결 할때 지워야됨
 public class User {
     @Id
-    @Column(name = "users_email")
     private String email;
 
     private String name;
@@ -37,13 +35,13 @@ public class User {
     private String refreshToken;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
-    private Set<Member> members = new HashSet<>();
+    private Set<Member> member = new HashSet<>();
 
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
-    private Set<RequestJoin> requestJoins = new HashSet<>();
+    private Set<RequestJoin> requestJoin = new HashSet<>();
 
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
-    private Set<ClassRegistration> classRegistrations = new HashSet<>();
+    private Set<ClassRegistration> classRegistration = new HashSet<>();
 
     // 회원 정보 수정
     public void update(int grade, int class_, int num) {
