@@ -22,7 +22,7 @@ public class Member {
     @JoinColumn(name = "users_email")
     private User user;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     @JoinColumn(name = "club_id")
     private Club club;
 
