@@ -3,16 +3,13 @@ package com.example.msgadminapi.domain.entity.club;
 import com.example.msgadminapi.domain.entity.club.enums.Type;
 import com.example.msgadminapi.domain.entity.image.Image;
 import com.example.msgadminapi.domain.entity.member.Member;
-import com.example.msgadminapi.domain.entity.realtedlink.RelatedLink;
 import com.example.msgadminapi.domain.entity.requestjoin.RequestJoin;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -42,17 +39,16 @@ public class Club {
     @Column(columnDefinition = "TINYINT")
     private Boolean isOpened;
 
+    private String notionLink;
+
     @OneToMany(mappedBy = "club", fetch = FetchType.EAGER)
     private Set<Member> members = new HashSet<>();
 
     @OneToMany(mappedBy = "club", fetch = FetchType.EAGER)
-    private Set<RelatedLink> relatedLinks = new HashSet<>();
+    private Set<Image> activityUrls = new HashSet<>();
 
     @OneToMany(mappedBy = "club", fetch = FetchType.EAGER)
-    private Set<Image> images = new HashSet<>();
-
-    @OneToMany(mappedBy = "club", fetch = FetchType.EAGER)
-    private Set<RequestJoin> requestJoins = new HashSet<>();
+    private Set<RequestJoin> requestJoin = new HashSet<>();
 
     public void titleModify(String title) {
         this.title = title;
