@@ -42,7 +42,7 @@ public class Club {
     private String notionLink;
 
     @OneToMany(mappedBy = "club", fetch = FetchType.EAGER)
-    private Set<Member> members = new HashSet<>();
+    private Set<Member> member = new HashSet<>();
 
     @OneToMany(mappedBy = "club", fetch = FetchType.EAGER)
     private Set<Image> activityUrls = new HashSet<>();

@@ -28,12 +28,12 @@ public class Member {
 
     public void userMapping(User user){
         this.user=user;
-        user.getMembers().add(this);
+        user.getMember().add(this);
     }
 
     public void clubMapping(Club club) {
         this.club = club;
-        club.getMembers().add(this);
+        club.getMember().add(this);
     }
 
     public void changeScope(Scope scope){

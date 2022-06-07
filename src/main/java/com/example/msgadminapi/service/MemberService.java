@@ -50,7 +50,7 @@ public class MemberService {
                 .orElseThrow(() -> new MemberNotFindException("동아리 구성원을 강제로 이동하는 과정중에 구성원을 찾지 못했습니다.", ErrorCode.MEMBER_NOT_FIND));
         Club club = clubRepository.findById(clubIdx)
                 .orElseThrow(() -> new ClubNotFindException("동아리 구성원을 강제로 이동하는 과정중에 동아리를 찾지 못했습니다.", ErrorCode.CLUB_NOT_FIND));
-        member.getClub().getMembers().remove(member);
+        member.getClub().getMember().remove(member);
         member.clubMapping(club);
     }
 
@@ -58,7 +58,7 @@ public class MemberService {
     public void changeManager(Long memberIdx) {
         Member member = memberRepository.findById(memberIdx)
                 .orElseThrow(() -> new MemberNotFindException("동아리 부장을 교체하려는 과정중에 구성원을 찾지 못했습니다.", ErrorCode.MEMBER_NOT_FIND));
-        Set<Member> members = member.getClub().getMembers();
+        Set<Member> members = member.getClub().getMember();
         for(Member m : members) {
             if(m.getScope() == Scope.HEAD) {
                 m.changeScope(Scope.MEMBER);
