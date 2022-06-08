@@ -3,14 +3,18 @@ package com.example.msgadminapi.service;
 import com.example.msgadminapi.domain.entity.afterschool.AfterSchool;
 import com.example.msgadminapi.domain.entity.afterschool.DayOfWeek;
 import com.example.msgadminapi.domain.entity.afterschool.Grade;
+import com.example.msgadminapi.domain.entity.classregistration.ClassRegistration;
 import com.example.msgadminapi.domain.entity.member.Member;
+import com.example.msgadminapi.domain.entity.user.User;
 import com.example.msgadminapi.domain.repository.AfterSchoolRepository;
+import com.example.msgadminapi.domain.repository.ClassRegistrationRepository;
 import com.example.msgadminapi.domain.repository.DayOfWeekRepository;
 import com.example.msgadminapi.domain.repository.GradeRepository;
 import com.example.msgadminapi.dto.request.AfterSchoolDto;
 import com.example.msgadminapi.dto.request.AfterSchoolModifyDto;
 import com.example.msgadminapi.dto.response.StatisticsResponseDto;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,11 +22,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class AfterSchoolService {
     private final AfterSchoolRepository afterSchoolRepository;
     private final DayOfWeekRepository dayOfWeekRepository;
     private final GradeRepository gradeRepository;
+    private final ClassRegistrationRepository classRegistrationRepository;
 
     @Transactional(readOnly = true)
     public List<AfterSchool> findAll(){
@@ -37,10 +43,16 @@ public class AfterSchoolService {
     }
 
     @Transactional(readOnly = true)
-    public List<Member> findMemberByAfterSchool(Long afterSchoolIdx){
+    public List<User> findMemberByAfterSchool(Long afterSchoolIdx){
+        List<User> userList = new ArrayList<>();
         AfterSchool afterSchool = afterSchoolRepository.findById(afterSchoolIdx)
                 .orElseThrow(() -> new RuntimeException());
-        return afterSchool.getMembers();
+        log.info("1");
+        List<ClassRegistration> allByAfterSchool = classRegistrationRepository.findAllByAfterSchool(afterSchool);
+        log.info("2");
+        allByAfterSchool.forEach(e -> userList.add(e.getUser()));
+        log.info("{}", userList.size());
+        return userList;
     }
 
     @Transactional
@@ -69,7 +81,7 @@ public class AfterSchoolService {
                 .forEach(e -> list.add(
                         StatisticsResponseDto.builder()
                             .afterSchoolIdx(e.getId())
-                            .total(e.getMembers().size())
+                            .total(e.getClassRegistration().size())
                             .build()
                 ));
         return list;

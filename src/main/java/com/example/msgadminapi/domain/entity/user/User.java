@@ -3,6 +3,7 @@ package com.example.msgadminapi.domain.entity.user;
 import com.example.msgadminapi.domain.entity.classregistration.ClassRegistration;
 import com.example.msgadminapi.domain.entity.member.Member;
 import com.example.msgadminapi.domain.entity.requestjoin.RequestJoin;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -40,6 +41,7 @@ public class User {
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     private Set<RequestJoin> requestJoin = new HashSet<>();
 
+    @JsonIgnore
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     private Set<ClassRegistration> classRegistration = new HashSet<>();
 

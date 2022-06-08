@@ -34,9 +34,6 @@ public class AfterSchool {
     @OneToMany(mappedBy = "afterSchool")
     private List<DayOfWeek> dayOfWeek;
 
-    @OneToMany(mappedBy = "afterSchool")
-    private List<Member> members;
-
     private String teacher;
 
     @Column(columnDefinition = "TINYINT")

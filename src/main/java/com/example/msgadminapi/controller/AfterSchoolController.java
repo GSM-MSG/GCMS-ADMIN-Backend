@@ -2,6 +2,7 @@ package com.example.msgadminapi.controller;
 
 import com.example.msgadminapi.domain.entity.afterschool.AfterSchool;
 import com.example.msgadminapi.domain.entity.member.Member;
+import com.example.msgadminapi.domain.entity.user.User;
 import com.example.msgadminapi.dto.request.AfterSchoolDto;
 import com.example.msgadminapi.dto.request.AfterSchoolModifyDto;
 import com.example.msgadminapi.dto.response.StatisticsResponseDto;
@@ -50,7 +51,7 @@ public class AfterSchoolController {
     }
 
     @GetMapping("/members/{afterSchoolIdx}")
-    public List<Member> findMembers(@PathVariable Long afterSchoolIdx){
+    public List<User> findMembers(@PathVariable Long afterSchoolIdx){
         return afterSchoolService.findMemberByAfterSchool(afterSchoolIdx);
     }
 
