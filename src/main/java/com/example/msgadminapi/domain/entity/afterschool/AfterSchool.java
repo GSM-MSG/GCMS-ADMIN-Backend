@@ -47,7 +47,7 @@ public class AfterSchool {
     @Column(columnDefinition = "TINYINT")
     private Boolean isOpened;
 
-    @OneToMany(mappedBy = "afterSchool", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "afterSchool", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     private Set<ClassRegistration> classRegistration = new HashSet<>();
 
     public void update(AfterSchoolModifyDto afterSchoolDto){
