@@ -1,6 +1,7 @@
 package com.example.msgadminapi.domain.entity.afterschool;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -15,6 +16,7 @@ public class DayOfWeek {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "afterSchool_id")
     private AfterSchool afterSchool;

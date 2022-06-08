@@ -6,6 +6,7 @@ import com.example.msgadminapi.domain.entity.classregistration.ClassRegistration
 import com.example.msgadminapi.domain.repository.DayOfWeekRepository;
 import com.example.msgadminapi.domain.repository.GradeRepository;
 import com.example.msgadminapi.dto.request.AfterSchoolModifyDto;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -48,6 +49,7 @@ public class AfterSchool {
     @Column(columnDefinition = "TINYINT")
     private Boolean isOpened = true;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "afterSchool", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     private Set<ClassRegistration> classRegistration = new HashSet<>();
 
