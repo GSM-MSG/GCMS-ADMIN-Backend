@@ -1,5 +1,6 @@
 package com.example.msgadminapi.domain.entity.member;
 
+import com.example.msgadminapi.domain.entity.afterschool.AfterSchool;
 import com.example.msgadminapi.domain.entity.club.Club;
 import com.example.msgadminapi.domain.entity.member.enums.Scope;
 import com.example.msgadminapi.domain.entity.user.User;

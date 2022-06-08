@@ -1,19 +1,26 @@
 package com.example.msgadminapi.domain.entity.afterschool;
 
-import lombok.Getter;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
 @Getter
+@Setter
+@Builder
+@NoArgsConstructor @AllArgsConstructor
 public class Grade {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "afterschool_id")
+    @JoinColumn(name = "afterSchool_id")
     private AfterSchool afterSchool;
 
     private Long grade;
+
+    public void mapping(AfterSchool afterSchool){
+        this.afterSchool=afterSchool;
+    }
 }
