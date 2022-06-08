@@ -43,7 +43,7 @@ public class AfterSchoolService {
     }
 
     @Transactional(readOnly = true)
-    public List<User> findMemberByAfterSchool(Long afterSchoolIdx){
+    public List<User> findUserByAfterSchool(Long afterSchoolIdx){
         List<User> userList = new ArrayList<>();
         AfterSchool afterSchool = afterSchoolRepository.findById(afterSchoolIdx)
                 .orElseThrow(() -> new RuntimeException());

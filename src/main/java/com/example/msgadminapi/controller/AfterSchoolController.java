@@ -50,9 +50,9 @@ public class AfterSchoolController {
          return responseService.getSuccessResult();
     }
 
-    @GetMapping("/members/{afterSchoolIdx}")
-    public List<User> findMembers(@PathVariable Long afterSchoolIdx){
-        return afterSchoolService.findMemberByAfterSchool(afterSchoolIdx);
+    @GetMapping("/users/{afterSchoolIdx}")
+    public List<User> findUser(@PathVariable Long afterSchoolIdx){
+        return afterSchoolService.findUserByAfterSchool(afterSchoolIdx);
     }
 
 
