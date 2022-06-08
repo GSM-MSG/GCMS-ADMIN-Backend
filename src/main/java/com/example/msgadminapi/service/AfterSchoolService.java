@@ -4,7 +4,6 @@ import com.example.msgadminapi.domain.entity.afterschool.AfterSchool;
 import com.example.msgadminapi.domain.entity.afterschool.DayOfWeek;
 import com.example.msgadminapi.domain.entity.afterschool.Grade;
 import com.example.msgadminapi.domain.entity.classregistration.ClassRegistration;
-import com.example.msgadminapi.domain.entity.member.Member;
 import com.example.msgadminapi.domain.entity.user.User;
 import com.example.msgadminapi.domain.repository.AfterSchoolRepository;
 import com.example.msgadminapi.domain.repository.ClassRegistrationRepository;
@@ -39,7 +38,7 @@ public class AfterSchoolService {
     public void updateAfterSchool(Long afterSchoolIdx, AfterSchoolModifyDto afterSchoolDto){
         AfterSchool afterSchool = afterSchoolRepository.findById(afterSchoolIdx)
                 .orElseThrow(() -> new RuntimeException());
-        afterSchool.update(afterSchoolDto);
+        afterSchool.update(afterSchoolDto, gradeRepository, dayOfWeekRepository);
     }
 
     @Transactional(readOnly = true)
@@ -47,11 +46,8 @@ public class AfterSchoolService {
         List<User> userList = new ArrayList<>();
         AfterSchool afterSchool = afterSchoolRepository.findById(afterSchoolIdx)
                 .orElseThrow(() -> new RuntimeException());
-        log.info("1");
         List<ClassRegistration> allByAfterSchool = classRegistrationRepository.findAllByAfterSchool(afterSchool);
-        log.info("2");
         allByAfterSchool.forEach(e -> userList.add(e.getUser()));
-        log.info("{}", userList.size());
         return userList;
     }
 
@@ -62,6 +58,8 @@ public class AfterSchoolService {
         afterSchoolDto.getDayOfWeek().forEach(e->weeks.add(DayOfWeek.builder().dayOfWeek(e).build()));
         afterSchoolDto.getGrade().forEach(e->grades.add(Grade.builder().grade(e).build()));
         AfterSchool afterSchool = afterSchoolDto.toEntity(grades, weeks);
+        grades.forEach(e->e.mapping(afterSchool));
+        weeks.forEach(e->e.mapping(afterSchool));
         gradeRepository.saveAll(grades);
         dayOfWeekRepository.saveAll(weeks);
         afterSchoolRepository.save(afterSchool);

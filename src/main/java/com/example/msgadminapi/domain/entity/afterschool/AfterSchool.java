@@ -3,7 +3,8 @@ package com.example.msgadminapi.domain.entity.afterschool;
 
 import com.example.msgadminapi.domain.entity.afterschool.enums.Season;
 import com.example.msgadminapi.domain.entity.classregistration.ClassRegistration;
-import com.example.msgadminapi.domain.entity.member.Member;
+import com.example.msgadminapi.domain.repository.DayOfWeekRepository;
+import com.example.msgadminapi.domain.repository.GradeRepository;
 import com.example.msgadminapi.dto.request.AfterSchoolModifyDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -26,7 +27,7 @@ public class AfterSchool {
 
     private String title;
 
-    private Long personnel;
+//    private Long personnel;
 
     @OneToMany(mappedBy = "afterSchool")
     private List<Grade> grade;
@@ -45,12 +46,12 @@ public class AfterSchool {
     private Long yearOf;
 
     @Column(columnDefinition = "TINYINT")
-    private Boolean isOpened;
+    private Boolean isOpened = true;
 
     @OneToMany(mappedBy = "afterSchool", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     private Set<ClassRegistration> classRegistration = new HashSet<>();
 
-    public void update(AfterSchoolModifyDto afterSchoolDto){
+    public void update(AfterSchoolModifyDto afterSchoolDto, GradeRepository gradeRepository, DayOfWeekRepository dayOfWeekRepository){
         this.title = afterSchoolDto.getTitle();
         this.teacher = afterSchoolDto.getTeacher();
         this.canDuplicate = afterSchoolDto.getCanDuplicate();
@@ -60,6 +61,7 @@ public class AfterSchool {
                 this.grade.get(i).setGrade(afterSchoolDto.getGrade().get(i));
             }
             for(int i=afterSchoolDto.getGrade().size();i<this.grade.size();i++){
+                gradeRepository.delete(this.grade.get(i));
                 this.grade.remove(i);
             }
         }
@@ -68,12 +70,39 @@ public class AfterSchool {
                 this.grade.get(i).setGrade(afterSchoolDto.getGrade().get(i));
             }
             for(int i=this.getGrade().size();i<afterSchoolDto.getGrade().size();i++){
-                this.grade.add(Grade.builder().grade(afterSchoolDto.getGrade().get(i)).afterSchool(this).build());
+                Grade build = Grade.builder().grade(afterSchoolDto.getGrade().get(i)).afterSchool(this).build();
+                this.grade.add(build);
+                gradeRepository.save(build);
             }
         }
         else{
             for(int i=0;i<this.getGrade().size();i++){
                 this.grade.get(i).setGrade(afterSchoolDto.getGrade().get(i));
+            }
+        }
+
+        if(this.dayOfWeek.size() > afterSchoolDto.getDayOfWeek().size()){
+            for(int i=0;i<afterSchoolDto.getDayOfWeek().size();i++){
+                this.dayOfWeek.get(i).setDayOfWeek(afterSchoolDto.getDayOfWeek().get(i));
+            }
+            for(int i=afterSchoolDto.getDayOfWeek().size();i<this.dayOfWeek.size();i++){
+                dayOfWeekRepository.delete(this.dayOfWeek.get(i));
+                this.dayOfWeek.remove(i);
+            }
+        }
+        else if(this.dayOfWeek.size() < afterSchoolDto.getDayOfWeek().size()){
+            for(int i=0;i<this.getDayOfWeek().size();i++){
+                this.dayOfWeek.get(i).setDayOfWeek(afterSchoolDto.getDayOfWeek().get(i));
+            }
+            for(int i=this.getDayOfWeek().size();i<afterSchoolDto.getDayOfWeek().size();i++){
+                DayOfWeek build = DayOfWeek.builder().dayOfWeek(afterSchoolDto.getDayOfWeek().get(i)).afterSchool(this).build();
+                dayOfWeekRepository.save(build);
+                this.dayOfWeek.add(build);
+            }
+        }
+        else{
+            for(int i=0;i<this.getDayOfWeek().size();i++){
+                this.dayOfWeek.get(i).setDayOfWeek(afterSchoolDto.getDayOfWeek().get(i));
             }
         }
     }
