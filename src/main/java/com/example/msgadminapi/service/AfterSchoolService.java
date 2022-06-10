@@ -79,6 +79,7 @@ public class AfterSchoolService {
                 .forEach(e -> list.add(
                         StatisticsResponseDto.builder()
                             .afterSchoolIdx(e.getId())
+                            .afterSchoolTitle(e.getTitle())
                             .total(e.getClassRegistration().size())
                             .build()
                 ));

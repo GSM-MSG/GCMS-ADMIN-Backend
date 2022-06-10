@@ -11,5 +11,7 @@ public class StatisticsResponseDto {
     @JsonProperty
     private Long afterSchoolIdx;
     @JsonProperty
+    private String afterSchoolTitle;
+    @JsonProperty
     private int total;
 }
