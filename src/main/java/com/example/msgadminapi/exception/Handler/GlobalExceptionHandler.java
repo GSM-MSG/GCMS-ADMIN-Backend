@@ -1,6 +1,7 @@
 package com.example.msgadminapi.exception.Handler;
 
 import com.example.msgadminapi.exception.ErrorResponse;
+import com.example.msgadminapi.exception.exception.AfterSchoolNotFindException;
 import com.example.msgadminapi.exception.exception.ClubNotFindException;
 import com.example.msgadminapi.exception.exception.MemberNotFindException;
 import com.example.msgadminapi.exception.exception.UserNotFindException;
@@ -32,6 +33,13 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(MemberNotFindException.class)
     public ResponseEntity<ErrorResponse> MemberNotFindExceptionHandler(HttpServletRequest request, MemberNotFindException ex) {
         printException(request, ex, "Member Not Find");
+        ErrorResponse errorResponse = new ErrorResponse(ex.getErrorCode());
+        return new ResponseEntity<>(errorResponse, HttpStatus.valueOf(ex.getErrorCode().getStatus()));
+    }
+
+    @ExceptionHandler(AfterSchoolNotFindException.class)
+    public ResponseEntity<ErrorResponse> AfterSchoolNotFindExceptionHandler(HttpServletRequest request, AfterSchoolNotFindException ex) {
+        printException(request, ex, "AfterSchool Not Find");
         ErrorResponse errorResponse = new ErrorResponse(ex.getErrorCode());
         return new ResponseEntity<>(errorResponse, HttpStatus.valueOf(ex.getErrorCode().getStatus()));
     }

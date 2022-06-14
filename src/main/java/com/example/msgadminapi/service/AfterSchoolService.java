@@ -13,6 +13,8 @@ import com.example.msgadminapi.domain.repository.GradeRepository;
 import com.example.msgadminapi.dto.request.AfterSchoolDto;
 import com.example.msgadminapi.dto.request.AfterSchoolModifyDto;
 import com.example.msgadminapi.dto.response.StatisticsResponseDto;
+import com.example.msgadminapi.exception.ErrorCode;
+import com.example.msgadminapi.exception.exception.AfterSchoolNotFindException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,7 +38,7 @@ public class AfterSchoolService {
     @Transactional
     public void updateAfterSchool(Long afterSchoolIdx, AfterSchoolModifyDto afterSchoolDto){
         AfterSchool afterSchool = afterSchoolRepository.findById(afterSchoolIdx)
-                .orElseThrow(() -> new RuntimeException());
+                .orElseThrow(() -> new AfterSchoolNotFindException("방과후 수정하는 중에 수정할 방과후를 찾지 못했습니다.", ErrorCode.AFTERSCHOOL_NOT_FIND));
         afterSchool.update(afterSchoolDto, gradeRepository, dayOfWeekRepository);
     }
 
@@ -44,7 +46,7 @@ public class AfterSchoolService {
     public List<User> findUserByAfterSchool(Long afterSchoolIdx){
         List<User> userList = new ArrayList<>();
         AfterSchool afterSchool = afterSchoolRepository.findById(afterSchoolIdx)
-                .orElseThrow(() -> new RuntimeException());
+                .orElseThrow(() -> new AfterSchoolNotFindException("방과후이름으로 찾고있는 도중 방과후를 찾지 못했습니다.", ErrorCode.AFTERSCHOOL_NOT_FIND));
         List<ClassRegistration> allByAfterSchool = classRegistrationRepository.findAllByAfterSchool(afterSchool);
         allByAfterSchool.forEach(e -> userList.add(e.getUser()));
         return userList;
@@ -67,7 +69,7 @@ public class AfterSchoolService {
     @Transactional
     public void deleteAfterSchool(Long afterSchoolIdx){
         AfterSchool afterSchool = afterSchoolRepository.findById(afterSchoolIdx)
-                .orElseThrow(() -> new RuntimeException());
+                .orElseThrow(() -> new AfterSchoolNotFindException("방과후를 지우는 도중 방과후를 찾지 못했습니다.", ErrorCode.AFTERSCHOOL_NOT_FIND));
         afterSchoolRepository.delete(afterSchool);
     }
 
@@ -97,7 +99,7 @@ public class AfterSchoolService {
     @Transactional
     public void closeAfterSchool(Long afterSchoolIdx, Season season, Long year) {
         AfterSchool afterSchool = afterSchoolRepository.findByIdAndSeasonAndYearOf(afterSchoolIdx, season, year)
-                        .orElseThrow(() -> new RuntimeException("값을 찾지 못함"));
+                        .orElseThrow(() -> new AfterSchoolNotFindException("방과후를 개별로 강제 마감 시키는 도중 방과후를 찾지 못했습니다.", ErrorCode.AFTERSCHOOL_NOT_FIND));
         if(afterSchool.getIsOpened() == true) {
             afterSchool.changeIsOpened(false);
         }
@@ -115,7 +117,7 @@ public class AfterSchoolService {
     @Transactional
     public void openAfterSchool(Long afterSchoolIdx, Season season, Long year) {
          AfterSchool afterSchool = afterSchoolRepository.findByIdAndSeasonAndYearOf(afterSchoolIdx, season, year)
-                 .orElseThrow(() -> new RuntimeException("값을 찾지 못함"));
+                 .orElseThrow(() -> new AfterSchoolNotFindException("방과후 신청을 받아주는 도중 방과후를 찾지 못했습니다.", ErrorCode.AFTERSCHOOL_NOT_FIND));
         if(afterSchool.getIsOpened() == false) {
             afterSchool.changeIsOpened(true);
         }

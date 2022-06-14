@@ -2,8 +2,6 @@ package com.example.msgadminapi.exception;
 
 import lombok.Getter;
 
-import java.time.LocalDateTime;
-
 @Getter
 public class ErrorResponse {
     private String message;
