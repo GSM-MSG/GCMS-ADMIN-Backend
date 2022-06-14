@@ -3,6 +3,7 @@ package com.example.msgadminapi.service;
 import com.example.msgadminapi.domain.entity.afterschool.AfterSchool;
 import com.example.msgadminapi.domain.entity.afterschool.DayOfWeek;
 import com.example.msgadminapi.domain.entity.afterschool.Grade;
+import com.example.msgadminapi.domain.entity.afterschool.enums.Season;
 import com.example.msgadminapi.domain.entity.classregistration.ClassRegistration;
 import com.example.msgadminapi.domain.entity.user.User;
 import com.example.msgadminapi.domain.repository.AfterSchoolRepository;
@@ -13,7 +14,6 @@ import com.example.msgadminapi.dto.request.AfterSchoolDto;
 import com.example.msgadminapi.dto.request.AfterSchoolModifyDto;
 import com.example.msgadminapi.dto.response.StatisticsResponseDto;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,7 +21,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-@Slf4j
 @RequiredArgsConstructor
 public class AfterSchoolService {
     private final AfterSchoolRepository afterSchoolRepository;
@@ -84,5 +83,41 @@ public class AfterSchoolService {
                             .build()
                 ));
         return list;
+    }
+
+    @Transactional
+    public void closeAllAfterSchool(Season season, Long year) {
+        afterSchoolRepository.findAllBySeasonAndYearOf(season, year).forEach(after -> {
+            if(after.getIsOpened() == true) {
+                after.changeIsOpened(false);
+            }
+        });
+    }
+
+    @Transactional
+    public void closeAfterSchool(Long afterSchoolIdx, Season season, Long year) {
+        AfterSchool afterSchool = afterSchoolRepository.findByIdAndSeasonAndYearOf(afterSchoolIdx, season, year)
+                        .orElseThrow(() -> new RuntimeException("값을 찾지 못함"));
+        if(afterSchool.getIsOpened() == true) {
+            afterSchool.changeIsOpened(false);
+        }
+    }
+
+    @Transactional
+    public void openAllAfterSchool(Season season, Long year) {
+        afterSchoolRepository.findAllBySeasonAndYearOf(season, year).forEach(after -> {
+            if(after.getIsOpened() == false) {
+                after.changeIsOpened(true);
+            }
+        });
+    }
+
+    @Transactional
+    public void openAfterSchool(Long afterSchoolIdx, Season season, Long year) {
+         AfterSchool afterSchool = afterSchoolRepository.findByIdAndSeasonAndYearOf(afterSchoolIdx, season, year)
+                 .orElseThrow(() -> new RuntimeException("값을 찾지 못함"));
+        if(afterSchool.getIsOpened() == false) {
+            afterSchool.changeIsOpened(true);
+        }
     }
 }

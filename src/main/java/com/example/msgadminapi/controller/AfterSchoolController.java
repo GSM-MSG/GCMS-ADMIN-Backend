@@ -1,7 +1,7 @@
 package com.example.msgadminapi.controller;
 
 import com.example.msgadminapi.domain.entity.afterschool.AfterSchool;
-import com.example.msgadminapi.domain.entity.member.Member;
+import com.example.msgadminapi.domain.entity.afterschool.enums.Season;
 import com.example.msgadminapi.domain.entity.user.User;
 import com.example.msgadminapi.dto.request.AfterSchoolDto;
 import com.example.msgadminapi.dto.request.AfterSchoolModifyDto;
@@ -55,5 +55,28 @@ public class AfterSchoolController {
         return afterSchoolService.findUserByAfterSchool(afterSchoolIdx);
     }
 
+    @PutMapping("/close/all")
+    public CommonResultResponse closeAllAfterSchool(@RequestParam Season season, @RequestParam Long year) {
+        afterSchoolService.closeAllAfterSchool(season, year);
+        return responseService.getSuccessResult();
+    }
+
+    @PutMapping("/close/{afterSchoolIdx}")
+    public CommonResultResponse closeAfterSchool(@PathVariable Long afterSchoolIdx, @RequestParam Season season, @RequestParam Long year) {
+        afterSchoolService.closeAfterSchool(afterSchoolIdx, season, year);
+        return responseService.getSuccessResult();
+    }
+
+    @PutMapping("/open/all")
+    public CommonResultResponse openAllAfterSchool(@RequestParam Season season, @RequestParam Long year) {
+        afterSchoolService.openAllAfterSchool(season, year);
+        return responseService.getSuccessResult();
+    }
+
+    @PutMapping("/open/{afterSchoolIdx}")
+    public CommonResultResponse openAfterSchool(@PathVariable Long afterSchoolIdx, @RequestParam Season season, @RequestParam Long year) {
+        afterSchoolService.openAfterSchool(afterSchoolIdx, season, year);
+        return responseService.getSuccessResult();
+    }
 
 }
