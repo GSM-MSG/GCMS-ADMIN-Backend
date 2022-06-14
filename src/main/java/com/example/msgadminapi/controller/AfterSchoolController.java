@@ -68,5 +68,10 @@ public class AfterSchoolController {
         return responseService.getSuccessResult();
     }
 
+    @PutMapping("/open/all")
+    public CommonResultResponse openAllAfterSchool(@RequestParam Season season, @RequestParam Long year) {
+        afterSchoolService.openAllAfterSchool(season, year);
+        return responseService.getSuccessResult();
+    }
 
 }

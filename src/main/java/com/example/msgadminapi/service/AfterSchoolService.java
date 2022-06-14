@@ -103,4 +103,14 @@ public class AfterSchoolService {
             afterSchool.changeIsOpened(false);
         }
     }
+
+    @Transactional
+    public void openAllAfterSchool(Season season, Long year) {
+        afterSchoolRepository.findAllBySeasonAndYearOf(season, year).forEach(e -> {
+            if(e.getIsOpened() == false) {
+                e.changeIsOpened(true);
+            }
+        });
+    }
+
 }
