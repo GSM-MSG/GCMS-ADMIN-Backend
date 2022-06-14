@@ -94,4 +94,13 @@ public class AfterSchoolService {
             }
         });
     }
+
+    @Transactional
+    public void closeAfterSchool(Long afterSchoolIdx, Season season, Long year) {
+        AfterSchool afterSchool = afterSchoolRepository.findByIdAndSeasonAndYearOf(afterSchoolIdx, season, year)
+                        .orElseThrow(() -> new RuntimeException("값을 찾지 못함"));
+        if(afterSchool.getIsOpened() == true) {
+            afterSchool.changeIsOpened(false);
+        }
+    }
 }
