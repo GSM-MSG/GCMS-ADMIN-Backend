@@ -85,4 +85,13 @@ public class AfterSchoolService {
                 ));
         return list;
     }
+
+    @Transactional
+    public void closeAllAfterSchool(Season season, Long year) {
+        afterSchoolRepository.findAllBySeasonAndYearOf(season, year).forEach(e -> {
+            if(e.getIsOpened() == true) {
+                e.changeIsOpened(false);
+            }
+        });
+    }
 }
