@@ -14,7 +14,6 @@ import com.example.msgadminapi.dto.request.AfterSchoolDto;
 import com.example.msgadminapi.dto.request.AfterSchoolModifyDto;
 import com.example.msgadminapi.dto.response.StatisticsResponseDto;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,7 +21,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-@Slf4j
 @RequiredArgsConstructor
 public class AfterSchoolService {
     private final AfterSchoolRepository afterSchoolRepository;
@@ -89,9 +87,9 @@ public class AfterSchoolService {
 
     @Transactional
     public void closeAllAfterSchool(Season season, Long year) {
-        afterSchoolRepository.findAllBySeasonAndYearOf(season, year).forEach(e -> {
-            if(e.getIsOpened() == true) {
-                e.changeIsOpened(false);
+        afterSchoolRepository.findAllBySeasonAndYearOf(season, year).forEach(after -> {
+            if(after.getIsOpened() == true) {
+                after.changeIsOpened(false);
             }
         });
     }
@@ -107,9 +105,9 @@ public class AfterSchoolService {
 
     @Transactional
     public void openAllAfterSchool(Season season, Long year) {
-        afterSchoolRepository.findAllBySeasonAndYearOf(season, year).forEach(e -> {
-            if(e.getIsOpened() == false) {
-                e.changeIsOpened(true);
+        afterSchoolRepository.findAllBySeasonAndYearOf(season, year).forEach(after -> {
+            if(after.getIsOpened() == false) {
+                after.changeIsOpened(true);
             }
         });
     }
