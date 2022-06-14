@@ -55,5 +55,11 @@ public class AfterSchoolController {
         return afterSchoolService.findUserByAfterSchool(afterSchoolIdx);
     }
 
+    @PutMapping("/close/all")
+    public CommonResultResponse closeAllAfterSchool(@RequestParam Season season, @RequestParam Long year) {
+        afterSchoolService.closeAllAfterSchool(season, year);
+        return responseService.getSuccessResult();
+    }
+
 
 }
