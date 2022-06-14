@@ -63,7 +63,6 @@ public class AfterSchoolController {
 
     @PutMapping("/close/{afterSchoolIdx}")
     public CommonResultResponse closeAfterSchool(@PathVariable Long afterSchoolIdx, @RequestParam Season season, @RequestParam Long year) {
-        System.out.println("1");
         afterSchoolService.closeAfterSchool(afterSchoolIdx, season, year);
         return responseService.getSuccessResult();
     }
