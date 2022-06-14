@@ -3,6 +3,7 @@ package com.example.msgadminapi.service;
 import com.example.msgadminapi.domain.entity.afterschool.AfterSchool;
 import com.example.msgadminapi.domain.entity.afterschool.DayOfWeek;
 import com.example.msgadminapi.domain.entity.afterschool.Grade;
+import com.example.msgadminapi.domain.entity.afterschool.enums.Season;
 import com.example.msgadminapi.domain.entity.classregistration.ClassRegistration;
 import com.example.msgadminapi.domain.entity.user.User;
 import com.example.msgadminapi.domain.repository.AfterSchoolRepository;
@@ -113,4 +114,12 @@ public class AfterSchoolService {
         });
     }
 
+    @Transactional
+    public void openAfterSchool(Long afterSchoolIdx, Season season, Long year) {
+         AfterSchool afterSchool = afterSchoolRepository.findByIdAndSeasonAndYearOf(afterSchoolIdx, season, year)
+                 .orElseThrow(() -> new RuntimeException("값을 찾지 못함"));
+        if(afterSchool.getIsOpened() == false) {
+            afterSchool.changeIsOpened(true);
+        }
+    }
 }

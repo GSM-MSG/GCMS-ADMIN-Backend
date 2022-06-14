@@ -1,6 +1,7 @@
 package com.example.msgadminapi.controller;
 
 import com.example.msgadminapi.domain.entity.afterschool.AfterSchool;
+import com.example.msgadminapi.domain.entity.afterschool.enums.Season;
 import com.example.msgadminapi.domain.entity.member.Member;
 import com.example.msgadminapi.domain.entity.user.User;
 import com.example.msgadminapi.dto.request.AfterSchoolDto;
@@ -10,13 +11,20 @@ import com.example.msgadminapi.response.ResponseService;
 import com.example.msgadminapi.response.result.CommonResultResponse;
 import com.example.msgadminapi.service.AfterSchoolService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 @RestController
 @RequestMapping("/afterSchool")
 @RequiredArgsConstructor
+@Slf4j
 public class AfterSchoolController {
 
     private final AfterSchoolService afterSchoolService;
@@ -71,6 +79,12 @@ public class AfterSchoolController {
     @PutMapping("/open/all")
     public CommonResultResponse openAllAfterSchool(@RequestParam Season season, @RequestParam Long year) {
         afterSchoolService.openAllAfterSchool(season, year);
+        return responseService.getSuccessResult();
+    }
+
+    @PutMapping("/open/{afterSchoolIdx}")
+    public CommonResultResponse openAfterSchool(@PathVariable Long afterSchoolIdx, @RequestParam Season season, @RequestParam Long year) {
+        afterSchoolService.openAfterSchool(afterSchoolIdx, season, year);
         return responseService.getSuccessResult();
     }
 
