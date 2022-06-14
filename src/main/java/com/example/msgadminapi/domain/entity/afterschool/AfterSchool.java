@@ -47,11 +47,15 @@ public class AfterSchool {
     private Long yearOf;
 
     @Column(columnDefinition = "TINYINT")
-    private Boolean isOpened = true;
+    private Boolean isOpened;
 
     @JsonIgnore
     @OneToMany(mappedBy = "afterSchool", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     private Set<ClassRegistration> classRegistration = new HashSet<>();
+
+    public void changeIsOpened(boolean isOpened) {
+        this.isOpened = isOpened;
+    }
 
     public void update(AfterSchoolModifyDto afterSchoolDto, GradeRepository gradeRepository, DayOfWeekRepository dayOfWeekRepository){
         this.title = afterSchoolDto.getTitle();
