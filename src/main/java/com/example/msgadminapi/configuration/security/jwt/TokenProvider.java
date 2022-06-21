@@ -45,3 +45,27 @@ public class TokenProvider {
                 .parseClaimsJws(token)
                 .getBody();
     }
+
+    public String getUserEmail(String token) {
+        return extractAllClaims(token).getSubject();
+    }
+    public String getTokenType(String token) {
+        return extractAllClaims(token).get(TokenClaimName.TOKEN_TYPE.value, String.class);
+    }
+    public Boolean isTokenExpired(String token) {
+        try {
+            extractAllClaims(token).getExpiration();
+            return false;
+        }
+        catch (ExpiredJwtException e) {
+            return true;
+        }
+    }
+    public String generateAccessToken(String email) {
+        return doGenerateToken(email, TokenType.ACCESS_TOKEN, ACCESS_TOKEN_EXPIRE_TIME);
+    }
+    public String generateRefreshToken(String email) {
+        return doGenerateToken(email, TokenType.REFRESH_TOKEN, REFRESH_TOKEN_EXPIRE_TIME);
+    }
+
+}
