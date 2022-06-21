@@ -61,6 +61,16 @@ public class TokenProvider {
             return true;
         }
     }
+    private String doGenerateToken(String userEmail, TokenType tokenType, long expireTime) {
+        final Claims claims = Jwts.claims().setSubject(userEmail);
+        claims.put("tokenType", tokenType.value);
+        return Jwts.builder()
+                .setClaims(claims)
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + expireTime))
+                .signWith(getSigningKey(SECRET_KEY), SignatureAlgorithm.HS256)
+                .compact();
+    }
     public String generateAccessToken(String email) {
         return doGenerateToken(email, TokenType.ACCESS_TOKEN, ACCESS_TOKEN_EXPIRE_TIME);
     }
