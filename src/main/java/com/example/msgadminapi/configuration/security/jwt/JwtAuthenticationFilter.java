@@ -74,6 +74,17 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
     }
 
+    private void registerUserinfoInSecurityContext(String userEmail, HttpServletRequest request) {
+        try {
+            UserDetails userDetails = myUserDetailService.loadUserByUsername(userEmail);
+            UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+            usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+            SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
+        } catch (NullPointerException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     private String generateNewAccessToken(String refreshToken) {
         try {
             return tokenProvider.generateAccessToken(tokenProvider.getUserEmail(refreshToken));
