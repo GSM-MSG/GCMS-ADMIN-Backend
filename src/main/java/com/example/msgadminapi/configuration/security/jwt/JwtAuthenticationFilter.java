@@ -48,3 +48,38 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
         filterChain.doFilter(request, response);
     }
+
+    private void writeResponse(HttpServletResponse response, String accessToken) throws IOException {
+        String bodyToJson = getBodyToJson();
+        response.addHeader("accessToken", accessToken);
+        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        response.setContentType("application/json");
+        response.getWriter().write(bodyToJson);
+    }
+
+    private String getBodyToJson() throws JsonProcessingException {
+        Map<String, Object> body = new HashMap<>();
+        body.put("success", true);
+        body.put("msg", "Token is regenerated");
+        body.put("status", HttpStatus.UNAUTHORIZED.value());
+        String bodyToJson = objectMapper.writeValueAsString(body);
+        return bodyToJson;
+    }
+
+    private String accessTokenExtractEmail(String accessToken) {
+        try {
+            return tokenProvider.getUserEmail(accessToken);
+        } catch (JwtException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private String generateNewAccessToken(String refreshToken) {
+        try {
+            return tokenProvider.generateAccessToken(tokenProvider.getUserEmail(refreshToken));
+        } catch (JwtException | IllegalStateException e) {
+            throw new RuntimeException();
+        }
+    }
+
+}
