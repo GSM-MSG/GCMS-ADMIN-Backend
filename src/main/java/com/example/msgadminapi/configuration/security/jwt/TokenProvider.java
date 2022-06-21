@@ -38,3 +38,10 @@ public class TokenProvider {
         byte keyByte[] = secretKey.getBytes(StandardCharsets.UTF_8);
         return Keys.hmacShaKeyFor(keyByte);
     }
+    public Claims extractAllClaims(String token) throws ExpiredJwtException, IllegalStateException, MalformedJwtException, SignatureException, UnsupportedJwtException {
+        return Jwts.parserBuilder()
+                .setSigningKey(getSigningKey(SECRET_KEY))
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
+    }
