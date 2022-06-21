@@ -1,14 +1,18 @@
 package com.example.msgadminapi.controller;
 
+import com.example.msgadminapi.dto.request.SignInDto;
 import com.example.msgadminapi.dto.request.UserRequestDto;
 import com.example.msgadminapi.dto.response.UserResponseDto;
 import com.example.msgadminapi.response.ResponseService;
 import com.example.msgadminapi.response.result.CommonResultResponse;
+import com.example.msgadminapi.response.result.SingleResult;
 import com.example.msgadminapi.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController()
 @RequiredArgsConstructor
@@ -39,6 +43,13 @@ public class UserController {
     public CommonResultResponse userDelete(@RequestParam("email") String email) {
         userService.userDelete(email);
         return responseService.getSuccessResult();
+    }
+
+    @PostMapping("/login")
+    @ResponseStatus(HttpStatus.OK)
+    public SingleResult<Map<String, String>> login(@RequestBody SignInDto signInDto) throws Exception {
+        System.out.println("signInDto.getEmail() = " + signInDto.getEmail());
+        return responseService.getSingleResult(userService.login(signInDto.getEmail()));
     }
 
 }
