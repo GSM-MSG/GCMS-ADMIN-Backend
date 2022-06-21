@@ -1,5 +1,6 @@
 package com.example.msgadminapi.service;
 
+import com.example.msgadminapi.configuration.security.jwt.TokenProvider;
 import com.example.msgadminapi.domain.entity.user.User;
 import com.example.msgadminapi.domain.repository.UserRepository;
 import com.example.msgadminapi.dto.request.UserRequestDto;
@@ -8,12 +9,12 @@ import com.example.msgadminapi.exception.ErrorCode;
 import com.example.msgadminapi.exception.exception.UserNotFindException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @RequiredArgsConstructor
 @Service
@@ -21,6 +22,8 @@ import java.util.Optional;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final TokenProvider tokenProvider;
 
     @Transactional(readOnly = true)
     public List<UserResponseDto> findAll() {
@@ -65,5 +68,24 @@ public class UserService {
                 .grade(e.getGrade())
                 .build()));
         return searchList;
+    }
+
+    public Map<String, String> login(String email) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException());
+        if(user==null) {
+            throw new UserNotFindException("User can't find", ErrorCode.USER_NOT_FIND);
+        }
+
+        final String accessToken = tokenProvider.generateAccessToken(user.getEmail());
+        final String refreshToken = tokenProvider.generateRefreshToken(user.getEmail());
+
+        user.updateRefreshToken(refreshToken);
+
+        Map<String, String> map = new HashMap<>();
+        map.put("email", user.getEmail());
+        map.put("accessToken", accessToken);
+        map.put("refreshToken", refreshToken);
+        return map;
     }
 }
