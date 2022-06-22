@@ -1,7 +1,5 @@
 package com.example.msgadminapi.configuration.security.jwt;
 
-import com.example.msgadminapi.configuration.security.auth.MyUserDetailService;
-import com.example.msgadminapi.domain.repository.UserRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.JwtException;
@@ -10,7 +8,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -30,7 +27,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final TokenProvider tokenProvider;
     private final ObjectMapper objectMapper;
-    private final MyUserDetailService myUserDetailService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws IOException, ServletException {
@@ -38,7 +34,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         String refreshToken = request.getHeader("RefreshToken");
         if(accessToken != null && refreshToken != null && tokenProvider.getTokenType(accessToken).equals("accessToken")) {
             if(tokenProvider.isTokenExpired(accessToken) && tokenProvider.getTokenType(refreshToken).equals("refreshToken") && !tokenProvider.isTokenExpired(refreshToken)) {
-                System.out.println("hi1");
                 accessToken = generateNewAccessToken(refreshToken);
                 writeResponse(response, accessToken);
                 return;
@@ -76,10 +71,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private void registerUserinfoInSecurityContext(String userEmail, HttpServletRequest request) {
         try {
-            UserDetails userDetails = myUserDetailService.loadUserByUsername(userEmail);
-            UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-            usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-            SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
+            UsernamePasswordAuthenticationToken AuthenticationToken = tokenProvider.authentication(userEmail);
+            AuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+            SecurityContextHolder.getContext().setAuthentication(AuthenticationToken);
         } catch (NullPointerException e) {
             throw new RuntimeException(e);
         }

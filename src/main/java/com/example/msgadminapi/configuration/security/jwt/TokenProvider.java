@@ -1,9 +1,13 @@
 package com.example.msgadminapi.configuration.security.jwt;
 
+import com.example.msgadminapi.configuration.security.auth.MyUserDetailService;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SignatureException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import java.nio.charset.StandardCharsets;
@@ -11,7 +15,11 @@ import java.security.Key;
 import java.util.Date;
 
 @Component
+@RequiredArgsConstructor
 public class TokenProvider {
+    private final MyUserDetailService myUserDetailService;
+
+
     public static final long ACCESS_TOKEN_EXPIRE_TIME = 1000 * 60 * 60 * 3; // 3시간
     public static final long REFRESH_TOKEN_EXPIRE_TIME = ACCESS_TOKEN_EXPIRE_TIME * 8 * 180;
 
@@ -78,4 +86,8 @@ public class TokenProvider {
         return doGenerateToken(email, TokenType.REFRESH_TOKEN, REFRESH_TOKEN_EXPIRE_TIME);
     }
 
+    public UsernamePasswordAuthenticationToken authentication(String userEmail) {
+        UserDetails userDetails = myUserDetailService.loadUserByUsername(userEmail);
+        return new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+    }
 }
