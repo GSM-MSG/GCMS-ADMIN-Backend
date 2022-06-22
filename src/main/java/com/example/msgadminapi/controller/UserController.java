@@ -7,7 +7,6 @@ import com.example.msgadminapi.dto.response.UserResponseDto;
 import com.example.msgadminapi.response.ResponseService;
 import com.example.msgadminapi.response.result.CommonResultResponse;
 import com.example.msgadminapi.service.UserService;
-import io.jsonwebtoken.Jwt;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
