@@ -1,14 +1,11 @@
 package com.example.msgadminapi.dto.request;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.sun.istack.NotNull;
+import lombok.*;
 
 @Getter
-@Setter
 @NoArgsConstructor
-@AllArgsConstructor
 public class SignInDto {
+    @NotNull(message = "author is not null")
     private String email;
 }
