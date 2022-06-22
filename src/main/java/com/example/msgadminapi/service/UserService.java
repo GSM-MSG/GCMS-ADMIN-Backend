@@ -4,9 +4,11 @@ import com.example.msgadminapi.configuration.security.jwt.TokenProvider;
 import com.example.msgadminapi.domain.entity.user.User;
 import com.example.msgadminapi.domain.repository.UserRepository;
 import com.example.msgadminapi.dto.request.UserRequestDto;
+import com.example.msgadminapi.dto.response.JwtResponseDto;
 import com.example.msgadminapi.dto.response.UserResponseDto;
 import com.example.msgadminapi.exception.ErrorCode;
 import com.example.msgadminapi.exception.exception.UserNotFindException;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
+
 
 @RequiredArgsConstructor
 @Service
@@ -70,7 +73,7 @@ public class UserService {
         return searchList;
     }
 
-    public Map<String, String> login(String email) {
+    public JwtResponseDto login(String email) {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException());
         if(user==null) {
@@ -82,10 +85,10 @@ public class UserService {
 
         user.updateRefreshToken(refreshToken);
 
-        Map<String, String> map = new HashMap<>();
-        map.put("email", user.getEmail());
-        map.put("accessToken", accessToken);
-        map.put("refreshToken", refreshToken);
-        return map;
+        return JwtResponseDto.builder()
+                .email(user.getEmail())
+                .accessToken(accessToken)
+                .refreshToken(refreshToken)
+                .build();
     }
 }
