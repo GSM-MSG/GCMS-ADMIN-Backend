@@ -76,9 +76,6 @@ public class UserService {
     public JwtResponseDto login(String email) {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException());
-        if(user==null) {
-            throw new UserNotFindException("User can't find", ErrorCode.USER_NOT_FIND);
-        }
 
         final String accessToken = tokenProvider.generateAccessToken(user.getEmail());
         final String refreshToken = tokenProvider.generateRefreshToken(user.getEmail());
