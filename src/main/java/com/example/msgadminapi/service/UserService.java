@@ -6,17 +6,15 @@ import com.example.msgadminapi.domain.repository.UserRepository;
 import com.example.msgadminapi.dto.request.UserRequestDto;
 import com.example.msgadminapi.dto.response.JwtResponseDto;
 import com.example.msgadminapi.dto.response.UserResponseDto;
-import com.example.msgadminapi.exception.ErrorCode;
 import com.example.msgadminapi.exception.exception.UserNotFindException;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @RequiredArgsConstructor
@@ -46,7 +44,7 @@ public class UserService {
         int num = Integer.parseInt(userRequestDto.getGrade().substring(2, 4));
 
         User userEntity = userRepository.findByEmail(userRequestDto.getEmail())
-                .orElseThrow(() -> new UserNotFindException("유저를 수정하는 도중 원하는 튜플을 찾지 못했습니다.", ErrorCode.USER_NOT_FIND));
+                .orElseThrow(() -> new UserNotFindException());
         userEntity.update(grade, class_, num);
     }
 
@@ -59,7 +57,7 @@ public class UserService {
     @Transactional
     public void userDelete(String email) {
         User byEmail = userRepository.findByEmail(email)
-                .orElseThrow(() -> new UserNotFindException("유저를 삭제하려는 과정중에 유저를 찾지 못했습니다.", ErrorCode.USER_NOT_FIND));
+                .orElseThrow(() -> new UserNotFindException());
         userRepository.delete(byEmail);
     }
 
@@ -75,7 +73,7 @@ public class UserService {
 
     public JwtResponseDto login(String email) {
         User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new UserNotFindException("User Not Found", ErrorCode.USER_NOT_FIND));
+                .orElseThrow(() -> new UserNotFindException());
 
         final String accessToken = tokenProvider.generateAccessToken(user.getEmail());
         final String refreshToken = tokenProvider.generateRefreshToken(user.getEmail());

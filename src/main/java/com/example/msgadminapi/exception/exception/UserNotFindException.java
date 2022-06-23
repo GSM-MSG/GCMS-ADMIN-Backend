@@ -1,14 +1,12 @@
 package com.example.msgadminapi.exception.exception;
 
+import com.example.msgadminapi.exception.CommonException;
 import com.example.msgadminapi.exception.ErrorCode;
-import lombok.Getter;
 
-@Getter
-public class UserNotFindException extends RuntimeException {
-    private ErrorCode errorCode;
+public class UserNotFindException extends CommonException {
+    private static final CommonException EXCEPTION = new UserNotFindException();
 
-    public UserNotFindException(String message, ErrorCode errorCode) {
-        super(message);
-        this.errorCode = errorCode;
+    public UserNotFindException() {
+        super(ErrorCode.USER_NOT_FIND);
     }
 }
