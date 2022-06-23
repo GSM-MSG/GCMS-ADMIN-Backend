@@ -47,21 +47,21 @@ public class ClubService {
     @Transactional
     public void clubTitleModify(ClubTitleModifyRequest request) {
         Club clubEntity = clubRepository.findById(request.getId())
-                        .orElseThrow(() -> new ClubNotFindException("동아리 이름 수정하는 과정중에 동아리를 찾지 못했습니다.", ErrorCode.CLUB_NOT_FIND));
+                        .orElseThrow(() -> new ClubNotFindException());
         clubEntity.titleModify(request.getTitle());
     }
 
     @Transactional
     public void clubDelete(Long clubIdx) {
         Club club = clubRepository.findById(clubIdx)
-                .orElseThrow(() -> new ClubNotFindException("동아리 삭제 하는 과정중에 동아리를 찾지 못했습니다.", ErrorCode.CLUB_NOT_FIND));
+                .orElseThrow(() -> new ClubNotFindException());
         clubRepository.delete(club);
     }
 
     @Transactional
     public void clubClose(Long clubIdx) {
         Club club = clubRepository.findById(clubIdx)
-                .orElseThrow(() -> new ClubNotFindException("동아리 강제 마감하는 과정중에 동아리를 찾지 못했습니다.", ErrorCode.CLUB_NOT_FIND));
+                .orElseThrow(() -> new ClubNotFindException());
         club.isClubFinishOpen(false);
     }
 
