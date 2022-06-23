@@ -31,9 +31,9 @@ public class MemberService {
     public void insertMember(String email, Long clubIdx) {
         Member member = new Member();
         User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new UserNotFindException("동아리 구성원을 강제 추가하려는 과정중에 유저를 찾지 못했습니다.", ErrorCode.USER_NOT_FIND));
+                .orElseThrow(() -> new UserNotFindException());
         Club club = clubRepository.findById(clubIdx)
-                .orElseThrow(()-> new ClubNotFindException("동아리 구성원을 강제 추가하려는 과정중에 동아리를 찾지 못했습니다.", ErrorCode.CLUB_NOT_FIND));
+                .orElseThrow(()-> new ClubNotFindException());
         member.userMapping(user);
         member.clubMapping(club);
         memberRepository.save(member);
@@ -41,15 +41,15 @@ public class MemberService {
 
     public void deleteMember(Long id) {
         Member member = memberRepository.findById(id)
-                        .orElseThrow(() -> new MemberNotFindException("동아리 구성원을 강제로 지우는 과정중에 구성원을 찾지 못했습니다.", ErrorCode.MEMBER_NOT_FIND));
+                        .orElseThrow(() -> new MemberNotFindException());
         memberRepository.delete(member);
     }
 
     public void moveMember(Long memberIdx, Long clubIdx) {
         Member member = memberRepository.findById(memberIdx)
-                .orElseThrow(() -> new MemberNotFindException("동아리 구성원을 강제로 이동하는 과정중에 구성원을 찾지 못했습니다.", ErrorCode.MEMBER_NOT_FIND));
+                .orElseThrow(() -> new MemberNotFindException());
         Club club = clubRepository.findById(clubIdx)
-                .orElseThrow(() -> new ClubNotFindException("동아리 구성원을 강제로 이동하는 과정중에 동아리를 찾지 못했습니다.", ErrorCode.CLUB_NOT_FIND));
+                .orElseThrow(() -> new ClubNotFindException());
         member.getClub().getMember().remove(member);
         member.clubMapping(club);
     }
@@ -57,7 +57,7 @@ public class MemberService {
     @Transactional
     public void changeManager(Long memberIdx) {
         Member member = memberRepository.findById(memberIdx)
-                .orElseThrow(() -> new MemberNotFindException("동아리 부장을 교체하려는 과정중에 구성원을 찾지 못했습니다.", ErrorCode.MEMBER_NOT_FIND));
+                .orElseThrow(() -> new MemberNotFindException());
         Set<Member> members = member.getClub().getMember();
         for(Member m : members) {
             if(m.getScope() == Scope.HEAD) {
