@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Builder
 @AllArgsConstructor @NoArgsConstructor
 public class StatisticsResponseDto {
@@ -12,6 +14,8 @@ public class StatisticsResponseDto {
     private Long afterSchoolIdx;
     @JsonProperty
     private String afterSchoolTitle;
+    @JsonProperty
+    private List<String> dayOfWeekList;
     @JsonProperty
     private int total;
 }

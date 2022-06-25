@@ -21,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -81,6 +82,10 @@ public class AfterSchoolService {
                         StatisticsResponseDto.builder()
                             .afterSchoolIdx(e.getId())
                             .afterSchoolTitle(e.getTitle())
+                            .dayOfWeekList(new ArrayList<>(e.getDayOfWeek().stream()
+                                    .map(d->d.getDayOfWeek())
+                                    .collect(Collectors.toList()))
+                            )
                             .total(e.getClassRegistration().size())
                             .build()
                 ));
