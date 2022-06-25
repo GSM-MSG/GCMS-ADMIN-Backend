@@ -5,11 +5,9 @@ import com.example.msgadminapi.dto.response.UserResponseDto
 import com.example.msgadminapi.response.ResponseService
 import com.example.msgadminapi.response.result.CommonResultResponse
 import com.example.msgadminapi.service.UserService
-import lombok.RequiredArgsConstructor
 import org.springframework.web.bind.annotation.*
 
 @RestController
-@RequiredArgsConstructor
 @RequestMapping("users")
 class UserController(
     private val userService: UserService,
