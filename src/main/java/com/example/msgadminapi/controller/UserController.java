@@ -47,7 +47,7 @@ public class UserController {
 
     @PostMapping("/login")
     public ResponseEntity<JwtResponseDto> login(@RequestBody SignInDto signInDto) throws Exception {
-        return new ResponseEntity<>(userService.login(signInDto.getEmail()), HttpStatus.OK);
+        return new ResponseEntity<>(userService.login(signInDto.getEmail(), signInDto.getPassword()), HttpStatus.OK);
     }
 
 }

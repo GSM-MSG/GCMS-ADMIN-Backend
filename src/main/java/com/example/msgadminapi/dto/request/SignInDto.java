@@ -10,4 +10,7 @@ import javax.validation.constraints.NotNull;
 public class SignInDto {
     @NotNull(message = "email is not null")
     private String email;
+
+    @NotNull(message = "password is not null")
+    private String password;
 }
