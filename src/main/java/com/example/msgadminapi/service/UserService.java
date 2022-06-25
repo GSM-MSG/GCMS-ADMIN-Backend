@@ -71,9 +71,10 @@ public class UserService {
         return searchList;
     }
 
-    public JwtResponseDto login(String email) {
+    public JwtResponseDto login(String email, String password) {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UserNotFindException());
+        checkPassword(password, user.);
 
         final String accessToken = tokenProvider.generateAccessToken(user.getEmail());
         final String refreshToken = tokenProvider.generateRefreshToken(user.getEmail());
@@ -85,5 +86,12 @@ public class UserService {
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)
                 .build();
+    }
+
+    private void checkPassword(String pw, String encodePw) {
+        boolean isSame = passwordEncoder.matches(pw, encodePw);
+        if(!isSame) {
+            throw new UserNotFindException();
+        }
     }
 }

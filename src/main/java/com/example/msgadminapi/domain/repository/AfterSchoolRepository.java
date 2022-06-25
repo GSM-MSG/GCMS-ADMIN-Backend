@@ -12,7 +12,7 @@ import java.util.Optional;
 
 @Repository
 public interface AfterSchoolRepository extends JpaRepository<AfterSchool, Long> {
-    public List<AfterSchool> findAllBySeasonAndYearOf(Season season, Long year);
+    List<AfterSchool> findAllBySeasonAndYearOf(Season season, Long year);
     Optional<AfterSchool>findByIdAndSeasonAndYearOf(Long id, Season season, Long year);
 
 }
