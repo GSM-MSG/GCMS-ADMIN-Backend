@@ -26,8 +26,8 @@ public class TeacherController {
     }
 
     @GetMapping("/refreshtoken")
-    public ResponseEntity<RefreshResponseDto> refreshToken(HttpServletRequest request) {
-        RefreshResponseDto responseDto = teacherService.reIssueAccessToken(request.getHeader("RefreshToken"));
+    public ResponseEntity<RefreshResponseDto> refreshToken(@RequestHeader("RefreshToken") String rfToken) {
+        RefreshResponseDto responseDto = teacherService.reIssueAccessToken(rfToken);
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 }
