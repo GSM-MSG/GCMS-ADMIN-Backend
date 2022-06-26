@@ -1,6 +1,9 @@
 package com.example.msgadminapi.configuration.security;
 
+import com.example.msgadminapi.configuration.security.jwt.JwtAuthenticationEntryPoint;
 import com.example.msgadminapi.configuration.security.jwt.JwtAuthenticationFilter;
+import com.example.msgadminapi.configuration.security.jwt.TokenProvider;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,7 +23,9 @@ import org.springframework.web.cors.CorsUtils;
 //@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig {
 
-    private final JwtAuthenticationFilter jwtAuthenticationFilter;
+    private final TokenProvider tokenProvider;
+    private final ObjectMapper objectMapper;
+    private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -28,16 +33,18 @@ public class WebSecurityConfig {
                 .cors()
                 .and()
                 .csrf().disable()
+                .exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint)
+                .and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS) // 스프링 시큐리티가 세션 쿠키 방식 동작 X
                 .and()
                 .authorizeRequests()
                 .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
-                .antMatchers(HttpMethod.POST, "/users/login").permitAll()
-                .antMatchers("/**").permitAll()
+                .antMatchers(HttpMethod.POST, "/teacher/login").permitAll()
+                .antMatchers(HttpMethod.GET, "/teacher/refreshtoken").permitAll()
                 .anyRequest().authenticated()
                 .and()
-                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(new JwtAuthenticationFilter(tokenProvider, objectMapper), UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 
