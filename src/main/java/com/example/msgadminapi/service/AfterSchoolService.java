@@ -13,8 +13,7 @@ import com.example.msgadminapi.domain.repository.GradeRepository;
 import com.example.msgadminapi.dto.request.AfterSchoolDto;
 import com.example.msgadminapi.dto.request.AfterSchoolModifyDto;
 import com.example.msgadminapi.dto.response.StatisticsResponseDto;
-import com.example.msgadminapi.exception.ErrorCode;
-import com.example.msgadminapi.exception.exception.AfterSchoolNotFindException;
+import com.example.msgadminapi.exception.exception.AfterSchoolNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,7 +37,7 @@ public class AfterSchoolService {
     @Transactional
     public void updateAfterSchool(Long afterSchoolIdx, AfterSchoolModifyDto afterSchoolDto){
         AfterSchool afterSchool = afterSchoolRepository.findById(afterSchoolIdx)
-                .orElseThrow(() -> new AfterSchoolNotFindException());
+                .orElseThrow(() -> new AfterSchoolNotFoundException());
         afterSchool.update(afterSchoolDto, gradeRepository, dayOfWeekRepository);
     }
 
@@ -46,7 +45,7 @@ public class AfterSchoolService {
     public List<User> findUserByAfterSchool(Long afterSchoolIdx){
         List<User> userList = new ArrayList<>();
         AfterSchool afterSchool = afterSchoolRepository.findById(afterSchoolIdx)
-                .orElseThrow(() -> new AfterSchoolNotFindException());
+                .orElseThrow(() -> new AfterSchoolNotFoundException());
         List<ClassRegistration> allByAfterSchool = classRegistrationRepository.findAllByAfterSchool(afterSchool);
         allByAfterSchool.forEach(e -> userList.add(e.getUser()));
         return userList;
@@ -69,7 +68,7 @@ public class AfterSchoolService {
     @Transactional
     public void deleteAfterSchool(Long afterSchoolIdx){
         AfterSchool afterSchool = afterSchoolRepository.findById(afterSchoolIdx)
-                .orElseThrow(() -> new AfterSchoolNotFindException());
+                .orElseThrow(() -> new AfterSchoolNotFoundException());
         afterSchoolRepository.delete(afterSchool);
     }
 
@@ -99,7 +98,7 @@ public class AfterSchoolService {
     @Transactional
     public void closeAfterSchool(Long afterSchoolIdx, Season season, Long year) {
         AfterSchool afterSchool = afterSchoolRepository.findByIdAndSeasonAndYearOf(afterSchoolIdx, season, year)
-                        .orElseThrow(() -> new AfterSchoolNotFindException());
+                        .orElseThrow(() -> new AfterSchoolNotFoundException());
         if(afterSchool.getIsOpened()) {
             afterSchool.changeIsOpened(false);
         }
@@ -115,7 +114,7 @@ public class AfterSchoolService {
     @Transactional
     public void openAfterSchool(Long afterSchoolIdx, Season season, Long year) {
          AfterSchool afterSchool = afterSchoolRepository.findByIdAndSeasonAndYearOf(afterSchoolIdx, season, year)
-                 .orElseThrow(() -> new AfterSchoolNotFindException());
+                 .orElseThrow(() -> new AfterSchoolNotFoundException());
         if(!afterSchool.getIsOpened()) {
             afterSchool.changeIsOpened(true);
         }

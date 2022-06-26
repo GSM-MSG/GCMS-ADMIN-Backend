@@ -1,15 +1,12 @@
 package com.example.msgadminapi.service;
 
-import com.example.msgadminapi.configuration.security.jwt.TokenProvider;
 import com.example.msgadminapi.domain.entity.user.User;
 import com.example.msgadminapi.domain.repository.UserRepository;
 import com.example.msgadminapi.dto.request.UserRequestDto;
-import com.example.msgadminapi.dto.response.JwtResponseDto;
 import com.example.msgadminapi.dto.response.UserResponseDto;
-import com.example.msgadminapi.exception.exception.UserNotFindException;
+import com.example.msgadminapi.exception.exception.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,8 +20,7 @@ import java.util.List;
 public class UserService {
 
     private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
-    private final TokenProvider tokenProvider;
+
 
     @Transactional(readOnly = true)
     public List<UserResponseDto> findAll() {
@@ -44,7 +40,7 @@ public class UserService {
         int num = Integer.parseInt(userRequestDto.getGrade().substring(2, 4));
 
         User userEntity = userRepository.findByEmail(userRequestDto.getEmail())
-                .orElseThrow(() -> new UserNotFindException());
+                .orElseThrow(() -> new UserNotFoundException());
         userEntity.update(grade, class_, num);
     }
 
@@ -57,7 +53,7 @@ public class UserService {
     @Transactional
     public void userDelete(String email) {
         User byEmail = userRepository.findByEmail(email)
-                .orElseThrow(() -> new UserNotFindException());
+                .orElseThrow(() -> new UserNotFoundException());
         userRepository.delete(byEmail);
     }
 
@@ -69,29 +65,5 @@ public class UserService {
                 .grade(e.getGrade())
                 .build()));
         return searchList;
-    }
-
-    public JwtResponseDto login(String email, String password) {
-        User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new UserNotFindException());
-        checkPassword(password, user.);
-
-        final String accessToken = tokenProvider.generateAccessToken(user.getEmail());
-        final String refreshToken = tokenProvider.generateRefreshToken(user.getEmail());
-
-        user.updateRefreshToken(refreshToken);
-
-        return JwtResponseDto.builder()
-                .email(user.getEmail())
-                .accessToken(accessToken)
-                .refreshToken(refreshToken)
-                .build();
-    }
-
-    private void checkPassword(String pw, String encodePw) {
-        boolean isSame = passwordEncoder.matches(pw, encodePw);
-        if(!isSame) {
-            throw new UserNotFindException();
-        }
     }
 }

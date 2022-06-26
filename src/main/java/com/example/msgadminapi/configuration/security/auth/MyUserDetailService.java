@@ -1,8 +1,7 @@
 package com.example.msgadminapi.configuration.security.auth;
 
 import com.example.msgadminapi.domain.repository.UserRepository;
-import com.example.msgadminapi.exception.ErrorCode;
-import com.example.msgadminapi.exception.exception.UserNotFindException;
+import com.example.msgadminapi.exception.exception.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -17,6 +16,6 @@ public class MyUserDetailService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return userRepository.findUserByEmail(username)
                 .map(MyUserDetails::new)
-                .orElseThrow(() -> new UserNotFindException());
+                .orElseThrow(() -> new UserNotFoundException());
     }
 }

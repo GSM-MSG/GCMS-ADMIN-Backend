@@ -7,16 +7,14 @@ import com.example.msgadminapi.domain.entity.user.User;
 import com.example.msgadminapi.domain.repository.ClubRepository;
 import com.example.msgadminapi.domain.repository.MemberRepository;
 import com.example.msgadminapi.domain.repository.UserRepository;
-import com.example.msgadminapi.exception.ErrorCode;
-import com.example.msgadminapi.exception.exception.ClubNotFindException;
-import com.example.msgadminapi.exception.exception.MemberNotFindException;
-import com.example.msgadminapi.exception.exception.UserNotFindException;
+import com.example.msgadminapi.exception.exception.ClubNotFoundException;
+import com.example.msgadminapi.exception.exception.MemberNotFoundException;
+import com.example.msgadminapi.exception.exception.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Set;
 
 @Service
@@ -31,9 +29,9 @@ public class MemberService {
     public void insertMember(String email, Long clubIdx) {
         Member member = new Member();
         User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new UserNotFindException());
+                .orElseThrow(() -> new UserNotFoundException());
         Club club = clubRepository.findById(clubIdx)
-                .orElseThrow(()-> new ClubNotFindException());
+                .orElseThrow(()-> new ClubNotFoundException());
         member.userMapping(user);
         member.clubMapping(club);
         memberRepository.save(member);
@@ -41,15 +39,15 @@ public class MemberService {
 
     public void deleteMember(Long id) {
         Member member = memberRepository.findById(id)
-                        .orElseThrow(() -> new MemberNotFindException());
+                        .orElseThrow(() -> new MemberNotFoundException());
         memberRepository.delete(member);
     }
 
     public void moveMember(Long memberIdx, Long clubIdx) {
         Member member = memberRepository.findById(memberIdx)
-                .orElseThrow(() -> new MemberNotFindException());
+                .orElseThrow(() -> new MemberNotFoundException());
         Club club = clubRepository.findById(clubIdx)
-                .orElseThrow(() -> new ClubNotFindException());
+                .orElseThrow(() -> new ClubNotFoundException());
         member.getClub().getMember().remove(member);
         member.clubMapping(club);
     }
@@ -57,7 +55,7 @@ public class MemberService {
     @Transactional
     public void changeManager(Long memberIdx) {
         Member member = memberRepository.findById(memberIdx)
-                .orElseThrow(() -> new MemberNotFindException());
+                .orElseThrow(() -> new MemberNotFoundException());
         Set<Member> members = member.getClub().getMember();
         for(Member m : members) {
             if(m.getScope() == Scope.HEAD) {
