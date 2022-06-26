@@ -27,8 +27,7 @@ public class TeacherService {
 
         final String accessToken = tokenProvider.generateAccessToken(teacher.getEmail());
         final String refreshToken = tokenProvider.generateRefreshToken(teacher.getEmail());
-
-        teacher.updateRefreshToken(refreshToken);
+        
         return LoginResponseDto.builder()
                 .email(teacher.getEmail())
                 .accessToken(accessToken)
