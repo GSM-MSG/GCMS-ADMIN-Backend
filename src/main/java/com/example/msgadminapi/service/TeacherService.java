@@ -8,8 +8,11 @@ import com.example.msgadminapi.dto.response.RefreshResponseDto;
 import com.example.msgadminapi.exception.exception.TeacherNotFoundException;
 import com.example.msgadminapi.exception.exception.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import javax.servlet.http.HttpServletRequest;
 
 @Service
 @RequiredArgsConstructor
@@ -18,6 +21,9 @@ public class TeacherService {
     private final TeacherRepository teacherRepository;
     private final PasswordEncoder passwordEncoder;
     private final TokenProvider tokenProvider;
+
+    @Value("${teacher.email}")
+    private String email;
 
 
     public LoginResponseDto login(String email, String password) {
@@ -43,9 +49,11 @@ public class TeacherService {
         }
     }
 
-    public RefreshResponseDto reIssueAccessToken(String email, String refreshToken) {
+    public RefreshResponseDto reIssueAccessToken(String rfToken) {
         Teacher teacher = teacherRepository.findByEmail(email).orElseThrow(() -> new TeacherNotFoundException());
+        tokenProvider.checkRefreshToken(email, rfToken);
         String accessToken = tokenProvider.generateAccessToken(email);
+        String refreshToken = tokenProvider.generateRefreshToken(email);
         return new RefreshResponseDto(accessToken, refreshToken);
     }
 }
