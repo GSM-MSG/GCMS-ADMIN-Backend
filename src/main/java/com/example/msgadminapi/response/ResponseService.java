@@ -1,6 +1,7 @@
 package com.example.msgadminapi.response;
 
 import com.example.msgadminapi.response.result.CommonResultResponse;
+import com.example.msgadminapi.response.result.SingleResult;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.stereotype.Service;
@@ -14,6 +15,11 @@ public class ResponseService {
         private boolean success;
         private String msg;
         private int status;
+    }
+
+    public <T>SingleResult<T> getSingleResult(T data) {
+        SingleResult<T> result = new SingleResult<>(getCommonResultResponse(), data);
+        return result;
     }
 
     public CommonResultResponse getSuccessResult() {
