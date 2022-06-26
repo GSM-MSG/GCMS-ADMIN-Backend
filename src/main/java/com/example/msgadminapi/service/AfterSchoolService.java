@@ -125,10 +125,8 @@ public class AfterSchoolService {
         AfterSchool afterSchool = afterSchoolRepository.findById(afterSchoolId)
                 .orElseThrow(() -> new AfterSchoolNotFindException("방과후 신청을 받아주는 도중 방과후를 찾지 못했습니다.", ErrorCode.AFTERSCHOOL_NOT_FIND));
         afterSchool.getClassRegistration()
-                .forEach(classRegistration -> {
-                    if(classRegistration.getUser().getEmail().equals(userEmail)){
-                        classRegistrationRepository.delete(classRegistration);
-                    }
-                });
+                .stream()
+                .filter(classRegistration -> classRegistration.getUser().getEmail().equals(userEmail))
+                .forEach(classRegistration -> classRegistrationRepository.delete(classRegistration));
     }
 }
