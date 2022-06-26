@@ -2,7 +2,11 @@ package com.example.msgadminapi.configuration.security.jwt;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
+import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.UnsupportedJwtException;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -17,6 +21,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.security.SignatureException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -31,18 +36,23 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws IOException, ServletException {
         String accessToken = request.getHeader("Authorization");
-        String refreshToken = request.getHeader("RefreshToken");
-        if(accessToken != null && refreshToken != null && tokenProvider.getTokenType(accessToken).equals("accessToken")) {
-            if(tokenProvider.isTokenExpired(accessToken) && tokenProvider.getTokenType(refreshToken).equals("refreshToken") && !tokenProvider.isTokenExpired(refreshToken)) {
-                accessToken = generateNewAccessToken(refreshToken);
-                writeResponse(response, accessToken);
-                return;
-            }
+        if(accessToken != null) {
+            try {
             String userEmail = accessTokenExtractEmail(accessToken);
             if(userEmail != null) registerUserinfoInSecurityContext(userEmail, request);
+            } catch (MalformedJwtException e) {
+                log.error("Invalid JWT token: {}", e.getMessage());
+            } catch (ExpiredJwtException e) {
+                log.error("JWT token is expired: {}", e.getMessage());
+            } catch (UnsupportedJwtException e) {
+                log.error("JWT token is unsupported: {}", e.getMessage());
+            } catch (IllegalArgumentException e) {
+                log.error("JWT claims string is empty: {}", e.getMessage());
+            }
         }
         filterChain.doFilter(request, response);
     }
+
 
     private void writeResponse(HttpServletResponse response, String accessToken) throws IOException {
         String bodyToJson = getBodyToJson();
