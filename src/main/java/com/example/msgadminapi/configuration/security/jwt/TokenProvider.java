@@ -1,6 +1,7 @@
 package com.example.msgadminapi.configuration.security.jwt;
 
 import com.example.msgadminapi.configuration.security.auth.MyUserDetailService;
+import com.example.msgadminapi.service.RedisService;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SignatureException;
@@ -14,11 +15,11 @@ import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.Date;
 
-@Component
 @RequiredArgsConstructor
+@Component
 public class TokenProvider {
     private final MyUserDetailService myUserDetailService;
-
+    private final RedisService redisService;
 
     public static final long ACCESS_TOKEN_EXPIRE_TIME = 1000 * 60 * 60 * 3; // 3시간
     public static final long REFRESH_TOKEN_EXPIRE_TIME = ACCESS_TOKEN_EXPIRE_TIME * 8 * 180;
@@ -83,7 +84,9 @@ public class TokenProvider {
         return doGenerateToken(email, TokenType.ACCESS_TOKEN, ACCESS_TOKEN_EXPIRE_TIME);
     }
     public String generateRefreshToken(String email) {
-        return doGenerateToken(email, TokenType.REFRESH_TOKEN, REFRESH_TOKEN_EXPIRE_TIME);
+        String refreshToken = doGenerateToken(email, TokenType.REFRESH_TOKEN, REFRESH_TOKEN_EXPIRE_TIME);
+        redisService.setValues(email, refreshToken);
+        return refreshToken;
     }
 
     public UsernamePasswordAuthenticationToken authentication(String userEmail) {
