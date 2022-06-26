@@ -48,6 +48,13 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorResponse, HttpStatus.valueOf(ex.getErrorCode().getStatus()));
     }
 
+    @ExceptionHandler(RefreshTokenExpiredException.class)
+    public ResponseEntity<ErrorResponse> RefreshTokenExpiredExceptionHandler(HttpServletRequest request, RefreshTokenExpiredException ex) {
+        printException(request, ex, "RefreshToken is Expired");
+        ErrorResponse errorResponse = new ErrorResponse(ex.getErrorCode());
+        return new ResponseEntity<>(errorResponse, HttpStatus.valueOf(ex.getErrorCode().getStatus()));
+    }
+
     public void printException(HttpServletRequest request, Exception ex, String message) {
         log.error(request.getRequestURI());
         log.error(message);
