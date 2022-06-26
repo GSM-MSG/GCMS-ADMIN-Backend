@@ -93,4 +93,11 @@ public class TokenProvider {
         UserDetails userDetails = myUserDetailService.loadUserByUsername(userEmail);
         return new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
     }
+
+    public void checkRefreshToken(String email, String refreshToken) {
+        String redisRT = redisService.getValues(email);
+        if(!refreshToken.equals(redisRT)) {
+            throw new RuntimeException();
+        }
+    }
 }
