@@ -6,7 +6,7 @@ import lombok.Getter;
 
 @Getter
 public class MemberNotFoundException extends CommonException {
-    private CommonException EXCEPTION = new MemberNotFoundException();
+    private static final CommonException EXCEPTION = new MemberNotFoundException();
 
     public MemberNotFoundException() {
         super(ErrorCode.MEMBER_NOT_FOUND);

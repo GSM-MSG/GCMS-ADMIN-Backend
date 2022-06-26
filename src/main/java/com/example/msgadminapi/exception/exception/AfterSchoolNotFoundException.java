@@ -6,7 +6,7 @@ import lombok.Getter;
 
 @Getter
 public class AfterSchoolNotFoundException extends CommonException {
-    private static CommonException EXCEPTION = new AfterSchoolNotFoundException();
+    private static final CommonException EXCEPTION = new AfterSchoolNotFoundException();
 
     public AfterSchoolNotFoundException() {
         super(ErrorCode.AFTERSCHOOL_NOT_FOUND);
