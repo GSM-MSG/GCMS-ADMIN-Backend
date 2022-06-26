@@ -6,10 +6,7 @@ import com.example.msgadminapi.domain.entity.afterschool.Grade;
 import com.example.msgadminapi.domain.entity.afterschool.enums.Season;
 import com.example.msgadminapi.domain.entity.classregistration.ClassRegistration;
 import com.example.msgadminapi.domain.entity.user.User;
-import com.example.msgadminapi.domain.repository.AfterSchoolRepository;
-import com.example.msgadminapi.domain.repository.ClassRegistrationRepository;
-import com.example.msgadminapi.domain.repository.DayOfWeekRepository;
-import com.example.msgadminapi.domain.repository.GradeRepository;
+import com.example.msgadminapi.domain.repository.*;
 import com.example.msgadminapi.dto.request.AfterSchoolDto;
 import com.example.msgadminapi.dto.request.AfterSchoolModifyDto;
 import com.example.msgadminapi.dto.response.StatisticsResponseDto;
@@ -121,5 +118,15 @@ public class AfterSchoolService {
         if(afterSchool.getIsOpened() == false) {
             afterSchool.changeIsOpened(true);
         }
+    }
+
+    @Transactional
+    public void deleteApplyMember(Long afterSchoolId, String userEmail){
+        AfterSchool afterSchool = afterSchoolRepository.findById(afterSchoolId)
+                .orElseThrow(() -> new AfterSchoolNotFindException("방과후 신청을 받아주는 도중 방과후를 찾지 못했습니다.", ErrorCode.AFTERSCHOOL_NOT_FIND));
+        afterSchool.getClassRegistration()
+                .stream()
+                .filter(classRegistration -> classRegistration.getUser().getEmail().equals(userEmail))
+                .forEach(classRegistration -> classRegistrationRepository.delete(classRegistration));
     }
 }
