@@ -5,10 +5,8 @@ import com.example.msgadminapi.domain.entity.member.Member;
 import com.example.msgadminapi.domain.entity.requestjoin.RequestJoin;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
-import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -54,7 +52,5 @@ public class User {
         this.num = num;
     }
 
-    public void updateRefreshToken(String refreshToken) {
-        this.refreshToken = refreshToken;
-    }
+
 }
