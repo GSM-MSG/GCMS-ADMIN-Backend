@@ -1,7 +1,6 @@
 package com.example.msgadminapi.controller;
 
 import com.example.msgadminapi.dto.request.LoginInDto;
-import com.example.msgadminapi.dto.request.RefreshTokenDto;
 import com.example.msgadminapi.dto.response.LoginResponseDto;
 import com.example.msgadminapi.dto.response.RefreshResponseDto;
 import com.example.msgadminapi.service.TeacherService;
@@ -25,8 +24,8 @@ public class TeacherController {
     }
 
     @GetMapping("/refreshtoken")
-    public ResponseEntity<RefreshResponseDto> refreshToken(@RequestBody RefreshTokenDto refreshTokenDto) {
-        RefreshResponseDto responseDto = teacherService.reIssueAccessToken(refreshTokenDto.getEmail(), refreshTokenDto.getRefreshToken());
+    public ResponseEntity<RefreshResponseDto> refreshToken(@RequestParam String email, @RequestParam String refreshToken) {
+        RefreshResponseDto responseDto = teacherService.reIssueAccessToken(email, refreshToken);
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 }
