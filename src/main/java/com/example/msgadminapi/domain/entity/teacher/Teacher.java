@@ -10,7 +10,7 @@ import javax.persistence.Id;
 @Getter
 public class Teacher {
     @Id
-    private String email;
+    private String userId;
 
     private String password;
 

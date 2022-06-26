@@ -38,8 +38,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         String accessToken = request.getHeader("Authorization");
         if(accessToken != null) {
             try {
-            String userEmail = accessTokenExtractEmail(accessToken);
-            if(userEmail != null) registerUserinfoInSecurityContext(userEmail, request);
+                String blackListexpiredAt = tokenProvider.redisGetValue(accessToken);
+                if(blackListexpiredAt != null) {
+                    throw new ExpiredJwtException(null, null, null);
+                }
+                String userId = accessTokenExtractEmail(accessToken);
+                if(userId != null) registerUserinfoInSecurityContext(userId, request);
             } catch (MalformedJwtException e) {
                 log.error("Invalid JWT token: {}", e.getMessage());
             } catch (ExpiredJwtException e) {
@@ -79,9 +83,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
     }
 
-    private void registerUserinfoInSecurityContext(String userEmail, HttpServletRequest request) {
+    private void registerUserinfoInSecurityContext(String userId, HttpServletRequest request) {
         try {
-            UsernamePasswordAuthenticationToken AuthenticationToken = tokenProvider.authentication(userEmail);
+            UsernamePasswordAuthenticationToken AuthenticationToken = tokenProvider.authentication(userId);
             AuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
             SecurityContextHolder.getContext().setAuthentication(AuthenticationToken);
         } catch (NullPointerException e) {

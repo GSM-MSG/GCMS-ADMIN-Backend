@@ -8,8 +8,8 @@ import javax.validation.constraints.NotNull;
 @Getter
 @NoArgsConstructor
 public class LoginInDto {
-    @NotNull(message = "email is not null")
-    private String email;
+    @NotNull(message = "userId is not null")
+    private String userId;
 
     @NotNull(message = "password is not null")
     private String password;

@@ -22,20 +22,19 @@ public class TeacherService {
     private final PasswordEncoder passwordEncoder;
     private final TokenProvider tokenProvider;
 
-    @Value("${teacher.email}")
-    private String email;
+    @Value("${teacher.user-id}")
+    private String userId;
 
 
-    public LoginResponseDto login(String email, String password) {
-        Teacher teacher = teacherRepository.findByEmail(email)
+    public LoginResponseDto login(String userId, String password) {
+        Teacher teacher = teacherRepository.findByUserId(userId)
                 .orElseThrow(() -> new UserNotFoundException());
         checkPassword(password, teacher.getPassword());
 
-        final String accessToken = tokenProvider.generateAccessToken(teacher.getEmail());
-        final String refreshToken = tokenProvider.generateRefreshToken(teacher.getEmail());
+        final String accessToken = tokenProvider.generateAccessToken(teacher.getUserId());
+        final String refreshToken = tokenProvider.generateRefreshToken(teacher.getUserId());
 
         return LoginResponseDto.builder()
-                .email(teacher.getEmail())
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)
                 .build();
@@ -50,10 +49,14 @@ public class TeacherService {
     }
 
     public RefreshResponseDto reIssueAccessToken(String rfToken) {
-        Teacher teacher = teacherRepository.findByEmail(email).orElseThrow(() -> new TeacherNotFoundException());
-        tokenProvider.checkRefreshToken(email, rfToken);
-        String accessToken = tokenProvider.generateAccessToken(email);
-        String refreshToken = tokenProvider.generateRefreshToken(email);
+        Teacher teacher = teacherRepository.findByUserId(userId).orElseThrow(() -> new TeacherNotFoundException());
+        tokenProvider.checkRefreshToken(userId, rfToken);
+        String accessToken = tokenProvider.generateAccessToken(userId);
+        String refreshToken = tokenProvider.generateRefreshToken(userId);
         return new RefreshResponseDto(accessToken, refreshToken);
+    }
+
+    public void logout(String accessToken) {
+        tokenProvider.logout(userId, accessToken);
     }
 }
