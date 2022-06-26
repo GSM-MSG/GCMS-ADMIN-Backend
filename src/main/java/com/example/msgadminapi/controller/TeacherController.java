@@ -10,6 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+
 @Controller
 @RestController
 @RequestMapping("/teacher")
@@ -24,8 +26,8 @@ public class TeacherController {
     }
 
     @GetMapping("/refreshtoken")
-    public ResponseEntity<RefreshResponseDto> refreshToken(@RequestParam String email, @RequestParam String refreshToken) {
-        RefreshResponseDto responseDto = teacherService.reIssueAccessToken(email, refreshToken);
+    public ResponseEntity<RefreshResponseDto> refreshToken(HttpServletRequest request) {
+        RefreshResponseDto responseDto = teacherService.reIssueAccessToken(request.getHeader("RefreshToken"));
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 }
