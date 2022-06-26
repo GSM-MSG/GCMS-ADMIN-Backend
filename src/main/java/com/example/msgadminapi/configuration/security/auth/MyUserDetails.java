@@ -1,5 +1,6 @@
 package com.example.msgadminapi.configuration.security.auth;
 
+import com.example.msgadminapi.domain.entity.teacher.Teacher;
 import com.example.msgadminapi.domain.entity.user.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
@@ -10,7 +11,7 @@ import java.util.Collection;
 @RequiredArgsConstructor
 public class MyUserDetails implements UserDetails {
 
-    private final User user;
+    private final Teacher teacher;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
