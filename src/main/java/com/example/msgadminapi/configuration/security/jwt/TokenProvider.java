@@ -1,6 +1,7 @@
 package com.example.msgadminapi.configuration.security.jwt;
 
 import com.example.msgadminapi.configuration.security.auth.MyUserDetailService;
+import com.example.msgadminapi.exception.exception.RefreshTokenExpiredException;
 import com.example.msgadminapi.service.RedisService;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Component;
 
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
+import java.time.Duration;
 import java.util.Date;
 
 @RequiredArgsConstructor
@@ -21,11 +23,14 @@ public class TokenProvider {
     private final MyUserDetailService myUserDetailService;
     private final RedisService redisService;
 
-    public static final long ACCESS_TOKEN_EXPIRE_TIME = 1000 * 60 * 60 * 3; // 3시간
-    public static final long REFRESH_TOKEN_EXPIRE_TIME = ACCESS_TOKEN_EXPIRE_TIME * 8 * 180;
+    public static final long ACCESS_TOKEN_EXPIRE_TIME = 1000 * 60 * 60 * 6; // 6시간
+    public static final long REFRESH_TOKEN_EXPIRE_TIME = 1000 * 60 * 60 * 24 * 14; // 14일
 
     @Value("${jwt.secret}")
     private String SECRET_KEY;
+
+    @Value("${jwt.blacklist.access-token}")
+    private String blackListATPrefix;
 
     enum TokenType {
         ACCESS_TOKEN("accessToken"),
@@ -70,8 +75,8 @@ public class TokenProvider {
             return true;
         }
     }
-    private String doGenerateToken(String userEmail, TokenType tokenType, long expireTime) {
-        final Claims claims = Jwts.claims().setSubject(userEmail);
+    private String doGenerateToken(String userId, TokenType tokenType, long expireTime) {
+        final Claims claims = Jwts.claims().setSubject(userId);
         claims.put("tokenType", tokenType.value);
         return Jwts.builder()
                 .setClaims(claims)
@@ -80,24 +85,40 @@ public class TokenProvider {
                 .signWith(getSigningKey(SECRET_KEY), SignatureAlgorithm.HS256)
                 .compact();
     }
-    public String generateAccessToken(String email) {
-        return doGenerateToken(email, TokenType.ACCESS_TOKEN, ACCESS_TOKEN_EXPIRE_TIME);
+    public String generateAccessToken(String userId) {
+        return doGenerateToken(userId, TokenType.ACCESS_TOKEN, ACCESS_TOKEN_EXPIRE_TIME);
     }
-    public String generateRefreshToken(String email) {
-        String refreshToken = doGenerateToken(email, TokenType.REFRESH_TOKEN, REFRESH_TOKEN_EXPIRE_TIME);
-        redisService.setValues(email, refreshToken);
+    public String generateRefreshToken(String userId) {
+        String refreshToken = doGenerateToken(userId, TokenType.REFRESH_TOKEN, REFRESH_TOKEN_EXPIRE_TIME);
+        redisService.setValues(userId, refreshToken);
         return refreshToken;
     }
 
-    public UsernamePasswordAuthenticationToken authentication(String userEmail) {
-        UserDetails userDetails = myUserDetailService.loadUserByUsername(userEmail);
+    public UsernamePasswordAuthenticationToken authentication(String userId) {
+        UserDetails userDetails = myUserDetailService.loadUserByUsername(userId);
         return new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
     }
 
     public void checkRefreshToken(String email, String refreshToken) {
-        String redisRT = redisService.getValues(email);
-        if(!refreshToken.equals(redisRT)) {
-            throw new RuntimeException();
-        }
+            String redisRT = redisService.getValues(email);
+
+            if(!refreshToken.equals(redisRT)) {
+                throw new RefreshTokenExpiredException();
+            }
+    }
+
+    public void logout(String email, String accessToken) {
+        long expiredAccessTokenTime = getExpiredTime(accessToken).getTime() - new Date().getTime();
+        redisService.setValues(blackListATPrefix + accessToken, email, Duration.ofMillis(expiredAccessTokenTime));
+        redisService.deleteValues(email);
+    }
+
+    private Date getExpiredTime(String token) {
+        return Jwts.parserBuilder().setSigningKey(SECRET_KEY.getBytes(StandardCharsets.UTF_8)).build().parseClaimsJws(token).getBody().getExpiration();
+    }
+
+    public String redisGetValue(String token) {
+        return redisService.getValues(blackListATPrefix + token);
     }
 }
+
