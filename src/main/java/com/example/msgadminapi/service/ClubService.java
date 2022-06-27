@@ -4,8 +4,7 @@ import com.example.msgadminapi.domain.entity.club.Club;
 import com.example.msgadminapi.domain.repository.ClubRepository;
 import com.example.msgadminapi.dto.request.ClubTitleModifyRequest;
 import com.example.msgadminapi.dto.response.ClubResponseDto;
-import com.example.msgadminapi.exception.ErrorCode;
-import com.example.msgadminapi.exception.exception.ClubNotFindException;
+import com.example.msgadminapi.exception.exception.ClubNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -47,21 +46,21 @@ public class ClubService {
     @Transactional
     public void clubTitleModify(ClubTitleModifyRequest request) {
         Club clubEntity = clubRepository.findById(request.getId())
-                        .orElseThrow(() -> new ClubNotFindException("동아리 이름 수정하는 과정중에 동아리를 찾지 못했습니다.", ErrorCode.CLUB_NOT_FIND));
+                        .orElseThrow(() -> new ClubNotFoundException());
         clubEntity.titleModify(request.getTitle());
     }
 
     @Transactional
     public void clubDelete(Long clubIdx) {
         Club club = clubRepository.findById(clubIdx)
-                .orElseThrow(() -> new ClubNotFindException("동아리 삭제 하는 과정중에 동아리를 찾지 못했습니다.", ErrorCode.CLUB_NOT_FIND));
+                .orElseThrow(() -> new ClubNotFoundException());
         clubRepository.delete(club);
     }
 
     @Transactional
     public void clubClose(Long clubIdx) {
         Club club = clubRepository.findById(clubIdx)
-                .orElseThrow(() -> new ClubNotFindException("동아리 강제 마감하는 과정중에 동아리를 찾지 못했습니다.", ErrorCode.CLUB_NOT_FIND));
+                .orElseThrow(() -> new ClubNotFoundException());
         club.isClubFinishOpen(false);
     }
 

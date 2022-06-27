@@ -51,4 +51,6 @@ public class User {
         this.class_ = class_;
         this.num = num;
     }
+
+
 }

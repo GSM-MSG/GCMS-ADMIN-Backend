@@ -15,8 +15,8 @@ public class MemberController {
     private final MemberService memberService;
     private final ResponseService responseService;
 
-    @PostMapping("/{email}/{clubIdx}")
-    public CommonResultResponse insertMember(@PathVariable String email, @PathVariable Long clubIdx) {
+    @PostMapping("/{clubIdx}")
+    public CommonResultResponse insertMember(@RequestBody String email, @PathVariable Long clubIdx) {
         memberService.insertMember(email, clubIdx);
         return responseService.getSuccessResult();
     }
