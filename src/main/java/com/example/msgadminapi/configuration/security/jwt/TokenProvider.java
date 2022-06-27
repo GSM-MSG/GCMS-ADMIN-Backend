@@ -99,18 +99,18 @@ public class TokenProvider {
         return new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
     }
 
-    public void checkRefreshToken(String email, String refreshToken) {
-            String redisRT = redisService.getValues(email);
+    public void checkRefreshToken(String userId, String refreshToken) {
+            String redisRT = redisService.getValues(userId);
 
             if(!refreshToken.equals(redisRT)) {
                 throw new RefreshTokenExpiredException();
             }
     }
 
-    public void logout(String email, String accessToken) {
+    public void logout(String userId, String accessToken) {
         long expiredAccessTokenTime = getExpiredTime(accessToken).getTime() - new Date().getTime();
-        redisService.setValues(blackListATPrefix + accessToken, email, Duration.ofMillis(expiredAccessTokenTime));
-        redisService.deleteValues(email);
+        redisService.setValues(blackListATPrefix + accessToken, userId, Duration.ofMillis(expiredAccessTokenTime));
+        redisService.deleteValues(userId);
     }
 
     private Date getExpiredTime(String token) {

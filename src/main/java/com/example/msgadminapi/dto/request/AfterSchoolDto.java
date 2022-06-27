@@ -18,7 +18,7 @@ public class AfterSchoolDto {
 
     private String title;
 
-    private List<Long> grade;
+    private List<Integer> grade;
 
     private List<String> dayOfWeek;
 
@@ -28,7 +28,7 @@ public class AfterSchoolDto {
 
     private Season season;
 
-    private Long yearOf;
+    private Integer yearOf;
 
     public AfterSchool toEntity(List<Grade> grade, List<DayOfWeek> week){
         return AfterSchool.builder()

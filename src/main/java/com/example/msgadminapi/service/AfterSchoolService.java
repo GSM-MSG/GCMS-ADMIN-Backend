@@ -32,14 +32,14 @@ public class AfterSchoolService {
     }
 
     @Transactional
-    public void updateAfterSchool(Long afterSchoolIdx, AfterSchoolModifyDto afterSchoolDto){
+    public void updateAfterSchool(Integer afterSchoolIdx, AfterSchoolModifyDto afterSchoolDto){
         AfterSchool afterSchool = afterSchoolRepository.findById(afterSchoolIdx)
                 .orElseThrow(() -> new AfterSchoolNotFoundException());
         afterSchool.update(afterSchoolDto, gradeRepository, dayOfWeekRepository);
     }
 
     @Transactional(readOnly = true)
-    public List<User> findUserByAfterSchool(Long afterSchoolIdx){
+    public List<User> findUserByAfterSchool(Integer afterSchoolIdx){
         List<User> userList = new ArrayList<>();
         AfterSchool afterSchool = afterSchoolRepository.findById(afterSchoolIdx)
                 .orElseThrow(() -> new AfterSchoolNotFoundException());
@@ -63,7 +63,7 @@ public class AfterSchoolService {
     }
 
     @Transactional
-    public void deleteAfterSchool(Long afterSchoolIdx){
+    public void deleteAfterSchool(Integer afterSchoolIdx){
         AfterSchool afterSchool = afterSchoolRepository.findById(afterSchoolIdx)
                 .orElseThrow(() -> new AfterSchoolNotFoundException());
         afterSchoolRepository.delete(afterSchool);
@@ -84,7 +84,7 @@ public class AfterSchoolService {
     }
 
     @Transactional
-    public void closeAllAfterSchool(Season season, Long year) {
+    public void closeAllAfterSchool(Season season, Integer year) {
         afterSchoolRepository.findAllBySeasonAndYearOf(season, year).forEach(after -> {
             if(after.getIsOpened() == true) {
                 after.changeIsOpened(false);
@@ -93,7 +93,7 @@ public class AfterSchoolService {
     }
 
     @Transactional
-    public void closeAfterSchool(Long afterSchoolIdx, Season season, Long year) {
+    public void closeAfterSchool(Integer afterSchoolIdx, Season season, Integer year) {
         AfterSchool afterSchool = afterSchoolRepository.findByIdAndSeasonAndYearOf(afterSchoolIdx, season, year)
                         .orElseThrow(() -> new AfterSchoolNotFoundException());
         if(afterSchool.getIsOpened()) {
@@ -102,14 +102,14 @@ public class AfterSchoolService {
     }
 
     @Transactional
-    public void openAllAfterSchool(Season season, Long year) {
+    public void openAllAfterSchool(Season season, Integer year) {
         afterSchoolRepository.findAllBySeasonAndYearOf(season, year).stream().filter(after -> !after.getIsOpened()).forEach(after -> {
                 after.changeIsOpened(true);
         });
     }
 
     @Transactional
-    public void openAfterSchool(Long afterSchoolIdx, Season season, Long year) {
+    public void openAfterSchool(Integer afterSchoolIdx, Season season, Integer year) {
          AfterSchool afterSchool = afterSchoolRepository.findByIdAndSeasonAndYearOf(afterSchoolIdx, season, year)
                  .orElseThrow(() -> new AfterSchoolNotFoundException());
         if(!afterSchool.getIsOpened()) {
@@ -118,9 +118,9 @@ public class AfterSchoolService {
     }
 
     @Transactional
-    public void deleteApplyMember(Long afterSchoolId, String userEmail){
+    public void deleteApplyMember(Integer afterSchoolId, String userEmail){
         AfterSchool afterSchool = afterSchoolRepository.findById(afterSchoolId)
-                .orElseThrow(() -> new AfterSchoolNotFindException("방과후 신청을 받아주는 도중 방과후를 찾지 못했습니다.", ErrorCode.AFTERSCHOOL_NOT_FIND));
+                .orElseThrow(() -> new AfterSchoolNotFoundException());
         afterSchool.getClassRegistration()
                 .stream()
                 .filter(classRegistration -> classRegistration.getUser().getEmail().equals(userEmail))

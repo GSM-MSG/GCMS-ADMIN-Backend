@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface ClubRepository extends JpaRepository<Club, Long> {
+public interface ClubRepository extends JpaRepository<Club, Integer> {
 
-    public List<Club> findAllByTitleLike(String title);
+    List<Club> findAllByTitleLike(String title);
 }

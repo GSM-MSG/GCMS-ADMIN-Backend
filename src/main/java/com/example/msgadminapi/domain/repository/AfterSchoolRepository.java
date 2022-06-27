@@ -11,8 +11,8 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface AfterSchoolRepository extends JpaRepository<AfterSchool, Long> {
-    List<AfterSchool> findAllBySeasonAndYearOf(Season season, Long year);
-    Optional<AfterSchool>findByIdAndSeasonAndYearOf(Long id, Season season, Long year);
+public interface AfterSchoolRepository extends JpaRepository<AfterSchool, Integer> {
+    List<AfterSchool> findAllBySeasonAndYearOf(Season season, Integer year);
+    Optional<AfterSchool>findByIdAndSeasonAndYearOf(Integer id, Season season, Integer year);
 
 }

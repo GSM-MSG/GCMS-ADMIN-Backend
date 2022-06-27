@@ -5,6 +5,7 @@ import lombok.Getter;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
 @Getter
@@ -13,7 +14,4 @@ public class Teacher {
     private String userId;
 
     private String password;
-
-    private String name;
-
 }

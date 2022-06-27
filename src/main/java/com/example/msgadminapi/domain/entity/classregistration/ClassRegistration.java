@@ -8,10 +8,11 @@ import javax.persistence.*;
 
 @Entity
 @Getter
+@Table(name = "classRegistration")
 public class ClassRegistration {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "afterschool_id")

@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ClubResponseDto {
-    private Long id;
+    private Integer id;
     private Type type;
     private String bannerUrl;
     private String title;

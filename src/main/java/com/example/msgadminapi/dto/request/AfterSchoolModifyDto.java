@@ -10,7 +10,7 @@ public class AfterSchoolModifyDto {
 
     private String title;
 
-    private List<Long> grade;
+    private List<Integer> grade;
 
     private List<String> dayOfWeek;
 
@@ -20,5 +20,5 @@ public class AfterSchoolModifyDto {
 
     private Season season;
 
-    private Long yearOf;
+    private Integer yearOf;
 }

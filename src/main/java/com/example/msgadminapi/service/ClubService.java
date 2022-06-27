@@ -51,14 +51,14 @@ public class ClubService {
     }
 
     @Transactional
-    public void clubDelete(Long clubIdx) {
+    public void clubDelete(Integer clubIdx) {
         Club club = clubRepository.findById(clubIdx)
                 .orElseThrow(() -> new ClubNotFoundException());
         clubRepository.delete(club);
     }
 
     @Transactional
-    public void clubClose(Long clubIdx) {
+    public void clubClose(Integer clubIdx) {
         Club club = clubRepository.findById(clubIdx)
                 .orElseThrow(() -> new ClubNotFoundException());
         club.isClubFinishOpen(false);
