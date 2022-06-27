@@ -5,7 +5,7 @@ import com.example.msgadminapi.domain.entity.afterschool.enums.Season;
 import com.example.msgadminapi.domain.entity.user.User;
 import com.example.msgadminapi.dto.request.AfterSchoolDto;
 import com.example.msgadminapi.dto.request.AfterSchoolModifyDto;
-import com.example.msgadminapi.dto.response.StatisticsResponseDto;
+import com.example.msgadminapi.dto.response.StatResponseDto;
 import com.example.msgadminapi.response.ResponseService;
 import com.example.msgadminapi.response.result.CommonResultResponse;
 import com.example.msgadminapi.service.AfterSchoolService;
@@ -13,7 +13,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/afterSchool")
@@ -36,7 +35,7 @@ public class AfterSchoolController {
     }
 
     @GetMapping("/statistics")
-    public Map<String, Object> findStatistics(){
+    public StatResponseDto findStatistics(){
         return afterSchoolService.getStatistics();
     }
 

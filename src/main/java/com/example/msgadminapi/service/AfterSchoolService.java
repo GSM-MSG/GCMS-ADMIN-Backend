@@ -9,6 +9,7 @@ import com.example.msgadminapi.domain.entity.user.User;
 import com.example.msgadminapi.domain.repository.*;
 import com.example.msgadminapi.dto.request.AfterSchoolDto;
 import com.example.msgadminapi.dto.request.AfterSchoolModifyDto;
+import com.example.msgadminapi.dto.response.StatResponseDto;
 import com.example.msgadminapi.dto.response.StatisticsResponseDto;
 import com.example.msgadminapi.exception.ErrorCode;
 import com.example.msgadminapi.exception.exception.AfterSchoolNotFindException;
@@ -17,9 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -75,8 +74,7 @@ public class AfterSchoolService {
     }
 
     @Transactional(readOnly = true)
-    public Map<String, Object> getStatistics(){
-        Map<String, Object> statistic = new HashMap<>();
+    public StatResponseDto getStatistics(){
         List<StatisticsResponseDto> list = new ArrayList<>();
         afterSchoolRepository.findAll()
                 .forEach(e -> list.add(
@@ -93,9 +91,11 @@ public class AfterSchoolService {
                             .attend(e.getClassRegistration().size())
                             .build()
                 ));
-        statistic.put("total", userRepository.findAll().size());
-        statistic.put("afterSchools", list);
-        return statistic;
+        StatResponseDto build = StatResponseDto.builder()
+                .total(userRepository.findAll().size())
+                .afterSchools(list)
+                .build();
+        return build;
     }
 
     @Transactional
