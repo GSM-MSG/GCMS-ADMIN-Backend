@@ -10,14 +10,15 @@ import javax.persistence.*;
 @Setter
 @Builder
 @NoArgsConstructor @AllArgsConstructor
+@Table(name = "grade")
 public class Grade {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @JsonIgnore
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "afterSchool_id")
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    @JoinColumn(name = "afterSchoolId")
     private AfterSchool afterSchool;
 
     private Integer grade;

@@ -19,7 +19,6 @@ import java.util.Set;
 @ToString
 public class Club {
     @Id
-    @Column(name = "club_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 

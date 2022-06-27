@@ -15,10 +15,10 @@ public class RequestJoin {
     private Integer id;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
-    @JoinColumn(name = "club_id")
+    @JoinColumn(name = "clubId")
     private Club club;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "users_id")
+    @JoinColumn(name = "userEmail")
     private User user;
 }

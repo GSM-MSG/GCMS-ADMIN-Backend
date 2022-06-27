@@ -9,6 +9,7 @@ import javax.persistence.Table;
 
 @Entity
 @Getter
+@Table(name = "teacher")
 public class Teacher {
     @Id
     private String userId;

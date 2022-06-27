@@ -1,16 +1,15 @@
 package com.example.msgadminapi.domain.entity.member;
 
-import com.example.msgadminapi.domain.entity.afterschool.AfterSchool;
 import com.example.msgadminapi.domain.entity.club.Club;
 import com.example.msgadminapi.domain.entity.member.enums.Scope;
 import com.example.msgadminapi.domain.entity.user.User;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
 @Entity
 @Getter
+@Table(name = "member")
 public class Member {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,12 +18,12 @@ public class Member {
     @Enumerated(EnumType.STRING)
     private Scope scope;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "users_email")
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    @JoinColumn(name = "userEmail")
     private User user;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
-    @JoinColumn(name = "club_id")
+    @JoinColumn(name = "clubId")
     private Club club;
 
     public void userMapping(User user){
