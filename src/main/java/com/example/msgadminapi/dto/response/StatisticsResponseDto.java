@@ -17,5 +17,7 @@ public class StatisticsResponseDto {
     @JsonProperty
     private List<String> dayOfWeekList;
     @JsonProperty
-    private int total;
+    private List<Long> grade;
+    @JsonProperty
+    private int attend;
 }

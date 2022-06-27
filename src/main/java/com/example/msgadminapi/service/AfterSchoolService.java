@@ -6,10 +6,7 @@ import com.example.msgadminapi.domain.entity.afterschool.Grade;
 import com.example.msgadminapi.domain.entity.afterschool.enums.Season;
 import com.example.msgadminapi.domain.entity.classregistration.ClassRegistration;
 import com.example.msgadminapi.domain.entity.user.User;
-import com.example.msgadminapi.domain.repository.AfterSchoolRepository;
-import com.example.msgadminapi.domain.repository.ClassRegistrationRepository;
-import com.example.msgadminapi.domain.repository.DayOfWeekRepository;
-import com.example.msgadminapi.domain.repository.GradeRepository;
+import com.example.msgadminapi.domain.repository.*;
 import com.example.msgadminapi.dto.request.AfterSchoolDto;
 import com.example.msgadminapi.dto.request.AfterSchoolModifyDto;
 import com.example.msgadminapi.dto.response.StatisticsResponseDto;
@@ -20,7 +17,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -30,6 +29,7 @@ public class AfterSchoolService {
     private final DayOfWeekRepository dayOfWeekRepository;
     private final GradeRepository gradeRepository;
     private final ClassRegistrationRepository classRegistrationRepository;
+    private final UserRepository userRepository;
 
     @Transactional(readOnly = true)
     public List<AfterSchool> findAll(){
@@ -75,7 +75,8 @@ public class AfterSchoolService {
     }
 
     @Transactional(readOnly = true)
-    public List<StatisticsResponseDto> getStatistics(){
+    public Map<String, Object> getStatistics(){
+        Map<String, Object> statistic = new HashMap<>();
         List<StatisticsResponseDto> list = new ArrayList<>();
         afterSchoolRepository.findAll()
                 .forEach(e -> list.add(
@@ -86,10 +87,15 @@ public class AfterSchoolService {
                                     .map(d->d.getDayOfWeek())
                                     .collect(Collectors.toList()))
                             )
-                            .total(e.getClassRegistration().size())
+                            .grade(new ArrayList<>(e.getGrade().stream()
+                                    .map(g->g.getGrade())
+                                    .collect(Collectors.toList())))
+                            .attend(e.getClassRegistration().size())
                             .build()
                 ));
-        return list;
+        statistic.put("total", userRepository.findAll().size());
+        statistic.put("afterSchools", list);
+        return statistic;
     }
 
     @Transactional

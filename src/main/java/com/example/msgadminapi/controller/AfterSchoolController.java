@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/afterSchool")
@@ -35,7 +36,7 @@ public class AfterSchoolController {
     }
 
     @GetMapping("/statistics")
-    public List<StatisticsResponseDto> findStatistics(){
+    public Map<String, Object> findStatistics(){
         return afterSchoolService.getStatistics();
     }
 
