@@ -9,6 +9,7 @@ import com.example.msgadminapi.domain.entity.user.User;
 import com.example.msgadminapi.domain.repository.*;
 import com.example.msgadminapi.dto.request.AfterSchoolDto;
 import com.example.msgadminapi.dto.request.AfterSchoolModifyDto;
+import com.example.msgadminapi.dto.response.StatResponseDto;
 import com.example.msgadminapi.dto.response.StatisticsResponseDto;
 import com.example.msgadminapi.exception.exception.AfterSchoolNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -25,6 +27,7 @@ public class AfterSchoolService {
     private final DayOfWeekRepository dayOfWeekRepository;
     private final GradeRepository gradeRepository;
     private final ClassRegistrationRepository classRegistrationRepository;
+    private final UserRepository userRepository;
 
     @Transactional(readOnly = true)
     public List<AfterSchool> findAll(){
@@ -70,17 +73,28 @@ public class AfterSchoolService {
     }
 
     @Transactional(readOnly = true)
-    public List<StatisticsResponseDto> getStatistics(){
+    public StatResponseDto getStatistics(){
         List<StatisticsResponseDto> list = new ArrayList<>();
         afterSchoolRepository.findAll()
                 .forEach(e -> list.add(
                         StatisticsResponseDto.builder()
                             .afterSchoolIdx(e.getId())
                             .afterSchoolTitle(e.getTitle())
-                            .total(e.getClassRegistration().size())
+                            .dayOfWeekList(new ArrayList<>(e.getDayOfWeek().stream()
+                                    .map(d->d.getDayOfWeek())
+                                    .collect(Collectors.toList()))
+                            )
+                            .grade(new ArrayList<>(e.getGrade().stream()
+                                    .map(g->g.getGrade())
+                                    .collect(Collectors.toList())))
+                            .attend(e.getClassRegistration().size())
                             .build()
                 ));
-        return list;
+        StatResponseDto build = StatResponseDto.builder()
+                .total(userRepository.findAll().size())
+                .afterSchools(list)
+                .build();
+        return build;
     }
 
     @Transactional

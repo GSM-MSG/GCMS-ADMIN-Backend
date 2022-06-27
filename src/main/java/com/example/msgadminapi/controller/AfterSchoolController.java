@@ -5,8 +5,8 @@ import com.example.msgadminapi.domain.entity.afterschool.enums.Season;
 import com.example.msgadminapi.domain.entity.user.User;
 import com.example.msgadminapi.dto.request.AfterSchoolDto;
 import com.example.msgadminapi.dto.request.AfterSchoolModifyDto;
+import com.example.msgadminapi.dto.response.StatResponseDto;
 import com.example.msgadminapi.dto.request.UserEmailDto;
-import com.example.msgadminapi.dto.response.StatisticsResponseDto;
 import com.example.msgadminapi.response.ResponseService;
 import com.example.msgadminapi.response.result.CommonResultResponse;
 import com.example.msgadminapi.service.AfterSchoolService;
@@ -36,7 +36,7 @@ public class AfterSchoolController {
     }
 
     @GetMapping("/statistics")
-    public List<StatisticsResponseDto> findStatistics(){
+    public StatResponseDto findStatistics(){
         return afterSchoolService.getStatistics();
     }
 
