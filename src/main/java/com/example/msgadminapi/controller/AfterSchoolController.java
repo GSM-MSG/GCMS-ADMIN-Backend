@@ -30,7 +30,7 @@ public class AfterSchoolController {
     }
 
     @DeleteMapping("/{afterSchoolIdx}")
-    public CommonResultResponse delete(@PathVariable Long afterSchoolIdx){
+    public CommonResultResponse delete(@PathVariable Integer afterSchoolIdx){
         afterSchoolService.deleteAfterSchool(afterSchoolIdx);
         return responseService.getSuccessResult();
     }
@@ -46,42 +46,42 @@ public class AfterSchoolController {
     }
 
     @PutMapping("/{afterSchoolIdx}")
-    public CommonResultResponse updateAfterSchool(@PathVariable Long afterSchoolIdx, @RequestBody AfterSchoolModifyDto afterSchoolDto){
+    public CommonResultResponse updateAfterSchool(@PathVariable Integer afterSchoolIdx, @RequestBody AfterSchoolModifyDto afterSchoolDto){
         afterSchoolService.updateAfterSchool(afterSchoolIdx, afterSchoolDto);
          return responseService.getSuccessResult();
     }
 
     @GetMapping("/users/{afterSchoolIdx}")
-    public List<User> findUser(@PathVariable Long afterSchoolIdx){
+    public List<User> findUser(@PathVariable Integer afterSchoolIdx){
         return afterSchoolService.findUserByAfterSchool(afterSchoolIdx);
     }
 
     @PutMapping("/close/all")
-    public CommonResultResponse closeAllAfterSchool(@RequestParam Season season, @RequestParam Long year) {
+    public CommonResultResponse closeAllAfterSchool(@RequestParam Season season, @RequestParam Integer year) {
         afterSchoolService.closeAllAfterSchool(season, year);
         return responseService.getSuccessResult();
     }
 
     @PutMapping("/close/{afterSchoolIdx}")
-    public CommonResultResponse closeAfterSchool(@PathVariable Long afterSchoolIdx, @RequestParam Season season, @RequestParam Long year) {
+    public CommonResultResponse closeAfterSchool(@PathVariable Integer afterSchoolIdx, @RequestParam Season season, @RequestParam Integer year) {
         afterSchoolService.closeAfterSchool(afterSchoolIdx, season, year);
         return responseService.getSuccessResult();
     }
 
     @PutMapping("/open/all")
-    public CommonResultResponse openAllAfterSchool(@RequestParam Season season, @RequestParam Long year) {
+    public CommonResultResponse openAllAfterSchool(@RequestParam Season season, @RequestParam Integer year) {
         afterSchoolService.openAllAfterSchool(season, year);
         return responseService.getSuccessResult();
     }
 
     @PutMapping("/open/{afterSchoolIdx}")
-    public CommonResultResponse openAfterSchool(@PathVariable Long afterSchoolIdx, @RequestParam Season season, @RequestParam Long year) {
+    public CommonResultResponse openAfterSchool(@PathVariable Integer afterSchoolIdx, @RequestParam Season season, @RequestParam Integer year) {
         afterSchoolService.openAfterSchool(afterSchoolIdx, season, year);
         return responseService.getSuccessResult();
     }
 
     @PatchMapping("/users/{afterSchoolIdx}")
-    public CommonResultResponse deleteApplyMember(@PathVariable Long afterSchoolIdx, @RequestBody UserEmailDto userEmailDto){
+    public CommonResultResponse deleteApplyMember(@PathVariable Integer afterSchoolIdx, @RequestBody UserEmailDto userEmailDto){
         afterSchoolService.deleteApplyMember(afterSchoolIdx, userEmailDto.getEmail());
         return responseService.getSuccessResult();
     }

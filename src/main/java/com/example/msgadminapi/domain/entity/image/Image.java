@@ -7,13 +7,14 @@ import javax.persistence.*;
 
 @Entity
 @Getter
+@Table(name = "image")
 public class Image {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
-    @JoinColumn(name = "club_id")
+    @JoinColumn(name = "clubId")
     private Club club;
 
     private String url;

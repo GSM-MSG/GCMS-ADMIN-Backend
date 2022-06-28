@@ -8,6 +8,6 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface ClassRegistrationRepository  extends JpaRepository<ClassRegistration, Long> {
+public interface ClassRegistrationRepository  extends JpaRepository<ClassRegistration, Integer> {
     List<ClassRegistration> findAllByAfterSchool(AfterSchool afterSchool);
 }

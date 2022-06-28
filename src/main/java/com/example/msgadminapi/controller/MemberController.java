@@ -16,25 +16,25 @@ public class MemberController {
     private final ResponseService responseService;
 
     @PostMapping("/{clubIdx}")
-    public CommonResultResponse insertMember(@RequestBody String email, @PathVariable Long clubIdx) {
+    public CommonResultResponse insertMember(@RequestBody String email, @PathVariable Integer clubIdx) {
         memberService.insertMember(email, clubIdx);
         return responseService.getSuccessResult();
     }
 
     @DeleteMapping("/{id}")
-    public CommonResultResponse deleteMember(@PathVariable Long id) throws Exception {
+    public CommonResultResponse deleteMember(@PathVariable Integer id) throws Exception {
         memberService.deleteMember(id);
         return responseService.getSuccessResult();
     }
 
     @PatchMapping("/move/{memberIdx}/{clubIdx}")
-    public CommonResultResponse moveMember(@PathVariable Long memberIdx, @PathVariable Long clubIdx) {
+    public CommonResultResponse moveMember(@PathVariable Integer memberIdx, @PathVariable Integer clubIdx) {
         memberService.moveMember(memberIdx, clubIdx);
         return responseService.getSuccessResult();
     }
 
     @PatchMapping("/club/manager/{memberIdx}")
-    public CommonResultResponse changeManager(@PathVariable Long memberIdx) {
+    public CommonResultResponse changeManager(@PathVariable Integer memberIdx) {
         memberService.changeManager(memberIdx);
         return responseService.getSuccessResult();
     }

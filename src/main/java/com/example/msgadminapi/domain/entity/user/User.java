@@ -16,18 +16,19 @@ import java.util.Set;
 @AllArgsConstructor
 @Builder
 @ToString
-@Table(name = "users") // 나중에 본 DB 연결 할때 지워야됨
+@Table(name = "user") // 나중에 본 DB 연결 할때 지워야됨
 public class User {
     @Id
     private String email;
 
     private String name;
 
-    private int grade;
+    private Integer grade;
 
-    private int class_;
+    @Column(name = "class")
+    private Integer class_;
 
-    private int num;
+    private Integer num;
 
     @Column( nullable = true )
     private String userImg;

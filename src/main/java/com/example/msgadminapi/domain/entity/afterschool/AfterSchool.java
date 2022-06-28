@@ -21,14 +21,13 @@ import java.util.Set;
 @Getter
 @Builder
 @AllArgsConstructor @NoArgsConstructor
+@Table(name = "afterSchool")
 public class AfterSchool {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
     private String title;
-
-//    private Long personnel;
 
     @OneToMany(mappedBy = "afterSchool")
     private List<Grade> grade;
@@ -44,7 +43,7 @@ public class AfterSchool {
     @Enumerated(EnumType.STRING)
     private Season season;
 
-    private Long yearOf;
+    private Integer yearOf;
 
     @Column(columnDefinition = "TINYINT")
     private Boolean isOpened;

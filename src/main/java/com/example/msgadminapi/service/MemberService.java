@@ -26,7 +26,7 @@ public class MemberService {
     private final UserRepository userRepository;
     private final ClubRepository clubRepository;
 
-    public void insertMember(String email, Long clubIdx) {
+    public void insertMember(String email, Integer clubIdx) {
         Member member = new Member();
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UserNotFoundException());
@@ -37,13 +37,13 @@ public class MemberService {
         memberRepository.save(member);
     }
 
-    public void deleteMember(Long id) {
+    public void deleteMember(Integer id) {
         Member member = memberRepository.findById(id)
                         .orElseThrow(() -> new MemberNotFoundException());
         memberRepository.delete(member);
     }
 
-    public void moveMember(Long memberIdx, Long clubIdx) {
+    public void moveMember(Integer memberIdx, Integer clubIdx) {
         Member member = memberRepository.findById(memberIdx)
                 .orElseThrow(() -> new MemberNotFoundException());
         Club club = clubRepository.findById(clubIdx)
@@ -53,7 +53,7 @@ public class MemberService {
     }
 
     @Transactional
-    public void changeManager(Long memberIdx) {
+    public void changeManager(Integer memberIdx) {
         Member member = memberRepository.findById(memberIdx)
                 .orElseThrow(() -> new MemberNotFoundException());
         Set<Member> members = member.getClub().getMember();

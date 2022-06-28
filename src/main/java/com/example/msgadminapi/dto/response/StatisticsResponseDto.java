@@ -11,7 +11,7 @@ import java.util.List;
 @AllArgsConstructor @NoArgsConstructor
 public class StatisticsResponseDto {
     @JsonProperty
-    private Long afterSchoolIdx;
+    private Integer afterSchoolIdx;
     @JsonProperty
     private String afterSchoolTitle;
     @JsonProperty
