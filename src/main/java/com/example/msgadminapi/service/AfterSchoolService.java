@@ -134,7 +134,7 @@ public class AfterSchoolService {
     @Transactional
     public void deleteApplyMember(Long afterSchoolId, String userEmail){
         AfterSchool afterSchool = afterSchoolRepository.findById(afterSchoolId)
-                .orElseThrow(() -> new AfterSchoolNotFindException("방과후 신청을 받아주는 도중 방과후를 찾지 못했습니다.", ErrorCode.AFTERSCHOOL_NOT_FIND));
+                .orElseThrow(() -> new AfterSchoolNotFoundException());
         afterSchool.getClassRegistration()
                 .stream()
                 .filter(classRegistration -> classRegistration.getUser().getEmail().equals(userEmail))
