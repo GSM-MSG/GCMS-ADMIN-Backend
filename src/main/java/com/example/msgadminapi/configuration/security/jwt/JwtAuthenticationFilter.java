@@ -1,5 +1,6 @@
 package com.example.msgadminapi.configuration.security.jwt;
 
+import com.example.msgadminapi.configuration.utils.CookieUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -18,6 +19,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -32,17 +34,18 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final TokenProvider tokenProvider;
     private final ObjectMapper objectMapper;
+    private final CookieUtil cookieUtil;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws IOException, ServletException {
-        String accessToken = request.getHeader("Authorization");
+        Cookie accessToken = cookieUtil.getCookie(request, "accessToken");
         if(accessToken != null) {
             try {
-                String blackListexpiredAt = tokenProvider.redisGetValue(accessToken);
+                String blackListexpiredAt = tokenProvider.redisGetValue(accessToken.getValue());
                 if(blackListexpiredAt != null) {
                     throw new ExpiredJwtException(null, null, null);
                 }
-                String userId = accessTokenExtractEmail(accessToken);
+                String userId = accessTokenExtractEmail(accessToken.getValue());
                 if(userId != null) registerUserinfoInSecurityContext(userId, request);
             } catch (MalformedJwtException e) {
                 log.error("Invalid JWT token: {}", e.getMessage());
