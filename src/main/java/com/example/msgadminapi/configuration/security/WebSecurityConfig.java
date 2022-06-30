@@ -3,6 +3,7 @@ package com.example.msgadminapi.configuration.security;
 import com.example.msgadminapi.configuration.security.jwt.JwtAuthenticationEntryPoint;
 import com.example.msgadminapi.configuration.security.jwt.JwtAuthenticationFilter;
 import com.example.msgadminapi.configuration.security.jwt.TokenProvider;
+import com.example.msgadminapi.configuration.utils.CookieUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -26,6 +27,7 @@ public class WebSecurityConfig {
     private final TokenProvider tokenProvider;
     private final ObjectMapper objectMapper;
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+    private final CookieUtil cookieUtil;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -44,7 +46,7 @@ public class WebSecurityConfig {
                 .antMatchers(HttpMethod.GET, "/teacher/refreshtoken").permitAll()
                 .anyRequest().authenticated()
                 .and()
-                .addFilterBefore(new JwtAuthenticationFilter(tokenProvider, objectMapper), UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(new JwtAuthenticationFilter(tokenProvider, objectMapper, cookieUtil), UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 
