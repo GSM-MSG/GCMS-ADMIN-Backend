@@ -45,8 +45,9 @@ public class AfterSchool {
 
     private Integer yearOf;
 
+    @Builder.Default
     @Column(columnDefinition = "TINYINT")
-    private Boolean isOpened;
+    private Boolean isOpened = false;
 
     @JsonIgnore
     @OneToMany(mappedBy = "afterSchool", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
