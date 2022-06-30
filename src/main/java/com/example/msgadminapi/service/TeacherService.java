@@ -9,6 +9,7 @@ import com.example.msgadminapi.dto.response.RefreshResponseDto;
 import com.example.msgadminapi.exception.exception.TeacherNotFoundException;
 import com.example.msgadminapi.exception.exception.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -18,6 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class TeacherService {
 
     private final TeacherRepository teacherRepository;
@@ -30,10 +32,11 @@ public class TeacherService {
 
 
     public LoginResponseDto login(String userId, String password) {
+        log.info("user Id 2{}", userId);
+        log.info("user Password 2{}", password);
         Teacher teacher = teacherRepository.findByUserId(userId)
                 .orElseThrow(() -> new UserNotFoundException());
         checkPassword(password, teacher.getPassword());
-
         final Cookie accessToken = cookieUtil.createCookie("accessToken", tokenProvider.generateAccessToken(teacher.getUserId()), TokenProvider.ACCESS_TOKEN_EXPIRE_TIME);
         final Cookie refreshToken = cookieUtil.createCookie("refreshToken", tokenProvider.generateRefreshToken(teacher.getUserId()), TokenProvider.REFRESH_TOKEN_EXPIRE_TIME);
 
@@ -45,8 +48,11 @@ public class TeacherService {
     }
 
     private void checkPassword(String pw, String encodePw) {
+        System.out.println("checkPassword : " +  pw);
+        System.out.println("encodePw = " + encodePw);
         //boolean isSame = passwordEncoder.matches(pw, encodePw);
         boolean isSame = pw.equals(encodePw);
+        log.info("isSame {}", isSame);
         if(!isSame) {
             throw new UserNotFoundException();
         }
@@ -55,8 +61,8 @@ public class TeacherService {
     public RefreshResponseDto reIssueAccessToken(String rfToken) {
         Teacher teacher = teacherRepository.findByUserId(userId).orElseThrow(() -> new TeacherNotFoundException());
         tokenProvider.checkRefreshToken(userId, rfToken);
-        String accessToken = tokenProvider.generateAccessToken(userId);
-        String refreshToken = tokenProvider.generateRefreshToken(userId);
+        final Cookie accessToken = cookieUtil.createCookie("accessToken", tokenProvider.generateAccessToken(teacher.getUserId()), TokenProvider.ACCESS_TOKEN_EXPIRE_TIME);
+        final Cookie refreshToken = cookieUtil.createCookie("refreshToken", tokenProvider.generateRefreshToken(teacher.getUserId()), TokenProvider.REFRESH_TOKEN_EXPIRE_TIME);
         return new RefreshResponseDto(accessToken, refreshToken);
     }
 
