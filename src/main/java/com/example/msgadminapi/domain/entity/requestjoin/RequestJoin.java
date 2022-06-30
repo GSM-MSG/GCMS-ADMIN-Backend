@@ -8,7 +8,6 @@ import javax.persistence.*;
 
 @Entity
 @Getter
-@Table(name = "requestJoin")
 public class RequestJoin {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
