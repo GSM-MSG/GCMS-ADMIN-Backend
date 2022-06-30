@@ -1,6 +1,7 @@
 package com.example.msgadminapi.service;
 
 import com.example.msgadminapi.configuration.security.jwt.TokenProvider;
+import com.example.msgadminapi.configuration.utils.CookieUtil;
 import com.example.msgadminapi.domain.entity.teacher.Teacher;
 import com.example.msgadminapi.domain.repository.TeacherRepository;
 import com.example.msgadminapi.dto.response.LoginResponseDto;
@@ -12,6 +13,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 
 @Service
@@ -21,6 +23,7 @@ public class TeacherService {
     private final TeacherRepository teacherRepository;
     private final PasswordEncoder passwordEncoder;
     private final TokenProvider tokenProvider;
+    private final CookieUtil cookieUtil;
 
     @Value("${teacher.user-id}")
     private String userId;
@@ -31,8 +34,9 @@ public class TeacherService {
                 .orElseThrow(() -> new UserNotFoundException());
         checkPassword(password, teacher.getPassword());
 
-        final String accessToken = tokenProvider.generateAccessToken(teacher.getUserId());
-        final String refreshToken = tokenProvider.generateRefreshToken(teacher.getUserId());
+        final Cookie accessToken = cookieUtil.createCookie("accessToken", tokenProvider.generateAccessToken(teacher.getUserId()), TokenProvider.ACCESS_TOKEN_EXPIRE_TIME);
+        final Cookie refreshToken = cookieUtil.createCookie("refreshToken", tokenProvider.generateRefreshToken(teacher.getUserId()), TokenProvider.REFRESH_TOKEN_EXPIRE_TIME);
+
 
         return LoginResponseDto.builder()
                 .accessToken(accessToken)
