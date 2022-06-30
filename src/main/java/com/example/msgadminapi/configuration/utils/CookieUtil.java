@@ -4,7 +4,6 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-import java.util.Date;
 
 @Service
 public class CookieUtil {
@@ -12,7 +11,7 @@ public class CookieUtil {
         Cookie cookie = new Cookie(name, value);
         cookie.setHttpOnly(true);
         cookie.setPath("/");
-        cookie.setMaxAge(exp / 1000);
+        cookie.setMaxAge((int) (System.currentTimeMillis() + exp / 1000));
         cookie.setSecure(true);
         cookie.setDomain("gcms.site");
         return cookie;
@@ -20,8 +19,11 @@ public class CookieUtil {
 
     public Cookie getCookie(HttpServletRequest req, String name) {
         Cookie[] cookies = req.getCookies();
+
         if(cookies == null) return null;
         for(Cookie cookie : cookies) {
+            System.out.println("filter cookies " + cookie.getName());
+            System.out.println("filter cookies value " + cookie.getValue());
             if(cookie.getName().equals(name))
                 return cookie;
         }

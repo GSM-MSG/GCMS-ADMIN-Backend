@@ -21,6 +21,7 @@ import java.util.Set;
 @Getter
 @Builder
 @AllArgsConstructor @NoArgsConstructor
+@Table(name = "after_school")
 public class AfterSchool {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,16 +37,18 @@ public class AfterSchool {
 
     private String teacher;
 
+    @Builder.Default
     @Column(columnDefinition = "TINYINT")
-    private Boolean canDuplicate;
+    private Boolean canDuplicate = false;
 
     @Enumerated(EnumType.STRING)
     private Season season;
 
     private Integer yearOf;
 
+    @Builder.Default
     @Column(columnDefinition = "TINYINT")
-    private Boolean isOpened;
+    private Boolean isOpened = false;
 
     @JsonIgnore
     @OneToMany(mappedBy = "afterSchool", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)

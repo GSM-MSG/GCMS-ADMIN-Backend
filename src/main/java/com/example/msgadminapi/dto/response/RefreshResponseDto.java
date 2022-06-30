@@ -3,10 +3,12 @@ package com.example.msgadminapi.dto.response;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+import javax.servlet.http.Cookie;
+
 @Getter
 @AllArgsConstructor
 public class RefreshResponseDto {
-    private String accessToken;
+    private Cookie accessToken;
 
-    private String refreshToken;
+    private Cookie refreshToken;
 }

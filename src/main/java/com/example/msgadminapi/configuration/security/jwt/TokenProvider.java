@@ -100,11 +100,10 @@ public class TokenProvider {
     }
 
     public void checkRefreshToken(String userId, String refreshToken) {
-            String redisRT = redisService.getValues(userId);
-
-            if(!refreshToken.equals(redisRT)) {
-                throw new RefreshTokenExpiredException();
-            }
+        String redisRT = redisService.getValues(userId);
+        if(!refreshToken.equals(redisRT)) {
+            throw new RefreshTokenExpiredException();
+        }
     }
 
     public void logout(String userId, String accessToken) {
