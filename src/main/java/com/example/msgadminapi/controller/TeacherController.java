@@ -10,6 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
+
 @Controller
 @RestController
 @RequestMapping("/teacher")
@@ -19,8 +21,11 @@ public class TeacherController {
     private final TeacherService teacherService;
 
     @PostMapping("/login")
-    public ResponseEntity<LoginResponseDto> login(@RequestBody LoginInDto LoginInDto) throws Exception {
-        return new ResponseEntity<>(teacherService.login(LoginInDto.getUserId(), LoginInDto.getPassword()), HttpStatus.OK);
+    public ResponseEntity<LoginResponseDto> login(HttpServletResponse response, @RequestBody LoginInDto LoginInDto) throws Exception {
+        LoginResponseDto userInform = teacherService.login(LoginInDto.getUserId(), LoginInDto.getPassword());
+        response.addCookie(userInform.getAccessToken());
+        response.addCookie(userInform.getRefreshToken());
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @GetMapping("/refreshtoken")

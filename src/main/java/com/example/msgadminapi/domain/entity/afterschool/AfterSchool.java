@@ -21,7 +21,6 @@ import java.util.Set;
 @Getter
 @Builder
 @AllArgsConstructor @NoArgsConstructor
-@Table(name = "afterSchool")
 public class AfterSchool {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

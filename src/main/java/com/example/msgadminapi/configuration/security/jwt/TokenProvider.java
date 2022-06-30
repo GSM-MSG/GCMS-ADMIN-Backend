@@ -23,8 +23,8 @@ public class TokenProvider {
     private final MyUserDetailService myUserDetailService;
     private final RedisService redisService;
 
-    public static final long ACCESS_TOKEN_EXPIRE_TIME = 1000 * 60 * 60 * 6; // 6시간
-    public static final long REFRESH_TOKEN_EXPIRE_TIME = 1000 * 60 * 60 * 24 * 14; // 14일
+    public static final int ACCESS_TOKEN_EXPIRE_TIME = 1000 * 60 * 60 * 6; // 6시간
+    public static final int REFRESH_TOKEN_EXPIRE_TIME = 1000 * 60 * 60 * 24 * 14; // 14일
 
     @Value("${jwt.secret}")
     private String SECRET_KEY;
