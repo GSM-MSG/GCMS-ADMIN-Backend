@@ -9,6 +9,7 @@ import com.example.msgadminapi.domain.entity.user.User;
 import com.example.msgadminapi.domain.repository.*;
 import com.example.msgadminapi.dto.request.AfterSchoolDto;
 import com.example.msgadminapi.dto.request.AfterSchoolModifyDto;
+import com.example.msgadminapi.dto.response.AfterSchoolFindResponseDto;
 import com.example.msgadminapi.dto.response.StatResponseDto;
 import com.example.msgadminapi.dto.response.StatisticsResponseDto;
 import com.example.msgadminapi.exception.exception.AfterSchoolNotFoundException;
@@ -30,8 +31,26 @@ public class AfterSchoolService {
     private final UserRepository userRepository;
 
     @Transactional(readOnly = true)
-    public List<AfterSchool> findAll(){
-        return afterSchoolRepository.findAll();
+    public List<AfterSchoolFindResponseDto> findAll(){
+        List<AfterSchoolFindResponseDto> list = new ArrayList<>();
+        afterSchoolRepository.findAll()
+                .forEach(e -> list.add(
+                        AfterSchoolFindResponseDto.builder()
+                                .id(e.getId())
+                                .title(e.getTitle())
+                                .dayOfWeek(new ArrayList<>(e.getDayOfWeek().stream()
+                                        .map(d->d.getDayOfWeek())
+                                        .collect(Collectors.toList()))
+                                )
+                                .grade(new ArrayList<>(e.getGrade().stream()
+                                        .map(g->g.getGrade())
+                                        .collect(Collectors.toList())))
+                                .teacher(e.getTeacher())
+                                .season(e.getSeason())
+                                .yearOf(e.getYearOf())
+                                .build()
+                ));
+        return list;
     }
 
     @Transactional
