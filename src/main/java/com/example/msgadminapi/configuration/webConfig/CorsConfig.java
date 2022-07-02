@@ -12,7 +12,6 @@ public class CorsConfig implements WebMvcConfigurer {
                 .allowedOrigins("https://gcms.site")
                 .allowedHeaders("*")
                 .allowCredentials(true)
-                .allowedHeaders("*")
                 .allowedMethods("GET", "POST", "PATCH", "DELETE", "PUT")
                 .maxAge(3000);
     }
