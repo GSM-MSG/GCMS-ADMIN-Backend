@@ -2,6 +2,7 @@ package com.example.msgadminapi.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import org.springframework.http.ResponseCookie;
 
 import javax.servlet.http.Cookie;
 
