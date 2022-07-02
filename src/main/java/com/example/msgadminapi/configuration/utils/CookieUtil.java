@@ -1,5 +1,6 @@
 package com.example.msgadminapi.configuration.utils;
 
+import org.springframework.http.ResponseCookie;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.Cookie;
@@ -10,9 +11,9 @@ public class CookieUtil {
     public Cookie createCookie(String name, String value, int exp) {
         Cookie cookie = new Cookie(name, value);
         cookie.setHttpOnly(true);
-        cookie.setPath("/");
-        cookie.setMaxAge((int) (System.currentTimeMillis() + exp / 1000));
+        cookie.setMaxAge(exp / 1000); //(int) (System.currentTimeMillis() + exp / 1000)
         cookie.setSecure(true);
+        cookie.setPath("/");
         cookie.setDomain("gcms.site");
         return cookie;
     }

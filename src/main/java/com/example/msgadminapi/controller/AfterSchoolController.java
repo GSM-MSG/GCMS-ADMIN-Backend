@@ -5,6 +5,7 @@ import com.example.msgadminapi.domain.entity.afterschool.enums.Season;
 import com.example.msgadminapi.domain.entity.user.User;
 import com.example.msgadminapi.dto.request.AfterSchoolDto;
 import com.example.msgadminapi.dto.request.AfterSchoolModifyDto;
+import com.example.msgadminapi.dto.response.AfterSchoolFindResponseDto;
 import com.example.msgadminapi.dto.response.StatResponseDto;
 import com.example.msgadminapi.dto.request.UserEmailDto;
 import com.example.msgadminapi.response.ResponseService;
@@ -41,7 +42,7 @@ public class AfterSchoolController {
     }
 
     @GetMapping
-    public List<AfterSchool> findAll(){
+    public List<AfterSchoolFindResponseDto> findAll(){
         return afterSchoolService.findAll();
     }
 

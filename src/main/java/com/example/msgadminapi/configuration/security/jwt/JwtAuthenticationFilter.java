@@ -39,7 +39,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws IOException, ServletException {
         Cookie accessToken = cookieUtil.getCookie(request, "accessToken");
-        if(accessToken != null) {
+        if(accessToken != null && !tokenProvider.isTokenExpired(accessToken.getValue())) {
             try {
                 String blackListexpiredAt = tokenProvider.redisGetValue(accessToken.getValue());
                 if(blackListexpiredAt != null) {

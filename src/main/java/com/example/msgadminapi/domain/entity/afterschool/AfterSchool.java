@@ -37,10 +37,6 @@ public class AfterSchool {
 
     private String teacher;
 
-    @Builder.Default
-    @Column(columnDefinition = "TINYINT")
-    private Boolean canDuplicate = false;
-
     @Enumerated(EnumType.STRING)
     private Season season;
 
@@ -61,7 +57,6 @@ public class AfterSchool {
     public void update(AfterSchoolModifyDto afterSchoolDto, GradeRepository gradeRepository, DayOfWeekRepository dayOfWeekRepository){
         this.title = afterSchoolDto.getTitle();
         this.teacher = afterSchoolDto.getTeacher();
-        this.canDuplicate = afterSchoolDto.getCanDuplicate();
         this.season = afterSchoolDto.getSeason();
         if(this.grade.size() > afterSchoolDto.getGrade().size()){
             for(int i=0;i<afterSchoolDto.getGrade().size();i++){
