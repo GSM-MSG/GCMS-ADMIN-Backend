@@ -24,8 +24,6 @@ public class AfterSchoolDto {
 
     private String teacher;
 
-    private Boolean canDuplicate;
-
     private Season season;
 
     private Integer yearOf;
@@ -36,7 +34,6 @@ public class AfterSchoolDto {
                 .grade(grade)
                 .dayOfWeek(week)
                 .teacher(teacher)
-                .canDuplicate(canDuplicate)
                 .season(season)
                 .yearOf(yearOf)
                 .build();
