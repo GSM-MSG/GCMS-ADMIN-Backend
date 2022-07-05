@@ -27,6 +27,7 @@ public class AfterSchool {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @Column(nullable = false)
     private String title;
 
     @OneToMany(mappedBy = "afterSchool")
@@ -35,15 +36,18 @@ public class AfterSchool {
     @OneToMany(mappedBy = "afterSchool")
     private List<DayOfWeek> dayOfWeek;
 
+    @Column(nullable = false)
     private String teacher;
 
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private Season season;
 
+    @Column(nullable = false)
     private Integer yearOf;
 
     @Builder.Default
-    @Column(columnDefinition = "TINYINT")
+    @Column(columnDefinition = "TINYINT", nullable = false)
     private Boolean isOpened = false;
 
     @JsonIgnore
