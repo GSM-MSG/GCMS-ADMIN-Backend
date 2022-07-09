@@ -65,8 +65,8 @@ public class AfterSchoolController {
     }
 
     @PutMapping("/close/{afterSchoolIdx}")
-    public CommonResultResponse closeAfterSchool(@PathVariable Integer afterSchoolIdx, @RequestParam Season season, @RequestParam Integer year) {
-        afterSchoolService.closeAfterSchool(afterSchoolIdx, season, year);
+    public CommonResultResponse closeAfterSchool(@PathVariable Integer afterSchoolIdx) {
+        afterSchoolService.closeAfterSchool(afterSchoolIdx);
         return responseService.getSuccessResult();
     }
 
@@ -77,8 +77,8 @@ public class AfterSchoolController {
     }
 
     @PutMapping("/open/{afterSchoolIdx}")
-    public CommonResultResponse openAfterSchool(@PathVariable Integer afterSchoolIdx, @RequestParam Season season, @RequestParam Integer year) {
-        afterSchoolService.openAfterSchool(afterSchoolIdx, season, year);
+    public CommonResultResponse openAfterSchool(@PathVariable Integer afterSchoolIdx) {
+        afterSchoolService.openAfterSchool(afterSchoolIdx);
         return responseService.getSuccessResult();
     }
 

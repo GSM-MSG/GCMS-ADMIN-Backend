@@ -153,8 +153,8 @@ public class AfterSchoolService {
     }
 
     @Transactional
-    public void closeAfterSchool(Integer afterSchoolIdx, Season season, Integer year) {
-        AfterSchool afterSchool = afterSchoolRepository.findByIdAndSeasonAndYearOf(afterSchoolIdx, season, year)
+    public void closeAfterSchool(Integer afterSchoolIdx) {
+        AfterSchool afterSchool = afterSchoolRepository.findById(afterSchoolIdx)
                         .orElseThrow(() -> new AfterSchoolNotFoundException());
         if(afterSchool.getIsOpened()) {
             afterSchool.changeIsOpened(false);
@@ -169,8 +169,8 @@ public class AfterSchoolService {
     }
 
     @Transactional
-    public void openAfterSchool(Integer afterSchoolIdx, Season season, Integer year) {
-         AfterSchool afterSchool = afterSchoolRepository.findByIdAndSeasonAndYearOf(afterSchoolIdx, season, year)
+    public void openAfterSchool(Integer afterSchoolIdx) {
+         AfterSchool afterSchool = afterSchoolRepository.findById(afterSchoolIdx)
                  .orElseThrow(() -> new AfterSchoolNotFoundException());
         if(!afterSchool.getIsOpened()) {
             afterSchool.changeIsOpened(true);
