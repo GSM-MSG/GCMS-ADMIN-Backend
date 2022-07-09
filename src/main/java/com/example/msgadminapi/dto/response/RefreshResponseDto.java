@@ -9,7 +9,7 @@ import javax.servlet.http.Cookie;
 @Getter
 @AllArgsConstructor
 public class RefreshResponseDto {
-    private Cookie accessToken;
+    private Cookie adminAccessToken;
 
-    private Cookie refreshToken;
+    private Cookie adminRefreshToken;
 }
