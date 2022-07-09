@@ -41,12 +41,12 @@ public class AfterSchoolService {
                         AfterSchoolFindResponseDto.builder()
                                 .id(e.getId())
                                 .title(e.getTitle())
-                                .dayOfWeek(new ArrayList<>(e.getDayOfWeek().stream()
-                                        .map(d->d.getDayOfWeek())
+                                .dayOfWeek((e.getDayOfWeek().stream()
+                                        .map(DayOfWeek::getDayOfWeek)
                                         .collect(Collectors.toList()))
                                 )
-                                .grade(new ArrayList<>(e.getGrade().stream()
-                                        .map(g->g.getGrade())
+                                .grade((e.getGrade().stream()
+                                        .map(Grade::getGrade)
                                         .collect(Collectors.toList())))
                                 .teacher(e.getTeacher())
                                 .season(e.getSeason())
@@ -67,6 +67,7 @@ public class AfterSchoolService {
     @Transactional(readOnly = true)
     public List<User> findUserByAfterSchool(Integer afterSchoolIdx){
         List<User> userList = new ArrayList<>();
+        System.out.println("afterSchoolIdx = " + afterSchoolIdx);
         AfterSchool afterSchool = afterSchoolRepository.findById(afterSchoolIdx)
                 .orElseThrow(() -> new AfterSchoolNotFoundException());
         List<ClassRegistration> allByAfterSchool = classRegistrationRepository.findAllByAfterSchool(afterSchool);
