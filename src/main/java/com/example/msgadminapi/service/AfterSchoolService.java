@@ -113,8 +113,12 @@ public class AfterSchoolService {
 
     @Transactional
     public void deleteAfterSchool(Integer afterSchoolIdx){
+        List<DayOfWeek> dayOfWeekAfterSchool = dayOfWeekRepository.findByAfterSchool_Id(afterSchoolIdx);
+        List<Grade> gradeAfterSchool = gradeRepository.findByAfterSchool_Id(afterSchoolIdx);
         AfterSchool afterSchool = afterSchoolRepository.findById(afterSchoolIdx)
                 .orElseThrow(() -> new AfterSchoolNotFoundException());
+        gradeAfterSchool.forEach(grade -> gradeRepository.delete(grade));
+        dayOfWeekAfterSchool.forEach(dayOfWeek -> dayOfWeekRepository.delete(dayOfWeek));
         afterSchoolRepository.delete(afterSchool);
     }
 
