@@ -6,7 +6,6 @@ import lombok.Getter;
 
 @Getter
 public class TeacherNotFoundException extends CommonException {
-    private static final CommonException EXCEPTION = new TeacherNotFoundException();
 
     public TeacherNotFoundException() {
         super(ErrorCode.TEACHER_NOT_FOUND);

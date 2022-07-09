@@ -38,7 +38,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws IOException, ServletException {
-        Cookie accessToken = cookieUtil.getCookie(request, "accessToken");
+        Cookie accessToken = cookieUtil.getCookie(request, "adminAccessToken");
         if(accessToken != null && !tokenProvider.isTokenExpired(accessToken.getValue())) {
             try {
                 String blackListexpiredAt = tokenProvider.redisGetValue(accessToken.getValue());
@@ -63,7 +63,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private void writeResponse(HttpServletResponse response, String accessToken) throws IOException {
         String bodyToJson = getBodyToJson();
-        response.addHeader("accessToken", accessToken);
+        response.addHeader("adminAccessToken", accessToken);
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         response.setContentType("application/json");
         response.getWriter().write(bodyToJson);

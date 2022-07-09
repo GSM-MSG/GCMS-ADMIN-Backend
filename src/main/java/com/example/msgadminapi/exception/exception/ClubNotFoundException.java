@@ -6,7 +6,6 @@ import lombok.Getter;
 
 @Getter
 public class ClubNotFoundException extends CommonException {
-    private static final CommonException EXCEPTION = new ClubNotFoundException();
 
     public ClubNotFoundException() {
         super(ErrorCode.CLUB_NOT_FOUND);

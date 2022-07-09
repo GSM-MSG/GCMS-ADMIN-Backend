@@ -5,9 +5,9 @@ import com.example.msgadminapi.exception.ErrorCode;
 import lombok.Getter;
 
 @Getter
-public class RefreshTokenExpiredException extends CommonException {
+public class AfterSchoolReduplicationException extends CommonException {
 
-    public RefreshTokenExpiredException() {
-        super(ErrorCode.REFRESH_TOKEN_EXPIRED);
+    public AfterSchoolReduplicationException() {
+        super(ErrorCode.AFTERSCHOOL_REDUPLICATION);
     }
 }

@@ -12,6 +12,8 @@ import com.example.msgadminapi.response.ResponseService;
 import com.example.msgadminapi.response.result.CommonResultResponse;
 import com.example.msgadminapi.service.AfterSchoolService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,9 +27,8 @@ public class AfterSchoolController {
     private final ResponseService responseService;
 
     @PostMapping
-    public CommonResultResponse create(@RequestBody AfterSchoolDto afterSchoolDto){
-        afterSchoolService.createAfterSchool(afterSchoolDto);
-        return responseService.getSuccessResult();
+    public AfterSchoolFindResponseDto create(@RequestBody AfterSchoolDto afterSchoolDto){
+        return afterSchoolService.createAfterSchool(afterSchoolDto);
     }
 
     @DeleteMapping("/{afterSchoolIdx}")
@@ -64,8 +65,8 @@ public class AfterSchoolController {
     }
 
     @PutMapping("/close/{afterSchoolIdx}")
-    public CommonResultResponse closeAfterSchool(@PathVariable Integer afterSchoolIdx, @RequestParam Season season, @RequestParam Integer year) {
-        afterSchoolService.closeAfterSchool(afterSchoolIdx, season, year);
+    public CommonResultResponse closeAfterSchool(@PathVariable Integer afterSchoolIdx) {
+        afterSchoolService.closeAfterSchool(afterSchoolIdx);
         return responseService.getSuccessResult();
     }
 
@@ -76,8 +77,8 @@ public class AfterSchoolController {
     }
 
     @PutMapping("/open/{afterSchoolIdx}")
-    public CommonResultResponse openAfterSchool(@PathVariable Integer afterSchoolIdx, @RequestParam Season season, @RequestParam Integer year) {
-        afterSchoolService.openAfterSchool(afterSchoolIdx, season, year);
+    public CommonResultResponse openAfterSchool(@PathVariable Integer afterSchoolIdx) {
+        afterSchoolService.openAfterSchool(afterSchoolIdx);
         return responseService.getSuccessResult();
     }
 

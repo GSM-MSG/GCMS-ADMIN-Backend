@@ -20,4 +20,5 @@ public class AfterSchoolFindResponseDto {
     private String teacher;
     private Season season;
     private Integer yearOf;
+    private Boolean isOpened;
 }

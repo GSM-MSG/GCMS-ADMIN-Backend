@@ -13,12 +13,15 @@ import com.example.msgadminapi.dto.response.AfterSchoolFindResponseDto;
 import com.example.msgadminapi.dto.response.StatResponseDto;
 import com.example.msgadminapi.dto.response.StatisticsResponseDto;
 import com.example.msgadminapi.exception.exception.AfterSchoolNotFoundException;
+import com.example.msgadminapi.exception.exception.AfterSchoolReduplicationException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -38,16 +41,17 @@ public class AfterSchoolService {
                         AfterSchoolFindResponseDto.builder()
                                 .id(e.getId())
                                 .title(e.getTitle())
-                                .dayOfWeek(new ArrayList<>(e.getDayOfWeek().stream()
-                                        .map(d->d.getDayOfWeek())
+                                .dayOfWeek((e.getDayOfWeek().stream()
+                                        .map(DayOfWeek::getDayOfWeek)
                                         .collect(Collectors.toList()))
                                 )
-                                .grade(new ArrayList<>(e.getGrade().stream()
-                                        .map(g->g.getGrade())
+                                .grade((e.getGrade().stream()
+                                        .map(Grade::getGrade)
                                         .collect(Collectors.toList())))
                                 .teacher(e.getTeacher())
                                 .season(e.getSeason())
                                 .yearOf(e.getYearOf())
+                                .isOpened(e.getIsOpened())
                                 .build()
                 ));
         return list;
@@ -63,6 +67,7 @@ public class AfterSchoolService {
     @Transactional(readOnly = true)
     public List<User> findUserByAfterSchool(Integer afterSchoolIdx){
         List<User> userList = new ArrayList<>();
+        System.out.println("afterSchoolIdx = " + afterSchoolIdx);
         AfterSchool afterSchool = afterSchoolRepository.findById(afterSchoolIdx)
                 .orElseThrow(() -> new AfterSchoolNotFoundException());
         List<ClassRegistration> allByAfterSchool = classRegistrationRepository.findAllByAfterSchool(afterSchool);
@@ -71,9 +76,12 @@ public class AfterSchoolService {
     }
 
     @Transactional
-    public void createAfterSchool(AfterSchoolDto afterSchoolDto){
+    public AfterSchoolFindResponseDto createAfterSchool(AfterSchoolDto afterSchoolDto){
         List<DayOfWeek> weeks = new ArrayList<>();
         List<Grade> grades = new ArrayList<>();
+        if(afterSchoolRepository.existsByTitleAndSeasonAndYearOf(afterSchoolDto.getTitle(), afterSchoolDto.getSeason(), afterSchoolDto.getYearOf())) {
+            throw new AfterSchoolReduplicationException();
+        }
         afterSchoolDto.getDayOfWeek().forEach(e->weeks.add(DayOfWeek.builder().dayOfWeek(e).build()));
         afterSchoolDto.getGrade().forEach(e->grades.add(Grade.builder().grade(e).build()));
         AfterSchool afterSchool = afterSchoolDto.toEntity(grades, weeks);
@@ -82,6 +90,25 @@ public class AfterSchoolService {
         gradeRepository.saveAll(grades);
         dayOfWeekRepository.saveAll(weeks);
         afterSchoolRepository.save(afterSchool);
+        AfterSchool afterTitleAndSeasonAndYearOf = afterSchoolRepository.findByTitleAndSeasonAndYearOf(afterSchoolDto.getTitle(), afterSchoolDto.getSeason(), afterSchoolDto.getYearOf())
+                .orElseThrow(() -> new AfterSchoolNotFoundException());
+        AfterSchoolFindResponseDto afterResponse = AfterSchoolFindResponseDto.builder()
+                .id(afterTitleAndSeasonAndYearOf.getId())
+                .title(afterTitleAndSeasonAndYearOf.getTitle())
+                .teacher(afterTitleAndSeasonAndYearOf.getTeacher())
+                .season(afterTitleAndSeasonAndYearOf.getSeason())
+                .yearOf(afterTitleAndSeasonAndYearOf.getYearOf())
+                .isOpened(afterTitleAndSeasonAndYearOf.getIsOpened())
+                .dayOfWeek(new ArrayList<>(afterTitleAndSeasonAndYearOf.getDayOfWeek().stream()
+                        .map(d->d.getDayOfWeek())
+                        .collect(Collectors.toList()))
+                )
+                .grade(new ArrayList<>(afterTitleAndSeasonAndYearOf.getGrade().stream()
+                        .map(g -> g.getGrade())
+                        .collect(Collectors.toList()))
+                )
+                .build();
+        return afterResponse;
     }
 
     @Transactional
@@ -126,8 +153,8 @@ public class AfterSchoolService {
     }
 
     @Transactional
-    public void closeAfterSchool(Integer afterSchoolIdx, Season season, Integer year) {
-        AfterSchool afterSchool = afterSchoolRepository.findByIdAndSeasonAndYearOf(afterSchoolIdx, season, year)
+    public void closeAfterSchool(Integer afterSchoolIdx) {
+        AfterSchool afterSchool = afterSchoolRepository.findById(afterSchoolIdx)
                         .orElseThrow(() -> new AfterSchoolNotFoundException());
         if(afterSchool.getIsOpened()) {
             afterSchool.changeIsOpened(false);
@@ -142,8 +169,8 @@ public class AfterSchoolService {
     }
 
     @Transactional
-    public void openAfterSchool(Integer afterSchoolIdx, Season season, Integer year) {
-         AfterSchool afterSchool = afterSchoolRepository.findByIdAndSeasonAndYearOf(afterSchoolIdx, season, year)
+    public void openAfterSchool(Integer afterSchoolIdx) {
+         AfterSchool afterSchool = afterSchoolRepository.findById(afterSchoolIdx)
                  .orElseThrow(() -> new AfterSchoolNotFoundException());
         if(!afterSchool.getIsOpened()) {
             afterSchool.changeIsOpened(true);

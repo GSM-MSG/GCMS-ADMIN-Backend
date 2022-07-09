@@ -15,7 +15,7 @@ public class ClassRegistration {
     private Integer id;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "afterschoolId")
+    @JoinColumn(name = "afterSchoolId")
     private AfterSchool afterSchool;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)

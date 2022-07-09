@@ -14,5 +14,7 @@ import java.util.Optional;
 public interface AfterSchoolRepository extends JpaRepository<AfterSchool, Integer> {
     List<AfterSchool> findAllBySeasonAndYearOf(Season season, Integer year);
     Optional<AfterSchool>findByIdAndSeasonAndYearOf(Integer id, Season season, Integer year);
+    Optional<AfterSchool> findByTitleAndSeasonAndYearOf(String title, Season season, Integer year);
+    boolean existsByTitleAndSeasonAndYearOf(String title, Season season, Integer year);
 
 }

@@ -12,7 +12,8 @@ public enum ErrorCode {
     MEMBER_NOT_FOUND(404, "No Club Members Found", ErrorClassification.MEMBER + "-ERR-404"),
     AFTERSCHOOL_NOT_FOUND(404, "No AfterSchool Found", ErrorClassification.AFTERSCHOOL + "-ERR-404"),
     TEACHER_NOT_FOUND(404, "No Teacher Found", ErrorClassification.TEACHER + "-ERR-404"),
-    REFRESH_TOKEN_EXPIRED(401, "RefreshToken is Expired", ErrorClassification.COMMON + "-ERR-401")
+    REFRESH_TOKEN_EXPIRED(401, "RefreshToken is Expired", ErrorClassification.COMMON + "-ERR-401"),
+    AFTERSCHOOL_REDUPLICATION(409, "AFTERSCHOOL Title , Season , YearOf REDUPLICATION", ErrorClassification.AFTERSCHOOL + "ERR-409")
     ;
 
     private int status;

@@ -33,8 +33,8 @@ public class TokenProvider {
     private String blackListATPrefix;
 
     enum TokenType {
-        ACCESS_TOKEN("accessToken"),
-        REFRESH_TOKEN("refreshToken");
+        ACCESS_TOKEN("adminAccessToken"),
+        REFRESH_TOKEN("adminRefreshToken");
         String value;
         TokenType(String value) {
             this.value = value;

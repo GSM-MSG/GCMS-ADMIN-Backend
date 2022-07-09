@@ -38,13 +38,13 @@ public class TeacherService {
         Teacher teacher = teacherRepository.findByUserId(userId)
                 .orElseThrow(() -> new UserNotFoundException());
         checkPassword(password, teacher.getPassword());
-        final Cookie accessToken = cookieUtil.createCookie("accessToken", tokenProvider.generateAccessToken(teacher.getUserId()), TokenProvider.ACCESS_TOKEN_EXPIRE_TIME);
-        final Cookie refreshToken = cookieUtil.createCookie("refreshToken", tokenProvider.generateRefreshToken(teacher.getUserId()), TokenProvider.REFRESH_TOKEN_EXPIRE_TIME);
+        final Cookie accessToken = cookieUtil.createCookie("adminAccessToken", tokenProvider.generateAccessToken(teacher.getUserId()), TokenProvider.ACCESS_TOKEN_EXPIRE_TIME);
+        final Cookie refreshToken = cookieUtil.createCookie("adminRefreshToken", tokenProvider.generateRefreshToken(teacher.getUserId()), TokenProvider.REFRESH_TOKEN_EXPIRE_TIME);
 
 
         return LoginResponseDto.builder()
-                .accessToken(accessToken)
-                .refreshToken(refreshToken)
+                .adminAccessToken(accessToken)
+                .adminRefreshToken(refreshToken)
                 .build();
     }
 
@@ -62,8 +62,8 @@ public class TeacherService {
     public RefreshResponseDto reIssueAccessToken(String rfToken) {
         Teacher teacher = teacherRepository.findByUserId(userId).orElseThrow(() -> new TeacherNotFoundException());
         tokenProvider.checkRefreshToken(userId, rfToken);
-        final Cookie accessToken = cookieUtil.createCookie("accessToken", tokenProvider.generateAccessToken(teacher.getUserId()), TokenProvider.ACCESS_TOKEN_EXPIRE_TIME);
-        final Cookie refreshToken = cookieUtil.createCookie("refreshToken", tokenProvider.generateRefreshToken(teacher.getUserId()), TokenProvider.REFRESH_TOKEN_EXPIRE_TIME);
+        final Cookie accessToken = cookieUtil.createCookie("adminAccessToken", tokenProvider.generateAccessToken(teacher.getUserId()), TokenProvider.ACCESS_TOKEN_EXPIRE_TIME);
+        final Cookie refreshToken = cookieUtil.createCookie("adminRefreshToken", tokenProvider.generateRefreshToken(teacher.getUserId()), TokenProvider.REFRESH_TOKEN_EXPIRE_TIME);
         return new RefreshResponseDto(accessToken, refreshToken);
     }
 
