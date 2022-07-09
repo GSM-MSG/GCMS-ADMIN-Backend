@@ -30,10 +30,10 @@ public class AfterSchool {
     @Column(nullable = false)
     private String title;
 
-    @OneToMany(mappedBy = "afterSchool")
+    @OneToMany(mappedBy = "afterSchool", cascade = CascadeType.REMOVE)
     private List<Grade> grade;
 
-    @OneToMany(mappedBy = "afterSchool")
+    @OneToMany(mappedBy = "afterSchool", cascade = CascadeType.REMOVE)
     private List<DayOfWeek> dayOfWeek;
 
     @Column(nullable = false)
