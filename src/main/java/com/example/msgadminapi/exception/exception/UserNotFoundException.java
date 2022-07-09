@@ -6,7 +6,6 @@ import lombok.Getter;
 
 @Getter
 public class UserNotFoundException extends CommonException {
-    private static final CommonException EXCEPTION = new UserNotFoundException();
 
     public UserNotFoundException() {
         super(ErrorCode.USER_NOT_FOUND);

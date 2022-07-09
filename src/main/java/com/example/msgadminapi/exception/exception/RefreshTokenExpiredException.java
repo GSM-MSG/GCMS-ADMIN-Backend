@@ -6,7 +6,6 @@ import lombok.Getter;
 
 @Getter
 public class RefreshTokenExpiredException extends CommonException {
-    private static final CommonException EXCEPTION = new RefreshTokenExpiredException();
 
     public RefreshTokenExpiredException() {
         super(ErrorCode.REFRESH_TOKEN_EXPIRED);
