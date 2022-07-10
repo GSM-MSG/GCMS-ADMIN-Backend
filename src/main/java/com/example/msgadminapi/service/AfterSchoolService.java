@@ -5,13 +5,10 @@ import com.example.msgadminapi.domain.entity.afterschool.DayOfWeek;
 import com.example.msgadminapi.domain.entity.afterschool.Grade;
 import com.example.msgadminapi.domain.entity.afterschool.enums.Season;
 import com.example.msgadminapi.domain.entity.classregistration.ClassRegistration;
-import com.example.msgadminapi.domain.entity.user.User;
 import com.example.msgadminapi.domain.repository.*;
 import com.example.msgadminapi.dto.request.AfterSchoolDto;
 import com.example.msgadminapi.dto.request.AfterSchoolModifyDto;
-import com.example.msgadminapi.dto.response.AfterSchoolFindResponseDto;
-import com.example.msgadminapi.dto.response.StatResponseDto;
-import com.example.msgadminapi.dto.response.StatisticsResponseDto;
+import com.example.msgadminapi.dto.response.*;
 import com.example.msgadminapi.exception.exception.AfterSchoolNotFoundException;
 import com.example.msgadminapi.exception.exception.AfterSchoolReduplicationException;
 import lombok.RequiredArgsConstructor;
@@ -19,9 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -65,13 +60,23 @@ public class AfterSchoolService {
     }
 
     @Transactional(readOnly = true)
-    public List<User> findUserByAfterSchool(Integer afterSchoolIdx){
-        List<User> userList = new ArrayList<>();
+    public List<ClassRegistrationUserResDto> findUserByAfterSchool(Integer afterSchoolIdx){
+        List<ClassRegistrationUserResDto> userList = new ArrayList<>();
         System.out.println("afterSchoolIdx = " + afterSchoolIdx);
         AfterSchool afterSchool = afterSchoolRepository.findById(afterSchoolIdx)
                 .orElseThrow(() -> new AfterSchoolNotFoundException());
         List<ClassRegistration> allByAfterSchool = classRegistrationRepository.findAllByAfterSchool(afterSchool);
-        allByAfterSchool.forEach(e -> userList.add(e.getUser()));
+        allByAfterSchool.forEach(e -> userList.add(
+                ClassRegistrationUserResDto.builder()
+                .email(e.getUser().getEmail())
+                .grade(e.getUser().getGrade())
+                .name(e.getUser().getName())
+                .class_(e.getUser().getClass_())
+                .num(e.getUser().getNum())
+                .userImg(e.getUser().getUserImg())
+                .build()
+                )
+        );
         return userList;
     }
 

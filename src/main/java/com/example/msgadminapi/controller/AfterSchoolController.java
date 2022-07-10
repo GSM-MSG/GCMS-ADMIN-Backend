@@ -7,8 +7,10 @@ import com.example.msgadminapi.domain.entity.user.User;
 import com.example.msgadminapi.dto.request.AfterSchoolDto;
 import com.example.msgadminapi.dto.request.AfterSchoolModifyDto;
 import com.example.msgadminapi.dto.response.AfterSchoolFindResponseDto;
+import com.example.msgadminapi.dto.response.ClassRegistrationUserResDto;
 import com.example.msgadminapi.dto.response.StatResponseDto;
 import com.example.msgadminapi.dto.request.UserEmailDto;
+import com.example.msgadminapi.dto.response.UserResponseDto;
 import com.example.msgadminapi.response.ResponseService;
 import com.example.msgadminapi.response.result.CommonResultResponse;
 import com.example.msgadminapi.service.AfterSchoolService;
@@ -55,7 +57,7 @@ public class AfterSchoolController {
     }
 
     @GetMapping("/users/{afterSchoolIdx}")
-    public List<User> findUser(@PathVariable Integer afterSchoolIdx){
+    public List<ClassRegistrationUserResDto> findUser(@PathVariable Integer afterSchoolIdx){
         return afterSchoolService.findUserByAfterSchool(afterSchoolIdx);
     }
 
