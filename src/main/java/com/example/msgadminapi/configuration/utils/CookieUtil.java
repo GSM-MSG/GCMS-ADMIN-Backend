@@ -1,6 +1,5 @@
 package com.example.msgadminapi.configuration.utils;
 
-import org.springframework.http.ResponseCookie;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.Cookie;
