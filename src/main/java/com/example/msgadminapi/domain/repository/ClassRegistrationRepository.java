@@ -9,5 +9,5 @@ import java.util.List;
 
 @Repository
 public interface ClassRegistrationRepository  extends JpaRepository<ClassRegistration, Integer> {
-    List<ClassRegistration> findAllByAfterSchool(AfterSchool afterSchool);
+    List<ClassRegistration> findByAfterSchool_Id(Integer id);
 }

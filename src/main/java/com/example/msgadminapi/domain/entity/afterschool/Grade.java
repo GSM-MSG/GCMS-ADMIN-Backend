@@ -18,9 +18,10 @@ public class Grade {
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
-    @JoinColumn(name = "afterSchoolId")
+    @JoinColumn(name = "afterSchoolId", nullable = false)
     private AfterSchool afterSchool;
 
+    @Column(nullable = false)
     private Integer grade;
 
     public void mapping(AfterSchool afterSchool){

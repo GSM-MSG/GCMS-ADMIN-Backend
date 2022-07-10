@@ -43,7 +43,7 @@ public class WebSecurityConfig {
                 .authorizeRequests()
                 .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
                 .antMatchers(HttpMethod.POST, "/teacher/login").permitAll()
-                .antMatchers(HttpMethod.GET, "/teacher/refreshtoken").permitAll()
+                .antMatchers(HttpMethod.POST, "/teacher/refreshtoken").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .addFilterBefore(new JwtAuthenticationFilter(tokenProvider, objectMapper, cookieUtil), UsernamePasswordAuthenticationFilter.class);
