@@ -77,7 +77,6 @@ public class AfterSchoolService {
                 .build()
                 )
         );
-
         return userList;
     }
 
