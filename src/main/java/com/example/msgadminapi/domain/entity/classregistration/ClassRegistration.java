@@ -15,10 +15,10 @@ public class ClassRegistration {
     private Integer id;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "afterSchoolId")
+    @JoinColumn(name = "afterSchoolId", nullable = false)
     private AfterSchool afterSchool;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
-    @JoinColumn(name = "userEmail")
+    @JoinColumn(name = "userEmail", nullable = false)
     private User user;
 }

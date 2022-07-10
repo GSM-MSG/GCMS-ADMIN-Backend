@@ -19,9 +19,10 @@ public class DayOfWeek {
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
-    @JoinColumn(name = "afterSchoolId")
+    @JoinColumn(name = "afterSchoolId", nullable = false)
     private AfterSchool afterSchool;
 
+    @Column(nullable = false)
     private String dayOfWeek;
 
     public void mapping(AfterSchool afterSchool){

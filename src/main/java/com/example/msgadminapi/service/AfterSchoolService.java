@@ -70,7 +70,7 @@ public class AfterSchoolService {
         System.out.println("afterSchoolIdx = " + afterSchoolIdx);
         AfterSchool afterSchool = afterSchoolRepository.findById(afterSchoolIdx)
                 .orElseThrow(() -> new AfterSchoolNotFoundException());
-        List<ClassRegistration> allByAfterSchool = classRegistrationRepository.findAllByAfterSchool(afterSchool);
+        List<ClassRegistration> allByAfterSchool = classRegistrationRepository.findByAfterSchool_Id(afterSchoolIdx);
         allByAfterSchool.forEach(e -> userList.add(e.getUser()));
         return userList;
     }

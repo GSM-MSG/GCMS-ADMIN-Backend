@@ -38,7 +38,7 @@ public class TeacherController {
         return new ResponseEntity<>(adminCookieResponseDto, HttpStatus.OK);
     }
 
-    @GetMapping("/refreshtoken")
+    @PostMapping("/refreshtoken")
     public ResponseEntity<AdminCookieResponseDto> refreshToken(HttpServletRequest request, HttpServletResponse response) {
         Cookie refresh = cookieUtil.getCookie(request, "adminRefreshToken");
         if(refresh == null) {
