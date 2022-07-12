@@ -51,8 +51,8 @@ public class TeacherService {
     private void checkPassword(String pw, String encodePw) {
         System.out.println("checkPassword : " +  pw);
         System.out.println("encodePw = " + encodePw);
-        //boolean isSame = passwordEncoder.matches(pw, encodePw);
-        boolean isSame = pw.equals(encodePw);
+        boolean isSame = passwordEncoder.matches(pw, encodePw);
+//        boolean isSame = pw.equals(encodePw);
         log.info("isSame {}", isSame);
         if(!isSame) {
             throw new UserNotFoundException();

@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,9 +29,11 @@ public class TeacherController {
 
     private final TeacherService teacherService;
     private final CookieUtil cookieUtil;
+    private final PasswordEncoder passwordEncoder;
 
     @PostMapping("/login")
     public ResponseEntity<AdminCookieResponseDto> login(HttpServletResponse response, @RequestBody LoginInDto LoginInDto) throws Exception {
+        System.out.println("response = " + passwordEncoder.encode(LoginInDto.getPassword()));
         LoginResponseDto userInform = teacherService.login(LoginInDto.getUserId(), LoginInDto.getPassword());
         response.addCookie(userInform.getAdminAccessToken());
         response.addCookie(userInform.getAdminRefreshToken());
