@@ -12,9 +12,11 @@ import com.example.msgadminapi.dto.response.*;
 import com.example.msgadminapi.exception.exception.AfterSchoolNotFoundException;
 import com.example.msgadminapi.exception.exception.AfterSchoolReduplicationException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.jpa.repository.Lock;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.LockModeType;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -183,6 +185,7 @@ public class AfterSchoolService {
     }
 
     @Transactional
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
     public void deleteApplyMember(Integer afterSchoolId, String userEmail){
         AfterSchool afterSchool = afterSchoolRepository.findById(afterSchoolId)
                 .orElseThrow(() -> new AfterSchoolNotFoundException());
