@@ -13,7 +13,7 @@ public class CookieUtil {
         cookie.setMaxAge(exp / 1000); //(int) (System.currentTimeMillis() + exp / 1000)
         cookie.setSecure(true);
         cookie.setPath("/");
-//        cookie.setDomain("gcms.site");
+        cookie.setDomain("gcms.site");
         return cookie;
     }
 

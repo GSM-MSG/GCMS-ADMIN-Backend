@@ -35,6 +35,7 @@ public class WebSecurityConfig {
                 .cors()
                 .and()
                 .csrf().disable()
+                .formLogin().disable()
                 .exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint)
                 .and()
                 .sessionManagement()
